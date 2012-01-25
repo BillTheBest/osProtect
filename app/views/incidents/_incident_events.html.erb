@@ -1,0 +1,47 @@
+<div id="osprotect_content" class="with_sidebar">
+  <div id="main_content_wrapper">
+    <div id="main_content">
+      <div class="paginated_collection">
+        <!-- <div class="pagination_information"><%#= page_entries_info incident_events %></div> -->
+        <div class="paginated_collection_contents">
+          <div class="index_content">
+            <div class="index_as_table">
+              <table border="0" cellspacing="0" cellpadding="0" id="events" class="index_table">
+                <thead>
+                  <tr>
+                    <th class="sortable" colspan="2" style="text-align:center">Events for this Incident</th>
+                  </tr>
+                  <tr>
+                    <th class="sortable">priority</th>
+                    <th class="sortable">signature</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% incident_events.each do |ie| %>
+                      <tr class="<%= cycle('even', 'odd') %>">
+                        <td><%= ie.sig_priority %></td>
+                        <td><%= SignatureDetail.where(sig_id: ie.signature).first.sig_name %></td>
+                      </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div> <!-- index_as_table -->
+          </div> <!-- index_content -->
+        </div> <!-- paginated_collection_contents -->
+        <!-- <div id="index_footer"><%#= will_paginate incident_events %></div> -->
+      </div> <!-- paginated_collection -->
+    </div> <!-- main_content -->
+  </div> <!-- main_content_wrapper -->
+
+  <div id="sidebar">
+    <div class="sidebar_section panel">
+      <div class="panel_contents">
+        <h4>notes/todos:</h4>
+        <ul>
+          <li>paginate events for this incident</li>
+          <li>allow filtering of events for this incident</li>
+        </ul>
+      </div> <!-- panel_contents -->
+    </div> <!-- sidebar_section -->
+  </div> <!-- sidebar -->
+</div> <!-- osprotect_content -->

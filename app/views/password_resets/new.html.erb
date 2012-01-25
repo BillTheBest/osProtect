@@ -1,0 +1,29 @@
+<div id="wrapper">
+  <div id="content_wrapper">
+    <div class="flashes">
+      <% flash.each do |name, msg| %>
+        <%= content_tag :div, msg, :class=>"flash flash_#{name}" %>
+      <% end %>
+    </div>
+    <div id="osprotect_content">
+      <div id="login">
+        <h2>osProtect &nbsp;&nbsp; Reset Password</h2>
+        <%= form_tag password_resets_path, :method => :post do %>
+          <fieldset class="inputs">
+            <ol>
+              <li class="email required">
+                <%= label_tag :email %>
+                <%= text_field_tag :email, params[:email] %>
+              </li>
+            </ol>
+          </fieldset>
+          <fieldset class="buttons">
+            <ol>
+              <li class="commit"><input class="create" name="commit" type="submit" value="Reset Password"></li>
+            </ol>
+          </fieldset>
+        <% end %>
+      </div> <!-- login -->
+    </div> <!-- osprotect_content -->
+  </div> <!-- content_wrapper -->
+</div> <!-- wrapper -->

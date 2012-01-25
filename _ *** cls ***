@@ -1,0 +1,301 @@
+t.integer   :incident_id
+t.integer   :sid
+t.integer   :cid
+t.integer   :signature
+t.integer   :vseq
+t.integer   :detail
+t.integer   :encoding
+t.integer   :last_cid
+t.integer   :detail_type
+t.integer   :encoding_type
+t.integer   :sig_id
+t.integer   :sig_class_id
+t.integer   :sig_priority
+t.integer   :sig_rev
+t.integer   :sig_sid
+t.integer   :sig_gid
+t.integer   :ip_src
+t.integer   :ip_dst
+t.integer   :ip_ver
+t.integer   :ip_hlen
+t.integer   :ip_tos
+t.integer   :ip_len
+t.integer   :ip_id
+t.integer   :ip_flags
+t.integer   :ip_off
+t.integer   :ip_ttl
+t.integer   :ip_proto
+t.integer   :ip_csum
+t.integer   :icmp_type
+t.integer   :icmp_code
+t.integer   :icmp_csum
+t.integer   :icmp_id
+t.integer   :icmp_seq
+t.integer   :tcp_sport
+t.integer   :tcp_dport
+t.integer   :tcp_seq
+t.integer   :tcp_ack
+t.integer   :tcp_off
+t.integer   :tcp_res
+t.integer   :tcp_flags
+t.integer   :tcp_win
+t.integer   :tcp_csum
+t.integer   :tcp_urp
+t.integer   :udp_sport
+t.integer   :udp_dport
+t.integer   :udp_len
+t.integer   :udp_csum
+47 * 4 = 188
+t.datetime  :timestamp
+t.datetime  :timestamp
+t.datetime  :timestamp
+t.datetime  :ctime
+4 * 8 = 32
+t.text      :hostname
+t.text      :interface
+t.text      :filter
+t.text      :detail_text
+t.text      :encoding_text
+t.text      :sig_name
+6 * 8 = 48
+188 + 32 + 48 = 268
+65,535 - 268 = 65,267
+t.string    :sig_class_name
+
+> rails g scaffold Incident group_id integer, user_id integer, incident_name character varying(255), incident_description text, incident_resolution text
+
+create_table "incident_events" do |t|
+  # event:
+  t.integer  "sid",                    :null => false
+  t.integer  "cid",       :limit => 8, :null => false
+  t.integer  "signature",              :null => false
+  t.datetime "timestamp",              :null => false
+  # iphdr:
+  t.integer "ip_src",   :limit => 8, :null => false
+  t.integer "ip_dst",   :limit => 8, :null => false
+  t.integer "ip_ver",   :limit => 2
+  t.integer "ip_hlen",  :limit => 2
+  t.integer "ip_tos",   :limit => 2
+  t.integer "ip_len"
+  t.integer "ip_id"
+  t.integer "ip_flags", :limit => 2
+  t.integer "ip_off"
+  t.integer "ip_ttl",   :limit => 2
+  t.integer "ip_proto", :limit => 2, :null => false
+  t.integer "ip_csum"
+  # icmphdr:
+  t.integer "icmp_type", :limit => 2, :null => false
+  t.integer "icmp_code", :limit => 2, :null => false
+  t.integer "icmp_csum"
+  t.integer "icmp_id"
+  t.integer "icmp_seq"
+  # tcphdr:
+  t.integer "tcp_sport",              :null => false
+  t.integer "tcp_dport",              :null => false
+  t.integer "tcp_seq",   :limit => 8
+  t.integer "tcp_ack",   :limit => 8
+  t.integer "tcp_off",   :limit => 2
+  t.integer "tcp_res",   :limit => 2
+  t.integer "tcp_flags", :limit => 2, :null => false
+  t.integer "tcp_win"
+  t.integer "tcp_csum"
+  t.integer "tcp_urp"
+  #udphdr:
+  t.integer "udp_sport",              :null => false
+  t.integer "udp_dport",              :null => false
+  t.integer "udp_len"
+  t.integer "udp_csum"
+  # signature:
+  t.text    "sig_name",                  :null => false
+  t.integer "sig_class_id", :limit => 8
+  t.integer "sig_priority", :limit => 8
+  t.integer "sig_rev",      :limit => 8
+  t.integer "sig_sid",      :limit => 8
+  t.integer "sig_gid",      :limit => 8
+
+  # schema:
+  t.integer  "vseq",  :null => false
+  t.datetime "ctime", :null => false
+
+  t.timestamps
+end
+add_index "incident_events", ["signature"],    :name => "signature_idx"
+add_index "incident_events", ["timestamp"],    :name => "timestamp_idx"
+add_index "incident_events", ["ip_dst"],       :name => "ip_dst_idx"
+add_index "incident_events", ["ip_src"],       :name => "ip_src_idx"
+add_index "incident_events", ["icmp_type"],    :name => "icmp_type_idx"
+add_index "incident_events", ["tcp_sport"],    :name => "tcp_sport_idx"
+add_index "incident_events", ["tcp_dport"],    :name => "tcp_dport_idx"
+add_index "incident_events", ["tcp_flags"],    :name => "tcp_flags_idx"
+add_index "incident_events", ["udp_sport"],    :name => "udp_sport_idx"
+add_index "incident_events", ["udp_dport"],    :name => "udp_dport_idx"
+add_index "incident_events", ["sig_class_id"], :name => "sig_class_idx"
+add_index "incident_events", ["sig_name"],     :name => "sig_name_idx"
+
+
+create_table "sig_class", :primary_key => "sig_class_id", :force => true do |t|
+  t.text "sig_class_name", :null => false
+end
+add_index "sig_class", ["sig_class_name"], :name => "sig_class_name_idx"
+
+create_table "sig_reference", :id => false, :force => true do |t|
+  t.integer "sig_id",  :null => false
+  t.integer "ref_seq", :null => false
+  t.integer "ref_id",  :null => false
+end
+
+____________________________________________________________________
+# these tables may have large text columns, but don't seem to:
+
+create_table "sensor" do |t|
+  t.integer "incident_id",            :null => false
+  t.integer "sid",                    :null => false
+  t.text    "hostname"
+  t.text    "interface"
+  t.text    "filter"
+  t.integer "detail",    :limit => 2
+  t.integer "encoding",  :limit => 2
+  t.integer "last_cid",  :limit => 8, :null => false
+end
+
+create_table "detail", :id => false, :force => true do |t|
+  t.integer "detail_type", :limit => 2, :null => false
+  t.text    "detail_text",              :null => false
+end
+
+create_table "encoding", :id => false, :force => true do |t|
+  t.integer "encoding_type", :limit => 2, :null => false
+  t.text    "encoding_text",              :null => false
+end
+
+create_table "reference", :primary_key => "ref_id", :force => true do |t|
+  t.integer "ref_system_id", :null => false
+  t.text    "ref_tag",       :null => false
+end
+
+create_table "reference_system", :primary_key => "ref_system_id", :force => true do |t|
+  t.text "ref_system_name"
+end
+
+____________________________________________________________________
+# these tables definitely have large text columns:
+
+create_table "data", :id => false, :force => true do |t|
+  t.integer "sid",                       :null => false
+  t.integer "cid",          :limit => 8, :null => false
+  t.text    "data_payload"
+end
+
+create_table "opt", :id => false, :force => true do |t|
+  t.integer "sid",                    :null => false
+  t.integer "cid",       :limit => 8, :null => false
+  t.integer "optid",     :limit => 2, :null => false
+  t.integer "opt_proto", :limit => 2, :null => false
+  t.integer "opt_code",  :limit => 2, :null => false
+  t.integer "opt_len"
+  t.text    "opt_data"
+end
+
+____________________________________________________________________
+tables missing from Incident creation:
+opt
+*done-> payload
+*done-> reference
+*done-> reference_system
+*done-> signature_reference
+
+____________________________________________________________________
+- upstart conf for redis, /etc/init/redis-server.conf:
+description "redis server"
+start on runlevel [2345]
+stop on shutdown
+exec /usr/bin/redis-server /etc/redis/redis.conf
+respawn
+
+
+_________________________________________________________________________________________________________
+... error caused by gem "composite_primary_keys", "~> 5.0.0.rc1"
+ActiveRecord::StatementInvalid in Events#index
+Showing /Users/cleesmith/Sites/osProtect_ror320/app/views/events/index.html.erb where line #13 raised:
+Mysql2::Error: Column 'sid' in field list is ambiguous: 
+SELECT COUNT(*) FROM (SELECT DISTINCT sid,cid FROM `event` 
+LEFT OUTER JOIN `sensor` ON `sensor`.`sid` = `event`.`sid` 
+LEFT OUTER JOIN `signature` ON `signature`.`sig_id` = `event`.`signature` 
+LEFT OUTER JOIN `iphdr` ON `iphdr`.`sid` = `event`.`sid` AND `iphdr`.`cid` = `event`.`cid` 
+LEFT OUTER JOIN `tcphdr` ON `tcphdr`.`sid` = `event`.`sid` AND `tcphdr`.`cid` = `event`.`cid` 
+LEFT OUTER JOIN `udphdr` ON `udphdr`.`sid` = `event`.`sid` AND `udphdr`.`cid` = `event`.`cid` 
+WHERE `event`.`sid` = 2 AND (signature.sig_priority = '3')) subquery_for_count
+... will_paginate is doing this query
+
+... cls: github issue: 
+Using rails 3.2.0 and composite_primary_keys 5.0.0.rc1 (and previous versions), I have the following:
+
+```ruby
+class Event < ActiveRecord::Base
+  self.pluralize_table_names = false
+  set_primary_keys [:sid, :cid]
+  belongs_to :iphdr, foreign_key: [:sid, :cid], :dependent => :destroy
+```
+
+```ruby
+class Iphdr < ActiveRecord::Base
+  self.pluralize_table_names = false
+  set_primary_keys [:sid, :cid]
+  has_many :events, foreign_key: [:sid, :cid]
+```
+These queries
+
+```ruby
+@events = Event.includes(:iphdr).where("iphdr.ip_src = ?", 329777412).count
+```
+... or ...
+
+```ruby
+@events = Event.includes(:iphdr).where("iphdr.ip_src = ?", 329777412).size
+```
+cause the following error:
+
+```
+Mysql2::Error: Column 'sid' in field list is ambiguous: 
+SELECT COUNT(*) FROM (SELECT DISTINCT sid,cid 
+FROM `event` LEFT OUTER JOIN `iphdr` 
+ON `iphdr`.`sid` = `event`.`sid` 
+AND `iphdr`.`cid` = `event`.`cid` 
+WHERE (iphdr.ip_src = 329777412)) subquery_for_count
+```
+
+As both tables have the same primary keys, I think the **SELECT DISTINCT sid,cid** 
+should be **SELECT DISTINCT event.sid, event.cid**. After forking CPK I changed the 
+following in **build_count_subquery** method in **lib/composite_primary_keys/relation/calculations.rb**:
+... from:
+
+```ruby
+relation.select_values = ["DISTINCT #{column.to_s}"]
+```
+... to this:
+
+```ruby
+if column_name.is_a?(CompositePrimaryKeys::CompositeKeys)
+  relation.select_values = ["DISTINCT #{column.to_s.split(',').collect {|col| @klass.unscoped.table.name + '.' + col.strip}.join(', ')}"]
+else
+  relation.select_values = ["DISTINCT #{column.to_s}"]
+end
+```
+I am unsure if this is a proper fix, but it works for MySQL ... but maybe there is a better way to express the query.
+Thanks for CPK.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

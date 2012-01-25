@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>osProtect</title>
+  <%= stylesheet_link_tag    "application" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body class="logged_out new">
+  <%= yield %>
+  <div id="footer">
+    <p>
+    	2011 &nbsp;&nbsp;osprotect.appsudo.com 0.2.1&nbsp;&nbsp;
+    	<%= Time.now.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") %>
+    </p>
+  </div>
+</body>
+</html>

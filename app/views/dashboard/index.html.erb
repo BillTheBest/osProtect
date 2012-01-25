@@ -1,0 +1,159 @@
+<div class="flashes">
+  <% flash.each do |name, msg| %>
+    <%= content_tag :div, msg, :class=>"flash flash_#{name}" %>
+  <% end %>
+</div>
+<div id="osprotect_content" class="with_sidebar">
+  <div id="main_content_wrapper">
+    <div id="main_content">
+      <% if @events_count > 0 %>
+        <table border="0" cellspacing="0" cellpadding="0" class="dashboard">
+          <tbody>
+            <tr>
+              <td>
+                <div class="dashboard_section panel">
+                  <h3>Stats</h3>
+                  <div class="panel_contents">
+                    <table border="0" cellspacing="0" cellpadding="0">
+                      <thead>
+                        <tr>
+                          <th style="text-align:left"><small>count (all time)</small></th>
+                          <th style="text-align:left">Priority</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% @priorities.each do |priority| %>
+                            <tr class="even">
+                              <td width="20%"><%= number_with_delimiter(priority.priority_cnt) %></td>
+                              <td><%= link_to priority.sig_priority, events_path('q[sig_priority]' => priority.sig_priority) %></td>
+                            </tr>
+                        <% end %>
+                      </tbody>
+                    </table>
+                    <hr />
+                    <table border="0" cellspacing="0" cellpadding="0">
+                      <thead>
+                        <tr>
+                          <th style="text-align:left"><small>count (all time)</small></th>
+                          <th style="text-align:left">Top Attackers <small>(source IPs)</small></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% @attackers.each do |attack_ip| %>
+                            <tr class="odd">
+                              <td width="20%"><%= number_with_delimiter(attack_ip.ipcnt) %></td>
+                              <td><%= link_to attack_ip.ip_source, events_path('q[source_address]' => attack_ip.ip_source) %></td>
+                            </tr>
+                        <% end %>
+                      </tbody>
+                    </table>
+                    <hr />
+                    <table border="0" cellspacing="0" cellpadding="0">
+                      <thead>
+                        <tr>
+                          <th style="text-align:left"><small>count (all time)</small></th>
+                          <th style="text-align:left">Top Targets <small>(destination IPs)</small></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% @targets.each do |target_ip| %>
+                            <tr class="even">
+                              <td width="20%"><%= number_with_delimiter(target_ip.ipcnt) %></td>
+                              <td><%= link_to target_ip.ip_destination, events_path('q[destination_address]' => target_ip.ip_destination) %></td>
+                            </tr>
+                        <% end %>
+                      </tbody>
+                    </table>
+                    <hr />
+                    <table border="0" cellspacing="0" cellpadding="0">
+                      <thead>
+                        <tr>
+                          <th style="text-align:left"><small>count (all time)</small></th>
+                          <th style="text-align:left">Top Events by Signature</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% @events.each do |event| %>
+                            <tr class="odd">
+                              <td width="20%"><%= number_with_delimiter(event.event_cnt) %></td>
+                              <td><%= link_to event.sig_name, events_path('q[sig_id]' => event.sig_id) %></td>
+                            </tr>
+                        <% end %>
+                      </tbody>
+                    </table>
+                    <hr />
+                  </div> <!-- panel_contents -->
+                </div> <!-- dashboard_section -->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      <% end %>
+    </div> <!-- main_content -->
+  </div> <!-- main_content_wrapper -->
+
+  <% if @events_count > 0 %>
+    <div id="sidebar">
+      <div class="sidebar_section panel">
+        <div class="panel_contents" style="margin-top:15px">
+          <table border="0" cellspacing="0" cellpadding="0" style="margin-top:-20px">
+            <thead>
+              <tr>
+                <th style="text-align:left">
+                  <%= form_tag incidents_path, method: :get do %>
+                    <div class="buttons" id="incidents">
+                      <%= submit_tag 'Incidents', title: 'view all Incidents' %>
+                    </div>
+                  <% end %>
+                </th>
+                <th style="text-align:left"><br />Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @incidents.each do |incident| %>
+                  <tr class="odd">
+                    <td style="white-space:nowrap"><%= link_to truncate(incident.incident_name, length: 25), edit_incident_path(incident), title: "#{incident.incident_name}" %></td>
+                    <td><span class="status <%=incident.status_class%>"><%= incident.status %></span></td>
+                  </tr>
+                  <tr><td colspan="2"></td></tr>
+              <% end %>
+              <tr class="odd">
+                <td>pending</td>
+                <td><%= number_with_delimiter @pending_incidents %></td>
+              </tr>
+              <tr class="odd">
+                <td>suspicious</td>
+                <td><%= number_with_delimiter @suspicious_incidents %></td>
+              </tr>
+              <tr class="odd">
+                <td>resolved</td>
+                <td><%= number_with_delimiter @resolved_incidents %></td>
+              </tr>
+              <tr class="odd">
+                <td>total</td>
+                <td><%= number_with_delimiter Incident.count %></td>
+              </tr>
+            </tbody>
+          </table>
+          <h4>notes/todos:</h4>
+          <ul>
+            <li>
+              Having a Pulse page instead of putting the stats on a home or dashboard page will help 
+              to avoid the user's first impression that this app is slow to respond, because
+              all of database queries on this page are very expensive. 
+              This only gets worse as more events are added to the database, and there is no way 
+              to improve the situation without some type of caching.  It would be perfect if 
+              Barnyard2 was updating these counts as the events were inserted into the database.
+            </li>
+            <br />
+            <li>Should there be stats about traffic by protocol ?</li>
+            <br />
+            <li>Instead of "all time" an option to choose between today, this week, this month, this year should be provided.</li>
+            <br />
+            <li>Perhaps the linux commands 'w', '/proc/...', or similar could be used to generate info (such as cpu load, memory, disk usage, interfaces, network traffic, etc.) for/on each sensor box, but how would that info get transferred from each box into the database?</li>
+          </ul>
+        </div> <!-- panel_contents -->
+      </div> <!-- sidebar_section -->
+    </div> <!-- sidebar -->
+  <% end %>
+</div> <!-- osprotect_content -->

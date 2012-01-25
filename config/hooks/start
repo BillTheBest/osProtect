@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# giddyup start hook
+echo "begin: giddyup start hook" >> ${ROOT}/hook.log
+
+export RAILS_ENV="production"
+echo "RAILS_ENV=${RAILS_ENV}" >> ${ROOT}/hook.log
+
+source "/usr/local/rvm/scripts/rvm"
+
+cd $RELEASE
+echo "cd $RELEASE" >> ${ROOT}/hook.log
+
+# in case we are using passenger:
+mkdir -p tmp/
+touch tmp/restart.txt
+
+bundle exec rake assets:precompile
+
+sudo service osprotect start
+
+echo "end: giddyup start hook" >> ${ROOT}/hook.log
+echo "***fin***"

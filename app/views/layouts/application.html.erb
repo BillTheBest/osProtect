@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>osProtect</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+
+<body class="index osprotect_dashboard logged_in">
+<div id="wrapper">
+  <div id="header">
+    <h1 id="site_title">osProtect</h1>
+    <ul class="tabbed_navigation" id="tabs"><%= main_menu %></ul>
+    <p id="utility_nav">
+      <span class="current_user">
+        <%= current_user.role?(:admin) ? "admin: " : "user: " %><%=current_user.username%>
+      </span>
+      <%= link_to 'Profile', edit_user_path(current_user), 'data-method'=>"get" %>
+      <%= link_to 'Logout', logout_path, 'data-method'=>"get" %>
+    </p>
+  </div>
+
+  <%= yield %>
+
+  <div id="footer">
+    <p>
+    	2011 &nbsp;&nbsp;osprotect.appsudo.com 0.0.1&nbsp;&nbsp;
+    	<%= Time.now.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") %>
+    </p>
+  </div>
+</div> <!-- wrapper -->
+<div id="ui-datepicker-div" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all ui-helper-hidden-accessible"></div>
+</body>
+</html>

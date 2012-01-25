@@ -1,0 +1,43 @@
+<div id="wrapper">
+  <div id="content_wrapper">
+    <div class="flashes">
+      <% flash.each do |name, msg| %>
+        <%= content_tag :div, msg, :class=>"flash flash_#{name}" %>
+      <% end %>
+    </div>
+    <div id="osprotect_content">
+      <div id="login">
+        <h2>osProtect &nbsp;&nbsp; Reset Password</h2>
+        <%= form_for @user, :url => password_reset_path(params[:id]) do |f| %>
+          <% if @user.errors.any? %>
+            <div class="error_messages">
+              <ul>
+                <% for message in @user.errors.full_messages %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+          <fieldset class="inputs">
+            <ol>
+              <li class="password required">
+                <%= f.label :password %>
+                <%= f.password_field :password %>
+              </li>
+              <li class="password required">
+                <label for="user_Confirm_Password">Confirm Password</label>
+                <%= f.password_field :password_confirmation %>
+              </li>
+            </ol>
+          </fieldset>
+          <fieldset class="buttons">
+            <ol>
+              <li class="commit"><input class="create" name="commit" type="submit" value="Update Password"></li>
+            </ol>
+          </fieldset>
+          <%= link_to "cancel", login_path %>
+        <% end %>
+      </div> <!-- login -->
+    </div> <!-- osprotect_content -->
+  </div> <!-- content_wrapper -->
+</div> <!-- wrapper -->
