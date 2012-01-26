@@ -1,5 +1,5 @@
 class BasePresenter
-  extend ActiveSupport::Memoizable
+  # extend ActiveSupport::Memoizable # deprecated in rails 3.2.0
 
   def initialize(object, template, params)
     @object = object

@@ -1,7 +1,8 @@
 class Sensor < ActiveRecord::Base
   # set_table_name 'sensor'
   self.pluralize_table_names = false
-  set_primary_key 'sid'
+  # set_primary_key 'sid' # deprecated in rails 3.2.0, instead do:
+  self.primary_key = 'sid'
   alias_attribute :id, :sid
 
   belongs_to :sensor_detail, :foreign_key => 'detail'

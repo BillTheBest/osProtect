@@ -1,7 +1,9 @@
 class SignatureDetail < ActiveRecord::Base
-  set_table_name 'signature'
+  # set_table_name 'signature' # deprecated in rails 3.2.0, instead do:
+  self.table_name = 'signature'
   self.pluralize_table_names = false
-  set_primary_key 'sig_id'
+  # set_primary_key 'sig_id' # deprecated in rails 3.2.0, instead do:
+  self.primary_key = 'sig_id'
   alias_attribute :id, :sig_id
 
   has_many :events, foreign_key: 'signature'

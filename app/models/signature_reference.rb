@@ -1,7 +1,8 @@
 class SignatureReference < ActiveRecord::Base
-  set_table_name 'sig_reference'
+  self.table_name = 'sig_reference'
   self.pluralize_table_names = false
-  set_primary_key 'sig_class_id'
+  # set_primary_key 'sig_class_id' # deprecated in rails 3.2.0, instead do:
+  self.primary_key = 'sig_class_id'
   alias_attribute :id, :sig_class_id
 
   has_many :signatures, :foreign_key => 'sig_id'

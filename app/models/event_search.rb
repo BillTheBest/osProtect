@@ -5,7 +5,7 @@ class EventSearch
   attr_accessor :searchable
 
   attribute_method_suffix  "="  # attr_writers
-  attribute_method_suffix  ""   # attr_readers
+  # attribute_method_suffix  ""   # attr_readers
 
   define_attribute_methods [:sig_priority, :sig_id, :source_address, :source_port, :destination_address, :destination_port, :sensor_id, :timestamp_gte, :timestamp_lte]
 

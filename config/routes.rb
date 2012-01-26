@@ -1,4 +1,15 @@
+class AdminRestriction
+  def matches?(request)
+    # user_id = request.env['rack.session'][:user_id]
+    auth_token = request.env['rack.request.cookie_hash']['auth_token']
+    user = User.find_by_auth_token(auth_token)
+    user && user.role?(:admin)
+  end
+end
+
 OsProtectRor320::Application.routes.draw do
+  mount Resque::Server => '/resque', :constraints => AdminRestriction.new
+
   resources :groups
 
   resources :sessions

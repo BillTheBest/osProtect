@@ -1,7 +1,13 @@
 module ApplicationHelper
   def main_menu
     menu_tabs.each do |page|
-      link = link_to(page.camelcase, send("#{page}_path"))
+      if page == 'resque_server'
+        link_text = 'Queues/Jobs/Workers'
+        link = link_to(link_text, send("#{page}_path"), target: "_blank")
+      else
+        link_text = page.camelcase
+        link = link_to(link_text, send("#{page}_path"))
+      end
       if page == params[:controller].downcase
         concat(content_tag(:li, link, class: "current", id: "#{page}"))
       else

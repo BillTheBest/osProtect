@@ -1,5 +1,5 @@
 class Payload < ActiveRecord::Base
-  set_table_name 'data'
+  self.table_name = 'data'
   self.pluralize_table_names = false
 
   # see 'composite_primary_keys' gem for info:

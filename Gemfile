@@ -27,6 +27,8 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 
 gem 'prawn'
 
+gem 'resque', :require => 'resque/server'
+
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
 

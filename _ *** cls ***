@@ -285,6 +285,18 @@ I am unsure if this is a proper fix, but it works for MySQL ... but maybe there 
 Thanks for CPK.
 
 
+_________________________________________________________________________________________________________
+
+... sql which will group rows based on frequency within a time period using the event.timestamp column:
+	select sec_to_time(floor(time_to_sec(timestamp)/60)*60), count(*)
+	from event
+	where timestamp between '2011-10-25 00:00:00' and '2011-10-25 23:59:59'
+	group by sec_to_time(floor(time_to_sec(timestamp)/60)*60);
+	... this groups by minute (60) intervals
+
+... verify counts with:
+	select timestamp from event
+	where timestamp between "2011-10-25 00:00:00" and "2011-10-25 23:59:59";
 
 
 

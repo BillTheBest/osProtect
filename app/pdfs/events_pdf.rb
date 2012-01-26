@@ -1,5 +1,3 @@
-require 'lorem' if Rails.env.development?
-
 class EventsPdf < Prawn::Document
   def initialize(events, search_params)
     super(top_margin: 30, left_margin: 5, right_margin: 5, font: "Helvetica", page_size: "A4", page_layout: :portrait)
@@ -12,9 +10,6 @@ class EventsPdf < Prawn::Document
     put_events_into_table
     # note: always do this last so Prawn's "number_pages" will number every page:
     set_footer_for_every_page
-    # used the lorem gem to easily create lots of text during initial testing:
-    # pdf.start_new_page
-    # pdf.text Lorem::Base.new('paragraphs', 200).output
   end
 
   def put_events_into_table

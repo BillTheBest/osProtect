@@ -8,5 +8,5 @@ class EventPagePresenter < BasePresenter
     # events.includes(:sensor, :signature_detail, :iphdr, :tcphdr, :udphdr)
     # Event.paginate_by_sql(events.to_sql, page: params[:page], per_page: 12)
   end
-  memoize :page_of_events
+  # memoize :page_of_events # deprecated rails 3.2.0
 end
