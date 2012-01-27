@@ -2,8 +2,11 @@ module ApplicationHelper
   def main_menu
     menu_tabs.each do |page|
       if page == 'resque_server'
-        link_text = 'Queues/Jobs/Workers'
+        link_text = 'Background jobs'
         link = link_to(link_text, send("#{page}_path"), target: "_blank")
+      elsif page == 'pdf archive'
+        link_text = 'PDF archive'
+        link = link_to(link_text, send("root_path"))
       else
         link_text = page.camelcase
         link = link_to(link_text, send("#{page}_path"))

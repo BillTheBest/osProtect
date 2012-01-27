@@ -27,7 +27,9 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 
 gem 'prawn'
 
+# background jobs:
 gem 'resque', :require => 'resque/server'
+gem 'resque-scheduler'
 
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
@@ -36,6 +38,7 @@ group :development do
   gem 'letter_opener'
   gem 'thin'
   gem 'foreman'
+  # web: bundle exec thin start -p $PORT -e production
 end
 
 gem "rspec-rails", :group => [:development, :test]

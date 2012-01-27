@@ -1,0 +1,10 @@
+notify:
+  # cron: "0 0 * * *"
+  # you can use rufus-scheduler "every" syntax in place of cron if you prefer
+  # every: 1hr
+  every: 5m
+  class: CronTask
+  queue: high
+  args: "event_notifications"
+  description: "Notifications"
+  rails_envs: development, production
