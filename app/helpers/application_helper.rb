@@ -4,8 +4,8 @@ module ApplicationHelper
       if page == 'resque_server'
         link_text = 'Background jobs'
         link = link_to(link_text, send("#{page}_path"), target: "_blank")
-      elsif page == 'pdf archive'
-        link_text = 'PDF archive'
+      elsif page == 'pdf reports'
+        link_text = 'PDF reports'
         link = link_to(link_text, send("root_path"))
       else
         link_text = page.camelcase
