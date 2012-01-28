@@ -4,7 +4,6 @@ class CreateNotificationResults < ActiveRecord::Migration
       t.text :result_ids
       t.text :messages
       t.text :stats
-
       t.timestamps
     end
   end

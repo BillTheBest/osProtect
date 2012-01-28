@@ -143,6 +143,9 @@ GEM
       redis (>= 2.0.1)
       resque (>= 1.8.0)
       rufus-scheduler
+    resque_mailer (2.0.2)
+      actionmailer (>= 3.0.0)
+      resque (>= 1.2.3)
     rspec (2.8.0)
       rspec-core (~> 2.8.0)
       rspec-expectations (~> 2.8.0)
@@ -221,6 +224,7 @@ DEPENDENCIES
   rails (= 3.2.0)
   resque
   resque-scheduler
+  resque_mailer
   rspec-rails
   sass-rails (~> 3.2.3)
   thin

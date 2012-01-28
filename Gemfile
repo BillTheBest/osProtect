@@ -30,6 +30,7 @@ gem 'prawn'
 # background jobs:
 gem 'resque', :require => 'resque/server'
 gem 'resque-scheduler'
+gem 'resque_mailer'
 
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
