@@ -4,7 +4,7 @@ notify:
   # every: 1hr
   every: 5m
   class: CronTask
-  queue: high
+  queue: notifications
   args: "event_notifications"
   description: "Notifications"
   rails_envs: development, production

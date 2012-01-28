@@ -46,6 +46,8 @@ class User < ActiveRecord::Base
     generate_token(:password_reset_token)
     self.password_reset_sent_at = Time.zone.now
     save!
+    # note: don't pass complex objects like ActiveRecord models, just pass an id as a reference
+    #       to the object(s) because the enqueue done by resque converts params to json:
     UserMailer.password_reset(self.id).deliver
   end
 end
