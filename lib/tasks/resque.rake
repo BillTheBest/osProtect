@@ -7,7 +7,10 @@ namespace :resque do
   task :setup => :environment do
     require 'resque'
     require 'resque_scheduler'
-    require 'resque/scheduler'      
+    require 'resque/scheduler'
+
+    # Resque.before_fork = Proc.new { ActiveRecord::Base.establish_connection }
+    # Resque.after_fork = Proc.new { ActiveRecord::Base.establish_connection }
 
     # you probably already have this somewhere
     # Resque.redis = 'localhost:6379'
@@ -29,6 +32,6 @@ namespace :resque do
     # less code that resque-scheduler needs to know about. But in a small
     # project, it's usually easier to just include you job classes here.
     # So, someting like this:
-    # require 'jobs'        
+    # require 'jobs'
   end
 end

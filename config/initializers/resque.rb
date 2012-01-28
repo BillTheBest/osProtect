@@ -12,3 +12,5 @@ Resque.schedule = schedule
 
 # set a custom namespace for redis (optional)
 # Resque.redis.namespace = "resque:osprotect"
+
+Resque.after_fork = Proc.new { ActiveRecord::Base.establish_connection }
