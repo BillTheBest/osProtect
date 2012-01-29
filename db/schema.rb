@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120127123323) do
+ActiveRecord::Schema.define(:version => 20120129160241) do
 
   create_table "data", :id => false, :force => true do |t|
     t.integer "sid",          :null => false
@@ -179,6 +179,18 @@ ActiveRecord::Schema.define(:version => 20120127123323) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "notifications", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "email"
+    t.boolean  "run_status",      :default => false
+    t.datetime "last_run"
+    t.text     "notify_criteria"
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+  end
+
+  add_index "notifications", ["user_id"], :name => "index_notifications_on_user_id"
 
   create_table "opt", :id => false, :force => true do |t|
     t.integer "sid",                    :null => false

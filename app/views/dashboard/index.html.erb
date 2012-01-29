@@ -142,7 +142,6 @@
                     <% if Rails.env.production? %>
                         <%#=debug Sys::CPU.cpu_stats # cls: this is just physical machine info%>
                         <%#=debug Sys::CPU.processors # cls: this shows nothing %>
-                        <%=debug Sys::CPU.load_avg.join(", ") %>
                         <table border="0" cellspacing="0" cellpadding="0">
                           <thead>
                             <tr><th colspan="2" style="text-align:left">CPU Load Averages</th></tr>

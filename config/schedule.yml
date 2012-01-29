@@ -5,6 +5,7 @@ notify:
   every: 5m
   class: CronTask
   queue: notifications
+  # the method to perform in app/workers/cron_task.rb:
   args: "event_notifications"
   description: "Notifications"
   rails_envs: development, production

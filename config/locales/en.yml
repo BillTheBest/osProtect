@@ -11,3 +11,5 @@ en:
           name: "Name: "
           user_ids: "Users: "
           sensor_ids: "Sensors: "
+        notification:
+          priority_ids: "Priority: "

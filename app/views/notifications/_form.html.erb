@@ -1,0 +1,88 @@
+<div id="wrapper">
+  <div id="content_wrapper">
+    <div class="flashes">
+      <% flash.each do |name, msg| %>
+        <%= content_tag :div, msg, :class=>"flash flash_#{name}" %>
+      <% end %>
+    </div>
+    <div id="osprotect_content" class="with_sidebar">
+      <div id="main_content_wrapper">
+        <div id="main_content">
+          <div id="incident">
+            <%= form_for(@notification) do |f| %>
+              <% if @notification.errors.any? %>
+                <div id="error_explanation">
+                  <h3><%= pluralize(@notification.errors.count, "error") %> prohibited this Notification from being saved:</h3>
+                  <ul>
+                  <% @notification.errors.full_messages.each do |msg| %>
+                    <li><h3><%= msg %></h3></li>
+                  <% end %>
+                  </ul>
+                </div>
+              <% end %>
+              <fieldset class="inputs">
+                <ol>
+                  <li class="note">
+                    <label>&nbsp;</label>
+                    <strong>Enabled notifications run in the background every 5 minutes</strong>
+                  </li>
+                  <li class="run_status required">
+                    <label>Status</label>
+                    <%= f.select(:run_status, options_for_select([["enabled", true], ["disabled", false]], selected: @notification.run_status)) %>
+                  </li>
+                  <li class="email">
+                    <label>Email</label>
+                    <% @notification.email = @notification.notify_email(current_user) %>
+                    <%= f.text_field :email %>
+                  </li>
+                  <li class="email">
+                    <label>&nbsp;</label>
+                    <em>note: you may enter an alternate email for notifications</em>
+                  </li>
+                  <li class="email">
+                    <label>Match Events based on the following:</label>
+                    &nbsp;
+                  </li>
+                  <li class="check_boxes priority required">
+                    <label>Priorities</label>
+                    <%#= hidden_field_tag "notification[priority_ids][]", nil %>
+                    <fieldset>
+                      <ol>
+                        <% @notification.priorities.each do |priority| %>
+                          <li>
+                            <% if @notification.notify_criteria.blank? %>
+                              <%= check_box_tag "notification[priority_ids][]", priority.id %>
+                            <% else %>
+                              <%= check_box_tag "notification[priority_ids][]", priority.id, @notification.notify_criteria.include?(priority.name) %>
+                            <% end %>
+                            <%= priority.name %>
+                          </li>
+                        <% end %>
+                      </ol>
+                    </fieldset>
+                  </li>
+                  <li class="buttons commit">
+                    <label>&nbsp;</label>
+                    <%= f.submit %>
+                  </li>
+                </ol>
+              </fieldset>
+            <% end %>
+          </div> <!-- incident -->
+        </div> <!-- main_content -->
+      </div> <!-- main_content_wrapper -->
+
+      <div id="sidebar">
+        <div class="sidebar_section panel">
+          <h3 style="margin-top:-2px">&larr; <%= @notification.new_record? ? "new Notification" : "Notification: #{@notification.id}" %></h3>
+          <div class="panel_contents">
+              <ul>
+                <li>You have <%= number_with_delimiter current_user.notifications.count %> notifications.</li>
+              </ul>
+          </div> <!-- panel_contents -->
+        </div> <!-- sidebar_section -->
+      </div> <!-- sidebar -->
+
+    </div> <!-- osprotect_content -->
+  </div> <!-- content_wrapper -->
+</div> <!-- wrapper -->

@@ -20,10 +20,10 @@ class CronTask
     end
   end
 
-  # tasks:
+  # *** put resque-scheduler tasks ***
 
   def event_notifications
-    # 1. get notifications, which include a serialized criteria
+    # 1. get notifications, which include the serialized criteria
     # 2. for each notification
     #       - use criteria to find events based on this user's access (groups/memberships)
     #       - use last_run to limit the scope of the find, instead of finding in all events

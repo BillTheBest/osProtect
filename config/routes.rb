@@ -10,6 +10,8 @@ end
 OsProtectRor320::Application.routes.draw do
   mount Resque::Server => '/resque', :constraints => AdminRestriction.new
 
+  resources :notifications
+
   resources :groups
 
   resources :sessions
