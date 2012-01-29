@@ -30,6 +30,20 @@
                         <% end %>
                       </tbody>
                     </table>
+                    <%
+                    total = 0
+                    data = []
+                    labels = []
+                    @priorities.collect do |priority|
+                      total += priority.priority_cnt
+                      data << priority.priority_cnt
+                    end
+                    labels = @priorities.collect do |priority|
+                      "#{priority.sig_priority} (#{total == 0 ? 0 : (100.0 * priority.priority_cnt / total).round}%)"
+                    end
+                    %>
+                    <%# themes: keynote, thirty7signals, pastel, greyscale %>
+                    <%= image_tag(Gchart.pie(data: data, labels: labels, size: '350x250', title: "Priority", theme: :thirty7signals)) %>
                     <hr />
                     <table border="0" cellspacing="0" cellpadding="0">
                       <thead>
@@ -47,6 +61,20 @@
                         <% end %>
                       </tbody>
                     </table>
+                    <%
+                    total = 0
+                    data = []
+                    labels = []
+                    @attackers.collect do |attack_ip|
+                      total += attack_ip.ipcnt
+                      data << attack_ip.ipcnt
+                    end
+                    labels = @attackers.collect do |attack_ip|
+                      "#{attack_ip.ip_source} (#{total == 0 ? 0 : (100.0 * attack_ip.ipcnt / total).round}%)"
+                    end
+                    %>
+                    <%# themes: keynote, thirty7signals, pastel, greyscale %>
+                    <%= image_tag(Gchart.pie(data: data, labels: labels, size: '450x250', title: "Top Attackers", theme: :thirty7signals)) %>
                     <hr />
                     <table border="0" cellspacing="0" cellpadding="0">
                       <thead>
@@ -64,6 +92,20 @@
                         <% end %>
                       </tbody>
                     </table>
+                    <%
+                    total = 0
+                    data = []
+                    labels = []
+                    @targets.collect do |target_ip|
+                      total += target_ip.ipcnt
+                      data << target_ip.ipcnt
+                    end
+                    labels = @targets.collect do |target_ip|
+                      "#{target_ip.ip_destination} (#{total == 0 ? 0 : (100.0 * target_ip.ipcnt / total).round}%)"
+                    end
+                    %>
+                    <%# themes: keynote, thirty7signals, pastel, greyscale %>
+                    <%= image_tag(Gchart.pie(data: data, labels: labels, size: '450x250', title: "Top Targets", theme: :thirty7signals)) %>
                     <hr />
                     <table border="0" cellspacing="0" cellpadding="0">
                       <thead>
@@ -81,7 +123,27 @@
                         <% end %>
                       </tbody>
                     </table>
+                    <%
+                    total = 0
+                    data = []
+                    labels = []
+                    @events.collect do |event|
+                      total += event.event_cnt
+                      data << event.event_cnt
+                    end
+                    labels = @events.collect do |event|
+                      "#{event.sig_name} (#{total == 0 ? 0 : (100.0 * event.event_cnt / total).round}%)"
+                    end
+                    %>
+                    <%# themes: keynote, thirty7signals, pastel, greyscale %>
+                    <%= image_tag(Gchart.pie(data: data, labels: labels, size: '850x250', title: "Top Events by Signature", theme: :thirty7signals)) %>
                     <hr />
+                    <%#=debug ProcTable.ps %>
+                    <% if Rails.env.production? %>
+                        <%=debug Sys::CPU.cpu_stats %>
+                        <%=debug Sys::CPU.processors %>
+                        <%=debug Sys::CPU.load_avg.join(", ") %>
+                    <% end %>
                   </div> <!-- panel_contents -->
                 </div> <!-- dashboard_section -->
               </td>
@@ -137,16 +199,7 @@
           </table>
           <h4>notes/todos:</h4>
           <ul>
-            <li>
-              Having a Pulse page instead of putting the stats on a home or dashboard page will help 
-              to avoid the user's first impression that this app is slow to respond, because
-              all of database queries on this page are very expensive. 
-              This only gets worse as more events are added to the database, and there is no way 
-              to improve the situation without some type of caching.  It would be perfect if 
-              Barnyard2 was updating these counts as the events were inserted into the database.
-            </li>
-            <br />
-            <li>Should there be stats about traffic by protocol ?</li>
+            <li>Stats about traffic by protocol(TCP, UDP, ICMP, etc.) ?</li>
             <br />
             <li>Instead of "all time" an option to choose between today, this week, this month, this year should be provided.</li>
             <br />

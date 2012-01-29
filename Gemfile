@@ -32,6 +32,11 @@ gem 'resque', :require => 'resque/server'
 gem 'resque-scheduler'
 gem 'resque_mailer'
 
+gem 'sys-proctable'
+gem 'sys-cpu'
+
+gem 'googlecharts'
+
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
 
