@@ -140,9 +140,28 @@
                     <hr />
                     <%#=debug ProcTable.ps %>
                     <% if Rails.env.production? %>
-                        <%=debug Sys::CPU.cpu_stats %>
-                        <%=debug Sys::CPU.processors %>
+                        <%#=debug Sys::CPU.cpu_stats # cls: this is just physical machine info%>
+                        <%#=debug Sys::CPU.processors # cls: this shows nothing %>
                         <%=debug Sys::CPU.load_avg.join(", ") %>
+                        <table border="0" cellspacing="0" cellpadding="0">
+                          <thead>
+                            <tr><th colspan="2" style="text-align:left">CPU Load Averages</th></tr>
+                          </thead>
+                          <tbody>
+                            <tr class="odd">
+                              <td width="20%">last minute</td>
+                              <td><%= Sys::CPU.load_avg[0] %></td>
+                            </tr>
+                            <tr class="odd">
+                              <td width="20%">last 5 minutes</td>
+                              <td><%= Sys::CPU.load_avg[1] %></td>
+                            </tr>
+                            <tr class="odd">
+                              <td width="20%">last 15 minutes</td>
+                              <td><%= Sys::CPU.load_avg[2] %></td>
+                            </tr>
+                          </tbody>
+                        </table>
                     <% end %>
                   </div> <!-- panel_contents -->
                 </div> <!-- dashboard_section -->
