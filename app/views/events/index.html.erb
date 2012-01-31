@@ -83,7 +83,7 @@
       <div id="sidebar">
         <br /><br />
         <div class="sidebar_section panel" id="filters_sidebar_section">
-          <h3>&larr; filter events based on:</h3>
+          <h3>&larr; search events based on:</h3>
           <div class="panel_contents">
             <%= form_tag events_path, method: 'get', class: "filter_form" do %>
               <div class="error_messages">
@@ -128,7 +128,7 @@
                 <%= text_field_tag 'q[timestamp_lte]', @event_search.timestamp_lte, size: "12", maxlength: "10", class: "datepicker" %>
               </div>
               <div class="buttons">
-                <%= submit_tag "Filter" %>
+                <%= submit_tag "Search" %>
                 <%= submit_tag "Reset" %>
               </div>
             <% end %>
