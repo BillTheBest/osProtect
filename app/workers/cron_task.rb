@@ -16,7 +16,9 @@ class CronTask
 
     def log(message, method = nil)
       now = Time.now.strftime("%Y-%m-%d %H:%M:%S")
-      puts "#{now} %s#%s - #{message}" % [self.name, method]
+      elapsed = "#{now} %s#%s - #{message}" % [self.name, method]
+      m = "elapsed=#{elapsed} now=#{now}  5.minutes.ago=#{5.minutes.ago}  current=#{Time.now.utc}"
+      NotificationResult.create!(messages: m)
     end
   end
 
@@ -34,8 +36,6 @@ class CronTask
     #    note: the above will be time consuming since it's doing each notification individually, even though
     #          the criteria to find events is similar for all users ... just different access to events, 
     #          perhaps there is a more efficient way ?
-
-    NotificationResult.create!(messages: 'hello!')
   end
 
   def some_other_task
