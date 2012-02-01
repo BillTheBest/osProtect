@@ -19,7 +19,7 @@ class CronTask
       elapsed = "#{now} %s#%s - #{message}" % [self.name, method]
       puts elapsed
       if message =~ /completed/i
-        m = "elapsed=#{elapsed} now=#{now}\n5.minutes.ago=#{5.minutes.ago}\ncurrent=#{Time.now.utc}"
+        m = "elapsed=#{elapsed}\nnow=#{now}\n5.minutes.ago=#{5.minutes.ago}\ncurrent=#{Time.now.utc}"
         NotificationResult.create!(messages: m)
       end
     end
