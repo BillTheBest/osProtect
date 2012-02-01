@@ -9,4 +9,11 @@ class UserMailer < ActionMailer::Base
     #   en.user_mailer.password_reset.subject
     mail :to => @user.email, :subject => "Password Reset"
   end
+
+  def event_notify(user_id, notification_id)
+    @user = User.find(user_id)
+    @notification = Notification.find(notification_id)
+    send_to = @notification.email.blank? ? @user.email : @notification.email
+    mail :to => send_to, :subject => "Event Notifications"
+  end
 end

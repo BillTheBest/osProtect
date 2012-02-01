@@ -173,15 +173,17 @@ ActiveRecord::Schema.define(:version => 20120129160241) do
   add_index "memberships", ["group_id"], :name => "index_memberships_on_group_id"
 
   create_table "notification_results", :force => true do |t|
+    t.integer  "notification_id"
     t.text     "result_ids"
     t.text     "messages"
     t.text     "stats"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   create_table "notifications", :force => true do |t|
     t.integer  "user_id"
+    t.integer  "group_id"
     t.string   "email"
     t.boolean  "run_status",      :default => false
     t.datetime "last_run"
@@ -190,6 +192,7 @@ ActiveRecord::Schema.define(:version => 20120129160241) do
     t.datetime "updated_at",                         :null => false
   end
 
+  add_index "notifications", ["group_id"], :name => "index_notifications_on_group_id"
   add_index "notifications", ["user_id"], :name => "index_notifications_on_user_id"
 
   create_table "opt", :id => false, :force => true do |t|

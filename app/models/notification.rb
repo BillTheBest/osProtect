@@ -1,6 +1,8 @@
 class Notification < ActiveRecord::Base
   belongs_to :user
-  
+  belongs_to :group
+  has_one :notification_result
+
   serialize :notify_criteria
 
   attr_accessible :user_id, :email, :run_status, :last_run, :notify_criteria, :priority_ids
