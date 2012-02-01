@@ -17,8 +17,11 @@ class CronTask
     def log(message, method = nil)
       now = Time.now.strftime("%Y-%m-%d %H:%M:%S")
       elapsed = "#{now} %s#%s - #{message}" % [self.name, method]
-      m = "elapsed=#{elapsed} now=#{now}  5.minutes.ago=#{5.minutes.ago}  current=#{Time.now.utc}"
-      NotificationResult.create!(messages: m)
+      puts elapsed
+      if message =~ /completed/i
+        m = "elapsed=#{elapsed} now=#{now}\n5.minutes.ago=#{5.minutes.ago}\ncurrent=#{Time.now.utc}"
+        NotificationResult.create!(messages: m)
+      end
     end
   end
 
