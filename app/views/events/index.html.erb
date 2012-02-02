@@ -67,7 +67,7 @@
 
             <div id="index_footer">
               <div style="float:left">
-                <%= button_to 'PDF', events_pdf_url(q: params[:q], format: :pdf), :method => "post", :form => {"target" => "_blank"} %>
+                <%= button_to 'report as PDF', events_pdf_url(q: params[:q], format: :pdf), method: "post", form: {"target" => "_blank"}, title: raw("Save this report as a PDF document.\n\nNote: some reports may be too long and will require processing as a background job.") %>
                 <%#= button_to 'PDF', events_pdf_url(q: params[:q], format: :pdf), :method => "post" %>
               </div>
               <%= will_paginate presenter.page_of_events %>

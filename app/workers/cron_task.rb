@@ -44,8 +44,8 @@ class CronTask
     Notification.all.each do |notification|
       Event.get_matches
       matching_keys = []
-      # .where("timestamp >= ? AND timestamp <= ?", 5.minutes.ago, Time.now.utc)
-      @events = Event.includes(:signature_detail, :iphdr).select('event.sid, event.cid, event.signature, event.timestamp, signature.sig_priority, iphdr.ip_src, iphdr.ip_dst').where("timestamp >= ? AND timestamp <= ?", '2011-10-26 15:11:00', '2011-10-26 15:12:00').order("timestamp ASC")
+      @events = Event.includes(:signature_detail, :iphdr).select('event.sid, event.cid, event.signature, event.timestamp, signature.sig_priority, iphdr.ip_src, iphdr.ip_dst').where("timestamp >= ? AND timestamp <= ?", 5.minutes.ago, Time.now.utc).order("timestamp ASC")
+      # @events = Event.includes(:signature_detail, :iphdr).select('event.sid, event.cid, event.signature, event.timestamp, signature.sig_priority, iphdr.ip_src, iphdr.ip_dst').where("timestamp >= ? AND timestamp <= ?", '2011-10-26 15:11:00', '2011-10-26 15:12:00').order("timestamp ASC")
       @events.each do |event|
         if notification.notify_criteria.include?(event.priority.to_s)
           matching_keys << event.key
@@ -61,7 +61,7 @@ class CronTask
         NotificationResult.create!(notification_id: notification.id, stats: matching_keys.size, result_ids: matching_keys)
         # note: don't pass complex objects like ActiveRecord models, just pass an id as a reference
         #       to the object(s) because the enqueue method in resque converts params to json:
-        # UserMailer.event_notify(notification.user_id, notification.id).deliver
+        UserMailer.event_notify(notification.user_id, notification.id).deliver
       end
     end
   end

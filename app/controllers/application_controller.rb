@@ -29,8 +29,8 @@ class ApplicationController < ActionController::Base
   private
 
   def menu_tabs
-    return ['events', 'sensors', 'notifications', 'incidents', 'pulse', 'pdf reports', 'groups', 'users', 'resque_server'] if can? :admin, User
-    ['events', 'sensors', 'notifications', 'incidents', 'pulse', 'pdf reports']
+    return ['events', 'sensors', 'notifications', 'incidents', 'pulse', 'groups', 'users', 'resque_server'] if can? :admin, User
+    ['events', 'sensors', 'notifications', 'incidents', 'pulse']
   end
   helper_method :menu_tabs
 
