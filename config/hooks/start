@@ -11,7 +11,7 @@ source "/usr/local/rvm/scripts/rvm"
 cd $RELEASE
 echo "cd $RELEASE" >> ${ROOT}/hook.log
 
-# in case we are using passenger:
+# in case you're using passenger:
 mkdir -p tmp/
 touch tmp/restart.txt
 

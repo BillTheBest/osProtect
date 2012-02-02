@@ -18,10 +18,10 @@ class CronTask
       now = Time.now.strftime("%Y-%m-%d %H:%M:%S")
       elapsed = "#{now} %s#%s - #{message}" % [self.name, method]
       puts elapsed
-      if message =~ /completed/i
-        m = "elapsed=#{elapsed}\nnow=#{now}\n5.minutes.ago=#{5.minutes.ago}\ncurrent=#{Time.now.utc}"
-        NotificationResult.create!(messages: m)
-      end
+      # if message =~ /completed/i
+      #   m = "elapsed=#{elapsed}\nnow=#{now}\n5.minutes.ago=#{5.minutes.ago}\ncurrent=#{Time.now.utc}"
+      #   NotificationResult.create!(messages: m)
+      # end
     end
   end
 
@@ -42,20 +42,20 @@ class CronTask
     #          perhaps there is a more efficient way ?
 
     Notification.all.each do |notification|
+      Event.get_matches
       matching_keys = []
-      # @events = Event.includes(:sensor, :signature_detail, :iphdr).where("timestamp >= ? AND timestamp <= ?", 5.minutes.ago, Time.now.utc)
-      @events = Event.includes(:sensor, :signature_detail, :iphdr).where("timestamp >= ? AND timestamp <= ?", '2011-10-26 15:10:00', '2011-10-26 15:15:00')
+      # .where("timestamp >= ? AND timestamp <= ?", 5.minutes.ago, Time.now.utc)
+      @events = Event.includes(:signature_detail, :iphdr).select('event.sid, event.cid, event.signature, event.timestamp, signature.sig_priority, iphdr.ip_src, iphdr.ip_dst').where("timestamp >= ? AND timestamp <= ?", '2011-10-26 15:11:00', '2011-10-26 15:12:00').order("timestamp ASC")
       @events.each do |event|
         if notification.notify_criteria.include?(event.priority.to_s)
           matching_keys << event.key
         end
-        # check_box_tag "event[#{x}]", event.key, false, :id => "check_box_#{event.key_with_underscore}", :class => 'select-events' %></td>
-        # event.priority
-        # event.signature
-        # event.source_ip_port
-        # event.destination_ip_port
-        # event.sensor_name
-        # event.timestamp
+        # event.timestamp.to_f (epoch seconds)
+        # event.key
+        # event.sid = sensor.id
+        # event.priority ...via... event.signature
+        # event.iphdr.ip_source      ...or... event.source_ip_port (this causes more db finds)
+        # event.iphdr.ip_destination ...or... event.destination_ip_port (this causes more db finds)
       end
       if matching_keys.size > 0
         NotificationResult.create!(notification_id: notification.id, stats: matching_keys.size, result_ids: matching_keys)

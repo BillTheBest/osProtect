@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
-ruby_string="ruby-1.9.2-p290"
-gemset_name="osProtect_ror320"
+# ruby_string="ruby-1.9.2-p290"
+# gemset_name="osProtect"
+ruby_string="ruby-1.9.3-p0"
+gemset_name="ruby-1.9.3-osProtect"
 
 if rvm list strings | grep -q "${ruby_string}" ; then
   # load or create the specified environment:
