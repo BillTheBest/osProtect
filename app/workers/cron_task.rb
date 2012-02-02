@@ -42,7 +42,7 @@ class CronTask
     #          perhaps there is a more efficient way ?
 
     Notification.all.each do |notification|
-      Event.get_matches
+      # Event.get_matches
       matching_keys = []
       @events = Event.includes(:signature_detail, :iphdr).select('event.sid, event.cid, event.signature, event.timestamp, signature.sig_priority, iphdr.ip_src, iphdr.ip_dst').where("timestamp >= ? AND timestamp <= ?", 5.minutes.ago, Time.now.utc).order("timestamp ASC")
       # @events = Event.includes(:signature_detail, :iphdr).select('event.sid, event.cid, event.signature, event.timestamp, signature.sig_priority, iphdr.ip_src, iphdr.ip_dst').where("timestamp >= ? AND timestamp <= ?", '2011-10-26 15:11:00', '2011-10-26 15:12:00').order("timestamp ASC")

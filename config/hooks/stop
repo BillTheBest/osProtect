@@ -8,7 +8,9 @@ export RAILS_ENV="production"
 echo "RAILS_ENV=${RAILS_ENV}" >> ${ROOT}/hook.log
 
 source "/usr/local/rvm/scripts/rvm"
+echo "ruby -v:" >> ${ROOT}/hook.log
 ruby -v >> ${ROOT}/hook.log
+echo "rvm gemset name:" >> ${ROOT}/hook.log
 rvm gemset name >> ${ROOT}/hook.log
 
 cd $RELEASE
