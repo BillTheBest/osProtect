@@ -11,6 +11,15 @@ source "/usr/local/rvm/scripts/rvm"
 cd $RELEASE
 echo "cd $RELEASE" >> ${ROOT}/hook.log
 
+echo "***********************" >> ${ROOT}/hook.log
+echo "ruby -v:" >> ${ROOT}/hook.log
+ruby -v >> ${ROOT}/hook.log
+echo "rvm gemset name:" >> ${ROOT}/hook.log
+rvm gemset name >> ${ROOT}/hook.log
+echo "rails -v:" >> ${ROOT}/hook.log
+rails -v >> ${ROOT}/hook.log
+echo "***********************" >> ${ROOT}/hook.log
+
 # in case you're using passenger:
 mkdir -p tmp/
 touch tmp/restart.txt

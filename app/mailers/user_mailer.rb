@@ -1,7 +1,11 @@
 class UserMailer < ActionMailer::Base
   include Resque::Mailer
 
-  default from: "from@localhost"
+  if Rails.env.production?
+    default from: "osProtect@appsudo.com"
+  else
+    default from: "from@localhost"
+  end
 
   def password_reset(user_id)
     @user = User.find(user_id)
@@ -14,6 +18,6 @@ class UserMailer < ActionMailer::Base
     @user = User.find(user_id)
     @notification = Notification.find(notification_id)
     send_to = @notification.email.blank? ? @user.email : @notification.email
-    mail :to => send_to, :subject => "Event Notifications"
+    mail :to => send_to, :subject => "osProtect: Event Notifications"
   end
 end
