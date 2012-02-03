@@ -8,13 +8,17 @@ class Notification < ActiveRecord::Base
   attr_accessible :user_id, :email, :run_status, :last_run, :notify_criteria, :priority_ids
   attr_reader :priority_ids
 
-  validates :run_status, presence: true
+  # validates :run_status, presence: true
   validates :priority_ids, presence: {message: "at least one must be selected"}
 
   def priority_ids=(ids)
     return if ids.blank? || ids.length < 1 || ids[0].blank?
     @priority_ids = ids
     self.notify_criteria = self.priority_ids
+  end
+
+  def disabled
+    self.run_status == false
   end
 
   def status
