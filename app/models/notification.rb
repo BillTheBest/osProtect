@@ -1,7 +1,7 @@
 class Notification < ActiveRecord::Base
   belongs_to :user
   belongs_to :group
-  has_one :notification_result
+  has_many :notification_results
 
   serialize :notify_criteria
 

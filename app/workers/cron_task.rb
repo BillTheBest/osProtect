@@ -44,8 +44,11 @@ class CronTask
     Notification.all.each do |notification|
       # Event.get_matches
       matching_keys = []
-      @events = Event.includes(:signature_detail, :iphdr).select('event.sid, event.cid, event.signature, event.timestamp, signature.sig_priority, iphdr.ip_src, iphdr.ip_dst').where("timestamp >= ? AND timestamp <= ?", 5.minutes.ago, Time.now.utc).order("timestamp ASC")
-      # @events = Event.includes(:signature_detail, :iphdr).select('event.sid, event.cid, event.signature, event.timestamp, signature.sig_priority, iphdr.ip_src, iphdr.ip_dst').where("timestamp >= ? AND timestamp <= ?", '2011-10-26 15:11:00', '2011-10-26 15:12:00').order("timestamp ASC")
+      if Rails.env.production?
+        @events = Event.includes(:signature_detail, :iphdr).select('event.sid, event.cid, event.signature, event.timestamp, signature.sig_priority, iphdr.ip_src, iphdr.ip_dst').where("timestamp >= ? AND timestamp <= ?", 5.minutes.ago, Time.now.utc).order("timestamp ASC")
+      else
+        @events = Event.includes(:signature_detail, :iphdr).select('event.sid, event.cid, event.signature, event.timestamp, signature.sig_priority, iphdr.ip_src, iphdr.ip_dst').where("timestamp >= ? AND timestamp <= ?", '2011-10-26 15:11:00', '2011-10-26 15:12:00').order("timestamp ASC")
+      end
       @events.each do |event|
         if notification.notify_criteria.include?(event.priority.to_s)
           matching_keys << event.key
