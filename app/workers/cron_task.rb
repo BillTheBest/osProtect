@@ -41,24 +41,26 @@ class CronTask
     #          the criteria to find events is similar for all users ... just different access to events, 
     #          perhaps there is a more efficient way ?
 
+    if Rails.env.production?
+      events = Event.includes(:signature_detail, :iphdr).select('event.sid, event.cid, event.signature, event.timestamp, signature.sig_priority, iphdr.ip_src, iphdr.ip_dst').where("timestamp >= ? AND timestamp <= ?", 5.minutes.ago, Time.now.utc).order("timestamp ASC")
+    else
+      # for molly:
+      events = Event.includes(:signature_detail, :iphdr).select('event.sid, event.cid, event.signature, event.timestamp, signature.sig_priority, iphdr.ip_src, iphdr.ip_dst').where("timestamp >= ? AND timestamp <= ?", '2011-10-26 15:11:00', '2011-10-26 15:12:00').order("timestamp ASC")
+      # for spud:
+      events = Event.includes(:signature_detail, :iphdr).select('event.sid, event.cid, event.signature, event.timestamp, signature.sig_priority, iphdr.ip_src, iphdr.ip_dst').where("timestamp >= ? AND timestamp <= ?", '2011-11-08 00:00:01', '2011-11-08 00:02:00').order("timestamp ASC")
+    end
     Notification.all.each do |notification|
       next if notification.disabled
       # Event.get_matches
       matching_keys = []
-      if Rails.env.production?
-        @events = Event.includes(:signature_detail, :iphdr).select('event.sid, event.cid, event.signature, event.timestamp, signature.sig_priority, iphdr.ip_src, iphdr.ip_dst').where("timestamp >= ? AND timestamp <= ?", 5.minutes.ago, Time.now.utc).order("timestamp ASC")
-      else
-        # for molly:
-        @events = Event.includes(:signature_detail, :iphdr).select('event.sid, event.cid, event.signature, event.timestamp, signature.sig_priority, iphdr.ip_src, iphdr.ip_dst').where("timestamp >= ? AND timestamp <= ?", '2011-10-26 15:11:00', '2011-10-26 15:12:00').order("timestamp ASC")
-        # for spud:
-        @events = Event.includes(:signature_detail, :iphdr).select('event.sid, event.cid, event.signature, event.timestamp, signature.sig_priority, iphdr.ip_src, iphdr.ip_dst').where("timestamp >= ? AND timestamp <= ?", '2011-11-08 00:00:01', '2011-11-08 00:02:00').order("timestamp ASC")
-      end
-      unless notification.user.role? :admin
+      if notification.user.role? :admin
         # note: if current_user is an admin, groups/memberships don't matter since an admin can do anything
+        events_for_this_notification = events
+      else
         # use current_user's sensors based on group memberships:
-        @events = @events.where("event.sid IN (?)", notification.user.sensors)
+        events_for_this_notification = events.where("event.sid IN (?)", notification.user.sensors)
       end
-      @events.each do |event|
+      events_for_this_notification.each do |event|
         if notification.notify_criteria.include?(event.priority.to_s)
           matching_keys << event.key
         end
