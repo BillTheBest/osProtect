@@ -11,7 +11,9 @@ class User < ActiveRecord::Base
             uniqueness: {case_sensitive: false},
             length: {minimum: 3},
             format: {with: /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i}
-  validates :username, presence: true, length: {minimum: 3}
+  validates :username, presence: true, 
+            uniqueness: {case_sensitive: false},
+            length: {minimum: 3}
   validates :password, presence: true, length: {minimum: 6}, on: :create
   validates :password, presence: true, length: {minimum: 6}, on: :update, :if => :password_digest_changed?
 

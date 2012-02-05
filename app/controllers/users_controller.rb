@@ -37,6 +37,11 @@ class UsersController < ApplicationController
 
   def destroy
     @user = User.find(params[:id])
+    if @user.username.strip.downcase == 'admin'
+      flash[:error] = "Deleting the default admin account is not allowed."
+      redirect_to users_url
+      return 
+    end
     if @user.id == current_user.id
       flash[:error] = "Deleting your own account is not allowed."
       redirect_to users_url

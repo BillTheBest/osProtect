@@ -284,6 +284,14 @@ end
 I am unsure if this is a proper fix, but it works for MySQL ... but maybe there is a better way to express the query.
 Thanks for CPK.
 
+_________________________________________________________________________________________________________
+
+event:
+1. timestamp
+2. sensor
+3. priority
+4. aIP (attacker/source)
+5. tIP (target/destination)
 
 _________________________________________________________________________________________________________
 

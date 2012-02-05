@@ -1,7 +1,7 @@
 
-These events were found matching your criteria:
+Notification summary for <%= @user.username %>:
 
-<%=debug @notification %>
-_______________________________________________
+<%= pluralize(@notification_result.total_matches, 'event') %> were found matching your criteria within the
+time frame of <%= @notification_result.events_timestamped_from %> to <%= @notification_result.events_timestamped_to %>.
 
-<%=debug @notification.notification_results.last %>
+To view the results for this notification, follow this link: <%= link_to('notification results', url_for(:action => 'index', :controller => 'notifications', only_path: false)) %>.

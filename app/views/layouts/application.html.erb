@@ -14,7 +14,7 @@
     <ul class="tabbed_navigation" id="tabs"><%= main_menu %></ul>
     <p id="utility_nav">
       <span class="current_user">
-        <%= current_user.role?(:admin) ? "admin: " : "user: " %><%=current_user.username%>
+        <%= current_user.role?(:admin) ? "admin user: " : "user: " %><%=current_user.username%>
       </span>
       <%= link_to 'Profile', edit_user_path(current_user), 'data-method'=>"get" %>
       <%= link_to 'Logout', logout_path, 'data-method'=>"get" %>

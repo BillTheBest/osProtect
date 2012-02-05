@@ -61,11 +61,21 @@
                     <fieldset>
                       <ol>
                         <% User.all.each do |user| %>
-                          <li>
-                            <%= check_box_tag "group[user_ids][]", user.id, @group.user_ids.include?(user.id), id: dom_id(user) %>
-                            <%#= label_tag dom_id(user), user.username %>
-                            <%= user.username %>
-                          </li>
+                          <% if user.username.strip.downcase == 'admin' && @group.name && @group.name.downcase == 'admins' %>
+                              <li>
+                                <%= check_box_tag "group[user_ids][]", user.id, @group.user_ids.include?(user.id), disabled: "disabled" %>
+                                <%= user.username %>
+                                &nbsp;&nbsp;&nbsp;
+                                <em>note: that the default admin can not be removed from this group.</em>
+                                <%= hidden_field_tag "group[user_ids][]", user.id %>
+                              </li>
+                          <% else %>
+                              <li>
+                                <%= check_box_tag "group[user_ids][]", user.id, @group.user_ids.include?(user.id), id: dom_id(user) %>
+                                <%#= label_tag dom_id(user), user.username %>
+                                <%= user.username %>
+                              </li>
+                          <% end %>
                         <% end %>
                       </ol>
                     </fieldset>
@@ -87,7 +97,13 @@
           <div class="panel_contents">
               <ul>
                 <li>Users count: <%= number_with_delimiter @group.users.count %></li>
-                <li>Sensors count: <%= number_with_delimiter @group.group_sensors.count %></li>
+                <li>Sensors count: 
+                <% if @group.name && @group.name.downcase == 'admins' %>
+                    All
+                <% else %>
+                    <%= number_with_delimiter @group.group_sensors.count %>
+                <% end %>
+                </li>
               </ul>
           </div> <!-- panel_contents -->
         </div> <!-- sidebar_section -->

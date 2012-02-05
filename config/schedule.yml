@@ -2,7 +2,7 @@ notify:
   # cron: "0 0 * * *"
   # you can use rufus-scheduler "every" syntax in place of cron if you prefer
   # every: 1hr
-  every: 5m
+  every: 1m
   class: CronTask
   queue: notifications
   # method to perform in app/workers/cron_task.rb:

@@ -23,7 +23,6 @@
                     <th>ID</th>
                     <th>Criteria</th>
                     <th>Status</th>
-                    <!-- <th>Last run</th> -->
                     <th></th>
                   </tr>
                 </thead>
@@ -44,7 +43,6 @@
                               <% end %>
                             </td>
                             <td><%= notification.status %></td>
-                            <!-- <td><%#= notification.last_run %></td> -->
                             <td><%= link_to 'delete', notification, confirm: 'Are you sure?', method: :delete %></td>
                           </tr>
                       <% end %>
