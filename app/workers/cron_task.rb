@@ -72,20 +72,21 @@ class CronTask
         next unless users_sensors.nil? || users_sensors.include?(event.sid)
         matching_keys << event.key if notification.notify_criteria.include?(event.priority.to_s)
       end
-      if matching_keys.size > 0
-        nr = NotificationResult.create!(notification_id: notification.id,
-                                        total_matches: matching_keys.size,
-                                        events_timestamped_from: one_minute_ago_time,
-                                        events_timestamped_to: now_time,
-                                        result_ids: matching_keys)
-        # note: don't pass complex objects like ActiveRecord models, just pass id's as references
-        #       to the object(s) because the enqueue method in resque converts params to json:
-        UserMailer.event_notify(notification.id, nr.id).deliver unless nr.blank?
-      end
+      nr = NotificationResult.create!(notification_id: notification.id,
+                                      total_matches: matching_keys.size,
+                                      events_timestamped_from: one_minute_ago_time,
+                                      events_timestamped_to: now_time,
+                                      result_ids: matching_keys) if matching_keys.size > 0
     end
   end
 
-  def some_other_task
-    # logic here
+  def batched_email_notifications
+    Notification.all.each do |notification|
+      next if notification.disabled
+      next if notification.notification_results.where(email_sent: false).count < 1
+      # note: don't pass complex objects like ActiveRecord models, just pass id's as references
+      #       to the object(s) because the enqueue method in resque converts params to json:
+      UserMailer.batched_email_notifications(notification.id).deliver
+    end
   end
 end

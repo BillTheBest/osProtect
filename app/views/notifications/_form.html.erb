@@ -22,13 +22,13 @@
               <% end %>
               <fieldset class="inputs">
                 <ol>
-                  <li class="note">
-                    <label>&nbsp;</label>
-                    <strong>Enabled notifications run in the background every 5 minutes</strong>
-                  </li>
                   <li class="run_status required">
                     <label>Status</label>
                     <%= f.select(:run_status, options_for_select([["enabled", true], ["disabled", false]], selected: @notification.run_status)) %>
+                  </li>
+                  <li class="note">
+                    <label>&nbsp;</label>
+                    <em>note: when enabled this notification will run in the background every minute</em>
                   </li>
                   <li class="email">
                     <label>Email</label>

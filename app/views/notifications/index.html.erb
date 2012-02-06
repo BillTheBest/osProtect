@@ -21,8 +21,8 @@
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Criteria</th>
                     <th>Status</th>
+                    <th>Match Criteria</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -31,6 +31,7 @@
                       <% @notifications.each do |notification| %>
                           <tr class="<%= cycle('even', 'odd') %>">
                             <td><%= link_to notification.id, edit_notification_path(notification) %></td>
+                            <td><%= notification.status %></td>
                             <td>
                               <%# definitely need a presenter here to handle the display of criteria %>
                               <% unless notification.notify_criteria.blank? %>
@@ -42,7 +43,6 @@
                                   <%# end %>
                               <% end %>
                             </td>
-                            <td><%= notification.status %></td>
                             <td><%= link_to 'delete', notification, confirm: 'Are you sure?', method: :delete %></td>
                           </tr>
                       <% end %>
