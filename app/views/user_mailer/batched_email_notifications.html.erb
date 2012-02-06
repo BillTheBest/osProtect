@@ -13,7 +13,8 @@
           time frame of <%= nr.events_timestamped_from %> to <%= nr.events_timestamped_to %>.
         </p>
         <p>
-          To view the results for this notification, follow this link: <%= link_to('notification results', url_for(:action => 'index', :controller => 'notifications', only_path: false)) %>.
+          To view the results for this notification, follow this link: 
+          <%= link_to('notification results', url_for(id: nr.notification.id, action: 'index', controller: 'notifications', only_path: false)) %>.
         </p>
       </blockquote>
       <hr />
