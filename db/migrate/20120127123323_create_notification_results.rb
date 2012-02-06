@@ -1,6 +1,7 @@
 class CreateNotificationResults < ActiveRecord::Migration
   def change
     create_table :notification_results do |t|
+      t.references  :user
       t.integer     :notification_id
       t.boolean     :email_sent,              default: false
       t.datetime    :events_timestamped_from

@@ -2,7 +2,6 @@ class CreateNotifications < ActiveRecord::Migration
   def change
     create_table :notifications do |t|
       t.references  :user
-      t.references  :group
       t.string      :email
       # enabled or disabled:
       t.boolean     :run_status,        default: false
@@ -11,6 +10,5 @@ class CreateNotifications < ActiveRecord::Migration
       t.timestamps
     end
     add_index :notifications, :user_id
-    add_index :notifications, :group_id
   end
 end

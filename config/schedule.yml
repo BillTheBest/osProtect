@@ -11,7 +11,7 @@ process_event_notifications:
   rails_envs: development, production
 
 email_notifications:
-  every: 10m
+  every: 5m
   class: CronTask
   queue: notifications
   # method to perform in app/workers/cron_task.rb:

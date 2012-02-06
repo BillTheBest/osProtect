@@ -10,10 +10,6 @@ end
 OsProtectRor320::Application.routes.draw do
   mount Resque::Server => '/resque', :constraints => AdminRestriction.new
 
-  resources :notifications
-
-  resources :groups
-
   resources :sessions
   get "login" => "sessions#new", :as => "login"
   get "logout" => "sessions#destroy", :as => "logout"
@@ -30,6 +26,9 @@ OsProtectRor320::Application.routes.draw do
   resources :users
 
   resources :groups
+
+  resources :notifications
+  resources :notification_results, :only => [:index, :show, :destroy]
 
   resources :events, :only => [:index, :show, :create, :create_pdf]
   get "home" => "events#index", :as => "home"

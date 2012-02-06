@@ -6,7 +6,7 @@
 <div id="osprotect_content" class="without_sidebar">
   <div id="main_content_wrapper">
     <div id="main_content">
-      <div class="pagination_information"><%= page_entries_info @groups %></div>
+      <div class="pagination_information"><%= page_entries_info @notifications %></div>
       <div class="paginated_collection">
         <%= form_tag new_notification_path, method: :get do %>
           <div class="buttons" id="add_new_notification">
@@ -21,8 +21,9 @@
                 <thead>
                   <tr>
                     <th>ID</th>
+                    <th>Total Results</th>
+                    <th>Criteria used to Match Events</th>
                     <th>Status</th>
-                    <th>Match Criteria</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -31,7 +32,13 @@
                       <% @notifications.each do |notification| %>
                           <tr class="<%= cycle('even', 'odd') %>">
                             <td><%= link_to notification.id, edit_notification_path(notification) %></td>
-                            <td><%= notification.status %></td>
+                            <td>
+                              <% if notification.notification_results.count > 0 %>
+                                  <%= link_to "#{notification.notification_results.count}", notification_results_path(id: notification) %>
+                              <% else %>
+                                  &nbsp;
+                              <% end %>
+                            </td>
                             <td>
                               <%# definitely need a presenter here to handle the display of criteria %>
                               <% unless notification.notify_criteria.blank? %>
@@ -43,6 +50,7 @@
                                   <%# end %>
                               <% end %>
                             </td>
+                            <td><%= notification.status %></td>
                             <td><%= link_to 'delete', notification, confirm: 'Are you sure?', method: :delete %></td>
                           </tr>
                       <% end %>

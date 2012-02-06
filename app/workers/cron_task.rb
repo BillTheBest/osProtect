@@ -73,6 +73,7 @@ class CronTask
         matching_keys << event.key if notification.notify_criteria.include?(event.priority.to_s)
       end
       nr = NotificationResult.create!(notification_id: notification.id,
+                                      user_id: notification.user.id,
                                       total_matches: matching_keys.size,
                                       events_timestamped_from: one_minute_ago_time,
                                       events_timestamped_to: now_time,
