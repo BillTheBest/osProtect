@@ -21,7 +21,7 @@ class Event < ActiveRecord::Base
   def self.add_events_to_incident(incident_id, events, user)
     return nil if events.blank?
     incident = Incident.where(id: incident_id)
-    incident = incident.any? ? incident.first : Incident.create(user_id: user.id, events_added_count: 0)
+    incident = incident.any? ? incident.first : Incident.create(user_id: user.id, group_id: user.groups.first.id, events_added_count: 0)
     ActiveRecord::Base.transaction do
       events.each do |key, sid_cid_value|
         event = Event.includes(:sensor, :signature_detail, :iphdr, :tcphdr, :icmphdr, :udphdr, :payload).find(sid_cid_value)

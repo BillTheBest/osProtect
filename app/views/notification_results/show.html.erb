@@ -85,12 +85,15 @@
         <div class="panel_contents">
             <ul style="list-style-type:none">
               <li>- events shown: <strong><%= number_with_delimiter @events.size %></strong></li>
-              <li>- events matched: <%= number_with_delimiter @events.size %></li>
+              <li>- events matched: <strong><%= number_with_delimiter @events.size %></strong></li>
               <li>- email sent: <strong><%= @notification_result.email_sent ? "yes" : "no" %></strong></li>
               <li>- results are from:</li>
               <li style="padding-left:20px"><strong><%= @notification_result.events_timestamped_from %></strong></li>
               <li style="padding-left:50px">to:</li>
               <li style="padding-left:20px"><strong><%= @notification_result.events_timestamped_to %></strong></li>
+              <!-- <li>&nbsp;</li> -->
+              <li>- match criteria:</strong></li>
+              <li style="padding-left:20px">priorities: <strong><%= @notification.notify_criteria.join(', ') %></strong></li>
               <!-- <li>&nbsp;</li> -->
               <li>- recorded: <%= @notification_result.created_at %></li>
             </ul>

@@ -25,6 +25,7 @@
                     <th>Description</th>
                     <th>Resolution</th>
                     <th>Events</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -36,6 +37,7 @@
                             <td><%= simple_format incident.incident_description %></td>
                             <td><%= simple_format incident.incident_resolution %></td>
                             <td><%= incident.incident_events.count %></td>
+                            <td><%= link_to 'delete', incident, confirm: 'Are you sure?', method: :delete %></td>
                           </tr>
                       <% end %>
                   <% else %>

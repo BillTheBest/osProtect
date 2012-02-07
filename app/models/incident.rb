@@ -1,6 +1,6 @@
 class Incident < ActiveRecord::Base
   belongs_to :group
-  has_many :incident_events
+  has_many :incident_events, dependent: :destroy
 
   attr_accessor :events_added_count, :events_rejected_count
 

@@ -17,7 +17,7 @@
                   <div class="buttons" id="add-selected-events">
                     <%#= submit_tag 'add selected Events to', id: 'submit-selected-events', disable_with: "Standby . . ." %>
                     <%= submit_tag 'add selected Events to', id: 'submit-selected-events' %>
-                    <%= select_tag(:incident_id, options_for_select(Incident.all.collect {|i| [ "##{i.id} - #{truncate(i.incident_name)}", i.id ] }), {prompt: "a new Incident or select from this list"}) %>
+                    <%= select_tag(:incident_id, options_for_select(Incident.accessible_by(current_ability).all.collect {|i| [ "##{i.id} - #{truncate(i.incident_name)}", i.id ] }), {prompt: "a new Incident or select from this list"}) %>
                   </div>
                   <div id="adding-events-spinner" style="display:none">
                     <%= image_tag('loading-bars.gif') %>

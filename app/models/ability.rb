@@ -7,6 +7,7 @@ class Ability
     else
       can     :update,  User, :id => user.id
       can     :read,    [Sensor, SensorName]
+      can     :manage,  Incident, :group => { :id => user.groups }
       can     :manage,  Notification
       cannot  :manage,  [Group, Membership]
     end
