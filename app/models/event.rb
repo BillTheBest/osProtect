@@ -44,6 +44,10 @@ class Event < ActiveRecord::Base
     self.id.to_s
   end
 
+  def key_as_array
+    self.id.to_a
+  end
+
   def key_with_underscore
     self.id.to_s.gsub(',', '_')
   end

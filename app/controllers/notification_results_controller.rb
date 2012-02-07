@@ -10,8 +10,8 @@ class NotificationResultsController < ApplicationController
   def show
     # show matching events for this notification result:
     @notification_result = current_user.notification_results.find(params[:id])
-    @notification = NotificationResult.find(params[:id])
-    # @notifications = current_user.notifications.order("updated_at desc").page(params[:page]).per_page(12)
+    @notification = Notification.find(@notification_result.notification.id)
+    @events = @notification_result.result_ids.map { |id| Event.find(id) }
   end
 
   def new
@@ -32,8 +32,8 @@ class NotificationResultsController < ApplicationController
 
   def destroy
     @notification_result = current_user.notification_results.find(params[:id])
-    notification = @notification_result.id
+    notification_id = @notification_result.notification.id
     @notification_result.destroy
-    redirect_to notification_results_url(id: notification)
+    redirect_to notification_results_url(id: notification_id)
   end
 end

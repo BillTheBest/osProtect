@@ -1,0 +1,102 @@
+<% presenting @events, "EventPagePresenter" do |presenter| %>
+  <div class="flashes">
+    <% flash.each do |name, msg| %>
+      <%= content_tag :div, msg, :class=>"flash flash_#{name}" %>
+    <% end %>
+    <div id="incident" class="flash flash_notice" style="display:none">
+      <%= render partial: 'incident', locals: {incident: @incident} %>
+    </div>
+  </div>
+  <div id="osprotect_content" class="with_sidebar">
+    <div id="main_content_wrapper">
+      <div id="main_content">
+        <% unless @events.blank? %>
+          <div class="paginated_collection">
+            <%= form_tag events_path, method: :post, :remote => :true, class: "event_select_form" do %>
+              <%# if presenter.page_of_events.count > 0 %>
+              <% if @events.size > 0 %>
+                  <div class="buttons" id="add-selected-events">
+                    <%= submit_tag 'add selected Events to', id: 'submit-selected-events' %>
+                    <%= select_tag(:incident_id, options_for_select(Incident.all.collect {|i| [ "##{i.id} - #{truncate(i.incident_name)}", i.id ] }), {prompt: "a new Incident or select from this list"}) %>
+                  </div>
+                  <div id="adding-events-spinner" style="display:none">
+                    <%= image_tag('loading-bars.gif') %>
+                  </div>
+              <% end %>
+              <div class="pagination_information">&nbsp;<%#= page_entries_info presenter.page_of_events %></div>
+              <div class="paginated_collection_contents">
+                <div class="index_content">
+                  <div class="index_as_table">
+                    <%# if presenter.page_of_events %>
+                    <% if @events.size > 0 %>
+                        <table border="0" cellspacing="0" cellpadding="0" id="events" class="index_table">
+                          <thead>
+                            <tr>
+                              <th class="sortable small">
+                                <%= image_tag('check.png', id: 'events-check', title: 'click to toggle checkboxes')%>
+                              </th>
+                              <th class="sortable">priority</th>
+                              <th class="sortable">signature</th>
+                              <th class="sortable">source</th>
+                              <th class="sortable">destination</th>
+                              <th class="sortable">sensor</th>
+                              <th class="sortable">timestamp</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <%# presenter.page_of_events.each_with_index do |event, x| %>
+                            <% @events.each_with_index do |event, x| %>
+                                <tr class="<%= cycle('even', 'odd') %>">
+                                  <td><%= check_box_tag "event[#{x}]", event.key, false, :id => "check_box_#{event.key_with_underscore}", :class => 'select-events' %></td>
+                                  <td><%=event.priority%></td>
+                                  <td><%= link_to event.signature, event_path(event.key) %></td>
+                                  <td><%=event.source_ip_port%></td>
+                                  <td><%=event.destination_ip_port%></td>
+                                  <td><%=event.sensor_name%></td>
+                                  <td><%=event.timestamp%></td>
+                                </tr>
+                            <% end %>
+                          </tbody>
+                        </table>
+                    <% else %>
+                        <br /><h2>No events found!</h2>
+                    <% end %>
+                  </div> <!-- index_as_table -->
+                </div> <!-- index_content -->
+              </div> <!-- paginated_collection_contents -->
+            <% end %> <!-- form_tag events_path -->
+
+            <div id="index_footer">
+              <div style="float:left">
+                <%#= button_to 'report as PDF', events_pdf_url(q: params[:q], format: :pdf), method: "post", form: {"target" => "_blank"}, title: raw("Save this report as a PDF document.\n\nNote: some reports may be too long and will require processing as a background job.") %>
+              </div>
+              <%#= will_paginate presenter.page_of_events %>
+            </div>
+          </div> <!-- paginated_collection -->
+        <% else %>
+          <br /><h2>No events found!</h2>
+        <% end %>
+      </div> <!-- main_content -->
+    </div> <!-- main_content_wrapper -->
+
+    <div id="sidebar">
+      <div class="sidebar_section panel">
+        <h3 style="margin-top:-2px">&larr; results for Notification: <%= "#{@notification.id}" %></h3>
+        <div class="panel_contents">
+            <ul style="list-style-type:none">
+              <li>- events shown: <strong><%= number_with_delimiter @events.size %></strong></li>
+              <li>- events matched: <%= number_with_delimiter @events.size %></li>
+              <li>- email sent: <strong><%= @notification_result.email_sent ? "yes" : "no" %></strong></li>
+              <li>- results are from:</li>
+              <li style="padding-left:20px"><strong><%= @notification_result.events_timestamped_from %></strong></li>
+              <li style="padding-left:50px">to:</li>
+              <li style="padding-left:20px"><strong><%= @notification_result.events_timestamped_to %></strong></li>
+              <!-- <li>&nbsp;</li> -->
+              <li>- recorded: <%= @notification_result.created_at %></li>
+            </ul>
+        </div> <!-- panel_contents -->
+      </div> <!-- sidebar_section -->
+    </div> <!-- sidebar -->
+
+  </div> <!-- osprotect_content -->
+<% end %>

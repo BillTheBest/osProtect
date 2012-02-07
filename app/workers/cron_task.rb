@@ -67,11 +67,12 @@ class CronTask
         # otherwise use the sensors(based on group memberships) for the user who owns this notification:
         users_sensors = notification.user.sensors
       end
-      # does this event match all criteria (users_sensors is an implied criteria):
       events.each do |event|
+        # does this event match all criteria (users_sensors are implied criteria):
         next unless users_sensors.nil? || users_sensors.include?(event.sid)
-        matching_keys << event.key if notification.notify_criteria.include?(event.priority.to_s)
+        matching_keys << event.key_as_array if notification.notify_criteria.include?(event.priority.to_s)
       end
+      matching_keys.uniq!
       nr = NotificationResult.create!(notification_id: notification.id,
                                       user_id: notification.user.id,
                                       total_matches: matching_keys.size,
