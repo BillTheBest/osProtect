@@ -43,7 +43,19 @@
                     end
                     %>
                     <%# themes: keynote, thirty7signals, pastel, greyscale %>
-                    <%= image_tag(Gchart.pie(data: data, labels: labels, size: '350x250', title: "Priority", theme: :thirty7signals)) %>
+                    <%= image_tag(Gchart.pie(data: data, labels: labels, size: '350x250', title: "Priority (googlecharts)", theme: :thirty7signals)) %>
+                    <canvas id="chartCanvasPriority" width="400" height="400">
+                        Your web-browser does not support the HTML 5 canvas element.
+                    </canvas>
+                    <script type="application/javascript">
+                      var chartPriority = new AwesomeChart('chartCanvasPriority');
+                      chartPriority.chartType = "exploded pie";
+                      chartPriority.title = "Priority (AwesomeChartJS)";
+                      chartPriority.data = [<%=data.join(',')%>];
+                      chartPriority.labels = ['<%=labels.join("', '")%>'];
+                      chartPriority.randomColors = true;
+                      chartPriority.draw();
+                    </script>
                     <hr />
                     <table border="0" cellspacing="0" cellpadding="0">
                       <thead>
@@ -75,6 +87,18 @@
                     %>
                     <%# themes: keynote, thirty7signals, pastel, greyscale %>
                     <%= image_tag(Gchart.pie(data: data, labels: labels, size: '450x250', title: "Top Attackers", theme: :thirty7signals)) %>
+                    <canvas id="chartCanvasTopAttackers" width="400" height="400">
+                        Your web-browser does not support the HTML 5 canvas element.
+                    </canvas>
+                    <script type="application/javascript">
+                      var chartTopAttackers = new AwesomeChart('chartCanvasTopAttackers');
+                      chartTopAttackers.chartType = "horizontal bars";
+                      chartTopAttackers.title = "Top Attackers (AwesomeChartJS)";
+                      chartTopAttackers.data = [<%=data.join(',')%>];
+                      chartTopAttackers.labels = ['<%=labels.join("', '")%>'];
+                      chartTopAttackers.randomColors = true;
+                      chartTopAttackers.draw();
+                    </script>
                     <hr />
                     <table border="0" cellspacing="0" cellpadding="0">
                       <thead>
@@ -106,6 +130,18 @@
                     %>
                     <%# themes: keynote, thirty7signals, pastel, greyscale %>
                     <%= image_tag(Gchart.pie(data: data, labels: labels, size: '450x250', title: "Top Targets", theme: :thirty7signals)) %>
+                    <canvas id="chartCanvasTopTargets" width="400" height="400">
+                        Your web-browser does not support the HTML 5 canvas element.
+                    </canvas>
+                    <script type="application/javascript">
+                      var chartTopTargets = new AwesomeChart('chartCanvasTopTargets');
+                      chartTopTargets.chartType = "horizontal bars";
+                      chartTopTargets.title = "Top Targets (AwesomeChartJS)";
+                      chartTopTargets.data = [<%=data.join(',')%>];
+                      chartTopTargets.labels = ['<%=labels.join("', '")%>'];
+                      chartTopTargets.randomColors = true;
+                      chartTopTargets.draw();
+                    </script>
                     <hr />
                     <table border="0" cellspacing="0" cellpadding="0">
                       <thead>
@@ -137,9 +173,21 @@
                     %>
                     <%# themes: keynote, thirty7signals, pastel, greyscale %>
                     <%= image_tag(Gchart.pie(data: data, labels: labels, size: '850x250', title: "Top Events by Signature", theme: :thirty7signals)) %>
+                    <canvas id="chartCanvasTopEventsBySignature" width="400" height="400">
+                        Your web-browser does not support the HTML 5 canvas element.
+                    </canvas>
+                    <script type="application/javascript">
+                      var chartTopEventsBySignature = new AwesomeChart('chartCanvasTopEventsBySignature');
+                      chartTopEventsBySignature.chartType = "horizontal bars";
+                      chartTopEventsBySignature.title = "Top Events by Signature";
+                      chartTopEventsBySignature.data = [<%=data.join(',')%>];
+                      chartTopEventsBySignature.labels = ['<%=labels.join("', '")%>'];
+                      chartTopEventsBySignature.randomColors = true;
+                      chartTopEventsBySignature.draw();
+                    </script>
                     <hr />
                     <%#=debug ProcTable.ps %>
-                    <% if Rails.env.production? %>
+                    <% if false # Rails.env.production? %>
                         <%#=debug Sys::CPU.cpu_stats # cls: this is just physical machine info%>
                         <%#=debug Sys::CPU.processors # cls: this shows nothing %>
                         <table border="0" cellspacing="0" cellpadding="0">
