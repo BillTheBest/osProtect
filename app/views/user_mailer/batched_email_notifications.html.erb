@@ -14,7 +14,7 @@
         </p>
         <p>
           To view the results for this notification, follow this link: 
-          <%= link_to('notification results', url_for(id: nr.notification.id, action: 'index', controller: 'notifications', only_path: false)) %>.
+          <%= link_to('notification results', url_for(id: nr.id, action: 'show', controller: 'notification_results', only_path: false)) %>.
         </p>
       </blockquote>
       <hr />
