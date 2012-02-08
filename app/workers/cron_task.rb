@@ -34,7 +34,7 @@ class CronTask
     # 1. get events from now back to 1 minute ago (or however often this job runs)
     # 2. for each notification
     #       - use criteria to find events based on this user's access (groups/memberships)
-    #       - save ids or sql in notification_results, so this can be replayed/retrieve later by user
+    #       - save ids in notification_results, so this can be replayed/retrieve later by user
     #       - save any error messages or stats/counts
     #       - email each user a summary with a link to retrieve the events, i.e. notify them, we may
     #         want to consider only sending out emails every 10-15 minutes instead of for each job run
@@ -70,9 +70,15 @@ class CronTask
       events.each do |event|
         # does this event match all criteria (users_sensors are implied criteria):
         next unless users_sensors.nil? || users_sensors.include?(event.sid)
-        matching_keys << event.key_as_array if notification.notify_criteria.include?(event.priority.to_s)
+        matching_keys << event.key_as_array if notification.notify_criteria.matches?(event)
       end
       matching_keys.uniq!
+      next unless notification.notify_criteria.minimum_matches.zero? || (matching_keys.size >= notification.notify_criteria.minimum_matches)
+#
+# * * *  add a notify_criteria attribute to NotificationResult, so the criteria used at run time is recorded,
+#        since the criteria in Notification can be changed after run time
+#        i.e. just dup it
+#
       nr = NotificationResult.create!(notification_id: notification.id,
                                       user_id: notification.user.id,
                                       total_matches: matching_keys.size,

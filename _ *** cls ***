@@ -283,16 +283,6 @@ end
 ```
 I am unsure if this is a proper fix, but it works for MySQL ... but maybe there is a better way to express the query.
 Thanks for CPK.
-
-_________________________________________________________________________________________________________
-
-event:
-1. timestamp
-2. sensor
-3. priority
-4. aIP (attacker/source)
-5. tIP (target/destination)
-
 _________________________________________________________________________________________________________
 
 ... sql which will group rows based on frequency within a time period using the event.timestamp column:
@@ -305,6 +295,19 @@ ________________________________________________________________________________
 ... verify counts with:
 	select timestamp from event
 	where timestamp between "2011-10-25 00:00:00" and "2011-10-25 23:59:59";
+
+_________________________________________________________________________________________________________
+
+For the reporting I'd like to see a way for the admin to be able to upload, disable, delete report profiles. 
+Examples of report profiles would be:
+
+a) A Summary report profile listing everything on the pulse page
+b) A Detailed report profile listing all the info in the events page
+c) A Critical report profile listing all the High Priority info (Level 1) priority events.
+d) A Combo report profile listing a & b in one report
+
+You should be able to select a timeframe for each report you generate. 
+You can setup a calendar option similar to the one on "Events" --> "search events based on:" --> "Date Range"
 
 
 

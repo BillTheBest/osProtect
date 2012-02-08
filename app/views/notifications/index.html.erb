@@ -42,12 +42,19 @@
                             <td>
                               <%# definitely need a presenter here to handle the display of criteria %>
                               <% unless notification.notify_criteria.blank? %>
-                                  selected priorities: 
-                                  <strong><%= notification.notify_criteria.join(', ') %></strong>
-                                  <!-- <br /> -->
-                                  <%# notification.notify_criteria.each do |nc| %>
-                                    <%#= nc %>
-                                  <%# end %>
+                                  <span style="font-size:0.9em">
+                                    <em>minimum: </em>
+                                    <strong><%= notification.notify_criteria.minimum_matches <= 0 ? 'any' : notification.notify_criteria.minimum_matches %></strong>
+                                    &nbsp;&nbsp;
+                                    <em>priorities: </em>
+                                    (<strong><%= notification.notify_criteria.priorities.join(', ') %></strong>)
+                                    &nbsp;&nbsp;
+                                    <em>attacker IP: </em>
+                                    <strong><%= notification.notify_criteria.attacker_ips.blank? ? 'any' :  notification.notify_criteria.attacker_ips %></strong>
+                                    &nbsp;&nbsp;
+                                    <em>target IP: </em>
+                                    <strong><%= notification.notify_criteria.target_ips.blank? ? 'any' : notification.notify_criteria.target_ips %></strong>
+                                  </span>
                               <% end %>
                             </td>
                             <td><%= notification.status %></td>

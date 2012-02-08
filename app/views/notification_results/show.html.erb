@@ -93,7 +93,21 @@
               <li style="padding-left:20px"><strong><%= @notification_result.events_timestamped_to %></strong></li>
               <!-- <li>&nbsp;</li> -->
               <li>- match criteria:</strong></li>
-              <li style="padding-left:20px">priorities: <strong><%= @notification.notify_criteria.join(', ') %></strong></li>
+              <li style="padding-left:20px">
+                <span style="font-size:0.9em">
+                  <em>minimum: </em>
+                  <strong><%= @notification.notify_criteria.minimum_matches <= 0 ? 'any' : @notification.notify_criteria.minimum_matches %></strong>
+                  <br />
+                  <em>priorities: </em>
+                  (<strong><%= @notification.notify_criteria.priorities.join(', ') %></strong>)
+                  <br />
+                  <em>attacker IP: </em>
+                  <strong><%= @notification.notify_criteria.attacker_ips.blank? ? 'any' :  @notification.notify_criteria.attacker_ips %></strong>
+                  <br />
+                  <em>target IP: </em>
+                  <strong><%= @notification.notify_criteria.target_ips.blank? ? 'any' : @notification.notify_criteria.target_ips %></strong>
+                </span>
+              </li>
               <!-- <li>&nbsp;</li> -->
               <li>- recorded: <%= @notification_result.created_at %></li>
             </ul>
