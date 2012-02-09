@@ -67,12 +67,12 @@
                     </fieldset>
                   </li>
                   <li class="attacker_ips">
-                    <label>Attacker IP</label>
+                    <label>Attacker IP <small>(source)</small></label>
                     <% @notification.attacker_ips = @notification.notify_criteria.attacker_ips %>
                     <%= f.text_field :attacker_ips %>
                   </li>
                   <li class="target_ips">
-                    <label>Target IP</label>
+                    <label>Target IP <small>(destination)</small></label>
                     <% @notification.target_ips = @notification.notify_criteria.target_ips %>
                     <%= f.text_field :target_ips %>
                   </li>

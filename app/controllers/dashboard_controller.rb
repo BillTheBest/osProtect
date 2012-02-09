@@ -9,6 +9,9 @@ class DashboardController < ApplicationController
   def index
     # note: if current_user is an admin, groups/memberships don't matter since an admin can do anything:
     if current_user.role? :admin
+      # @hot_times = Event.find_by_sql ["SELECT title FROM posts WHERE author = ? AND created > ?", author_id, start_date]
+      # @hot_times = Event.find_by_sql "select sec_to_time(floor(time_to_sec(timestamp)/900)*900) as `minute`, count(*) as `cnt` from event where timestamp between '2012-10-25 00:00:00' and '2012-10-25 23:59:59' group by sec_to_time(floor(time_to_sec(timestamp)/900)*900) having `cnt` > 20"
+      @hot_times = Event.find_by_sql "select sec_to_time(floor(time_to_sec(timestamp)/900)*900) as `minute`, count(*) as `cnt` from event group by sec_to_time(floor(time_to_sec(timestamp)/900)*900) having `cnt` > 20"
       @incidents = Incident.order('updated_at desc').limit(5)
       @pending_incidents = Incident.where(status: 'pending').count
       @suspicious_incidents = Incident.where(status: 'suspicious').count
@@ -30,6 +33,7 @@ class DashboardController < ApplicationController
       else
         # limit stats returned to the Sensors for this user's groups/memberships:
         groups_for_user = current_user.groups
+        @hot_times = []
         @incidents = Incident.where("incidents.group_id IN (?)", groups_for_user).order('updated_at desc').limit(5)
         @pending_incidents = Incident.where(status: 'pending').count
         @suspicious_incidents = Incident.where(status: 'suspicious').count
@@ -44,5 +48,6 @@ class DashboardController < ApplicationController
   end
 
   def user_setup_required
+    # just to show page telling user to have an admin set up their account
   end
 end

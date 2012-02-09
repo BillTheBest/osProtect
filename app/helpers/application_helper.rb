@@ -8,7 +8,13 @@ module ApplicationHelper
         link_text = page.camelcase
         link = link_to(link_text, send("#{page}_path"))
       end
+      current = false
       if page == params[:controller].downcase
+        current = true
+      elsif page == 'pulse' && params[:controller].downcase == 'dashboard'
+        current = true
+      end
+      if current
         concat(content_tag(:li, link, class: "current", id: "#{page}"))
       else
         concat(content_tag(:li, link, id: "#{page}"))

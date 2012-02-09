@@ -286,15 +286,15 @@ Thanks for CPK.
 _________________________________________________________________________________________________________
 
 ... sql which will group rows based on frequency within a time period using the event.timestamp column:
-	select sec_to_time(floor(time_to_sec(timestamp)/60)*60), count(*)
-	from event
-	where timestamp between '2011-10-25 00:00:00' and '2011-10-25 23:59:59'
-	group by sec_to_time(floor(time_to_sec(timestamp)/60)*60);
-	... this groups by minute (60) intervals
+select sec_to_time(floor(time_to_sec(timestamp)/60)*60), count(*)
+from event
+where timestamp between '2011-10-25 00:00:00' and '2011-10-25 23:59:59'
+group by sec_to_time(floor(time_to_sec(timestamp)/60)*60);
+... this groups by minute (60) intervals
 
 ... verify counts with:
-	select timestamp from event
-	where timestamp between "2011-10-25 00:00:00" and "2011-10-25 23:59:59";
+select timestamp from event
+where timestamp between "2011-10-25 00:00:00" and "2011-10-25 23:59:59";
 
 _________________________________________________________________________________________________________
 
@@ -309,6 +309,25 @@ d) A Combo report profile listing a & b in one report
 You should be able to select a timeframe for each report you generate. 
 You can setup a calendar option similar to the one on "Events" --> "search events based on:" --> "Date Range"
 
+_________________________________________________________________________________________________________
+
+Graph/Chart options:
+- googlecharts ... easy/simple, does all of the work, and returns an image as png file to use in img tag
+
+Tom recommendations:
+1. http://cyberpython.github.com/AwesomeChartJS/
+    ... uses js + html5 canvas ... easy/simple, but graphing is in browser, so there's no image to include in pdf
+
+2. http://www.jfree.org/jfreechart/
+    ... uses Java + JDK + JCommmon library ... way too complicated to install/maintain
+
+3. http://amardaxini.github.com/
+    ... pure Ruby, server-side generation and renders png/jpeg
+    ... poor docs, so it's hard to know exactly how to draw a simple pie chart
+    ... has too many brittle dependencies (like linux Gd ruby-gd(circa 2004)) - difficult to install and maintain
+
+4. http://code.google.com/p/flot/
+    ... uses js/jQuery + html5 canvas ... graphing is in browser, so there's no image to include in pdf
 
 
 

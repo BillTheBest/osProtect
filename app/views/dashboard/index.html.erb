@@ -3,7 +3,7 @@
     <%= content_tag :div, msg, :class=>"flash flash_#{name}" %>
   <% end %>
 </div>
-<div id="osprotect_content" class="with_sidebar">
+<div id="osprotect_content" class="without_sidebar">
   <div id="main_content_wrapper">
     <div id="main_content">
       <% if @events_count > 0 %>
@@ -12,8 +12,59 @@
             <tr>
               <td>
                 <div class="dashboard_section panel">
-                  <h3>Stats</h3>
+                  <div id="panel_header" style="margin-top:-26px">
+                    <ul class="tabbed_navigation" id="panel_tabs">
+                      <li><%= link_to 'Today', pulse_path %></li>
+                      <li><%= link_to 'Last 24 Hours', pulse_path %></li>
+                      <li><%= link_to 'Week', pulse_path %></li>
+                      <li><%= link_to 'Month', pulse_path %></li>
+                      <li><%= link_to 'Year', pulse_path %></li>
+                    </ul>
+                  </div>
                   <div class="panel_contents">
+                    <br />
+                    <%
+                    total = 0
+                    data = []
+                    labels = []
+                    @hot_times.collect do |hot_time|
+                      total += hot_time.cnt
+                      data << hot_time.cnt
+                    end
+                    labels = @hot_times.collect do |hot_time|
+                      s = hot_time.minute
+                      e = hot_time.minute + 15.minutes
+                      "#{s.strftime("%l:%M")}-#{e.strftime("%l:%M %P")} (#{total == 0 ? 0 : (100.0 * hot_time.cnt / total).round}%)"
+                    end
+                    %>
+                    <%= image_tag(Gchart.pie_3d(data: data, labels: labels, size: '750x200', title: "Active Times", theme: :thirty7signals)) %>
+                    <table border="0" cellspacing="0" cellpadding="0">
+                      <thead>
+                        <tr>
+                          <th style="text-align:right"><small>count</small></th>
+                          <th style="text-align:left">Active Times (UTC)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr><td></td><td style="text-align:left"><small><em>15 minute intervals with more than 20 events</em></small></td></tr>
+                        <% @hot_times.each do |hot_time| %>
+                            <tr class="<%= cycle('even', 'odd') %>">
+                              <%
+                                s = hot_time.minute
+                                e = hot_time.minute + 15.minutes
+                                case hot_time.cnt
+                                  when 0..50; c = "black"; w = "normal"
+                                  when 51..99; c = "orange"; w = "normal"
+                                  else; c = "red"; w = "bold"
+                                end                                
+                              %>
+                              <td width="10%" align="right" style="color:<%=c%>; font-weight:<%=w%>"><%= number_with_delimiter(hot_time.cnt) %></td>
+                              <td width="50%" style="color:<%=c%>; font-weight:<%=w%>"><%= s.strftime("%l:%M") %> - <%= e.strftime("%l:%M %P") %> </td>
+                            </tr>
+                        <% end %>
+                      </tbody>
+                    </table>
+                    <hr style="background-color:#c0c0c0; border:0 none; color:#c0c0c0; height:5px" /><br />
                     <%
                     total = 0
                     data = []
@@ -27,19 +78,28 @@
                     end
                     %>
                     <%# themes: keynote, thirty7signals, pastel, greyscale %>
-                    <%#= image_tag(Gchart.pie(data: data, labels: labels, size: '350x250', title: "Priority (googlecharts)", theme: :thirty7signals)) %>
-                    <canvas id="chartCanvasPriority" width="400" height="400">
+                    <%#= image_tag(Gchart.pie(data: data, labels: labels, size: '400x200', title: "Priority (googlecharts)", theme: :thirty7signals)) %>
+                    <!-- <canvas id="chartCanvasPriority" width="400" height="400" style="display:none;"> -->
+                    <canvas id="chartCanvasPriority" width="400" height="400" style="background:#fff">
                         Your web-browser does not support the HTML 5 canvas element.
                     </canvas>
+<!-- <img id="canvasImg" alt="right click to save me!"> -->
                     <script type="application/javascript">
                       var chartPriority = new AwesomeChart('chartCanvasPriority');
                       // chartPriority.chartType = "exploded pie";
-                      // chartPriority.chartType = "horizontal bars";
+                      chartPriority.chartType = "horizontal bars";
                       chartPriority.title = "Priority";
                       chartPriority.data = [<%=data.join(',')%>];
                       chartPriority.labels = ['<%=labels.join("', '")%>'];
                       chartPriority.randomColors = true;
                       chartPriority.draw();
+// var canvas = document.getElementById("chartCanvasPriority");
+// // save canvas image as data url (png format by default):
+// var dataURL = canvas.toDataURL();
+// console.log(dataURL);
+// // set canvasImg image src to dataURL so it can be saved as an image:
+// document.getElementById("canvasImg").src = dataURL;
+// window.location = canvas.toDataURL("image/png");
                     </script>
                     <table border="0" cellspacing="0" cellpadding="0">
                       <thead>
@@ -57,7 +117,7 @@
                         <% end %>
                       </tbody>
                     </table>
-                    <hr />
+                    <hr style="background-color:#c0c0c0; border:0 none; color:#c0c0c0; height:5px" /><br />
                     <%
                     total = 0
                     data = []
@@ -72,7 +132,7 @@
                     %>
                     <%# themes: keynote, thirty7signals, pastel, greyscale %>
                     <%#= image_tag(Gchart.pie(data: data, labels: labels, size: '450x250', title: "Top Attackers", theme: :thirty7signals)) %>
-                    <canvas id="chartCanvasTopAttackers" width="400" height="400">
+                    <canvas id="chartCanvasTopAttackers" width="400" height="400" style="background:#fff">
                         Your web-browser does not support the HTML 5 canvas element.
                     </canvas>
                     <script type="application/javascript">
@@ -100,7 +160,7 @@
                         <% end %>
                       </tbody>
                     </table>
-                    <hr />
+                    <hr style="background-color:#c0c0c0; border:0 none; color:#c0c0c0; height:5px" /><br />
                     <%
                     total = 0
                     data = []
@@ -115,7 +175,7 @@
                     %>
                     <%# themes: keynote, thirty7signals, pastel, greyscale %>
                     <%#= image_tag(Gchart.pie(data: data, labels: labels, size: '450x250', title: "Top Targets", theme: :thirty7signals)) %>
-                    <canvas id="chartCanvasTopTargets" width="400" height="400">
+                    <canvas id="chartCanvasTopTargets" width="400" height="400" style="background:#fff">
                         Your web-browser does not support the HTML 5 canvas element.
                     </canvas>
                     <script type="application/javascript">
@@ -143,7 +203,7 @@
                         <% end %>
                       </tbody>
                     </table>
-                    <hr />
+                    <hr style="background-color:#c0c0c0; border:0 none; color:#c0c0c0; height:5px" /><br />
                     <%
                     total = 0
                     data = []
@@ -158,7 +218,7 @@
                     %>
                     <%# themes: keynote, thirty7signals, pastel, greyscale %>
                     <%#= image_tag(Gchart.pie(data: data, labels: labels, size: '850x250', title: "Top Events by Signature", theme: :thirty7signals)) %>
-                    <canvas id="chartCanvasTopEventsBySignature" width="400" height="400">
+                    <canvas id="chartCanvasTopEventsBySignature" width="400" height="400" style="background:#fff">
                         Your web-browser does not support the HTML 5 canvas element.
                     </canvas>
                     <script type="application/javascript">
@@ -186,7 +246,7 @@
                         <% end %>
                       </tbody>
                     </table>
-                    <hr />
+                    <hr style="background-color:#c0c0c0; border:0 none; color:#c0c0c0; height:5px" /><br />
                     <%#=debug ProcTable.ps %>
                     <% if false # Rails.env.production? %>
                         <%#=debug Sys::CPU.cpu_stats # cls: this is just physical machine info%>
@@ -221,7 +281,8 @@
     </div> <!-- main_content -->
   </div> <!-- main_content_wrapper -->
 
-  <% if @events_count > 0 %>
+  <%# if @events_count > 0 %>
+  <% if false %>
     <div id="sidebar">
       <div class="sidebar_section panel">
         <div class="panel_contents" style="margin-top:15px">
@@ -264,14 +325,6 @@
               </tr>
             </tbody>
           </table>
-          <h4>notes/todos:</h4>
-          <ul>
-            <li>Stats about traffic by protocol(TCP, UDP, ICMP, etc.) ?</li>
-            <br />
-            <li>Instead of "all time" an option to choose between today, this week, this month, this year should be provided.</li>
-            <br />
-            <li>Perhaps the linux commands 'w', '/proc/...', or similar could be used to generate info (such as cpu load, memory, disk usage, interfaces, network traffic, etc.) for/on each sensor box, but how would that info get transferred from each box into the database?</li>
-          </ul>
         </div> <!-- panel_contents -->
       </div> <!-- sidebar_section -->
     </div> <!-- sidebar -->
