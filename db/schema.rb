@@ -175,24 +175,25 @@ ActiveRecord::Schema.define(:version => 20120129160241) do
   create_table "notification_results", :force => true do |t|
     t.integer  "user_id"
     t.integer  "notification_id"
-    t.boolean  "email_sent",              :default => false
+    t.text     "notify_criteria_for_this_result"
+    t.boolean  "email_sent",                      :default => false
     t.datetime "events_timestamped_from"
     t.datetime "events_timestamped_to"
     t.integer  "total_matches"
     t.text     "result_ids"
     t.text     "messages"
-    t.datetime "created_at",                                 :null => false
-    t.datetime "updated_at",                                 :null => false
+    t.datetime "created_at",                                         :null => false
+    t.datetime "updated_at",                                         :null => false
   end
 
   create_table "notifications", :force => true do |t|
     t.integer  "user_id"
     t.string   "email"
-    t.boolean  "run_status",      :default => false
-    t.datetime "last_run"
+    t.boolean  "run_status",                :default => false
     t.text     "notify_criteria"
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
+    t.text     "notify_criteria_as_string"
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
   end
 
   add_index "notifications", ["user_id"], :name => "index_notifications_on_user_id"

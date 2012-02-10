@@ -96,16 +96,16 @@
               <li style="padding-left:20px">
                 <span style="font-size:0.9em">
                   <em>minimum: </em>
-                  <strong><%= @notification.notify_criteria.minimum_matches <= 0 ? 'any' : @notification.notify_criteria.minimum_matches %></strong>
+                  <strong><%= @notification_result.notify_criteria_for_this_result.minimum_matches <= 0 ? 'any' : @notification_result.notify_criteria_for_this_result.minimum_matches %></strong>
                   <br />
                   <em>priorities: </em>
-                  (<strong><%= @notification.notify_criteria.priorities.join(', ') %></strong>)
+                  <strong><%= @notification_result.notify_criteria_for_this_result.priorities.size <= 0 ? 'any' : "#{@notification_result.notify_criteria_for_this_result.priorities.join(', ')}" %></strong>
                   <br />
                   <em>attacker IP: </em>
-                  <strong><%= @notification.notify_criteria.attacker_ips.blank? ? 'any' :  @notification.notify_criteria.attacker_ips %></strong>
+                  <strong><%= @notification_result.notify_criteria_for_this_result.attacker_ips.blank? ? 'any' :  @notification_result.notify_criteria_for_this_result.attacker_ips %></strong>
                   <br />
                   <em>target IP: </em>
-                  <strong><%= @notification.notify_criteria.target_ips.blank? ? 'any' : @notification.notify_criteria.target_ips %></strong>
+                  <strong><%= @notification_result.notify_criteria_for_this_result.target_ips.blank? ? 'any' : @notification_result.notify_criteria_for_this_result.target_ips %></strong>
                 </span>
               </li>
               <!-- <li>&nbsp;</li> -->

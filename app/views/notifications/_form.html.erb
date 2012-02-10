@@ -40,18 +40,20 @@
                     <em>note: you may enter an alternate email for notifications</em>
                   </li>
                   <li>
-                    <label style="text-align:right; padding-right:10px">Match Events</label>
-                     using the following criteria:
+                    <label>Match Events</label>
+                     criteria:&nbsp;&nbsp;&nbsp;<em>(all criteria are optional, and in that case any event would be a match)</em>
                   </li>
+                  <fieldset class="inputs" style="margin-left:240px">
+                  <ol>
                   <li class="minimum_matches">
                     <label>Minimum matches</label>
                     <%= f.select(:minimum_matches, options_for_select([["Any", 0], ["1 or more matching events", 1], ["3 or more matching events", 3], ["5 or more matching events", 5], ["7 or more matching events", 7], ["10 or more matching events", 10]], selected: @notification.notify_criteria.minimum_matches)) %>
                   </li>
                   <li class="check_boxes priority required">
                     <label>Priorities</label>
-                    <%#= hidden_field_tag "notification[priority_ids][]", nil %>
+                    <%= hidden_field_tag "notification[priority_ids][]", nil %>
                     <span>&nbsp;</span>
-                    <fieldset>
+                    <fieldset style="margin-top:-15px">
                       <ol>
                         <% @notification.priorities.each do |priority| %>
                           <li>
@@ -76,6 +78,8 @@
                     <% @notification.target_ips = @notification.notify_criteria.target_ips %>
                     <%= f.text_field :target_ips %>
                   </li>
+                  </ol>
+                  </fieldset>
                   <li class="buttons commit">
                     <label>&nbsp;</label>
                     <%= f.submit %>

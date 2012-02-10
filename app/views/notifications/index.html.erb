@@ -21,8 +21,8 @@
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Total Results</th>
-                    <th>Criteria used to Match Events</th>
+                    <th>Results</th>
+                    <th>Criteria used to match Events</th>
                     <th>Status</th>
                     <th></th>
                   </tr>
@@ -36,21 +36,21 @@
                               <% if notification.notification_results.count > 0 %>
                                   <%= link_to "#{notification.notification_results.count}", notification_results_path(id: notification) %>
                               <% else %>
-                                  &nbsp;
+                                  none
                               <% end %>
                             </td>
                             <td>
                               <%# definitely need a presenter here to handle the display of criteria %>
                               <% unless notification.notify_criteria.blank? %>
                                   <span style="font-size:0.9em">
-                                    <em>minimum: </em>
+                                    <em>min: </em>
                                     <strong><%= notification.notify_criteria.minimum_matches <= 0 ? 'any' : notification.notify_criteria.minimum_matches %></strong>
                                     &nbsp;&nbsp;
                                     <em>priorities: </em>
-                                    (<strong><%= notification.notify_criteria.priorities.join(', ') %></strong>)
+                                    <strong><%= notification.notify_criteria.priorities.size <= 0 ? 'any' : "#{notification.notify_criteria.priorities.join(', ')}" %></strong>
                                     &nbsp;&nbsp;
                                     <em>attacker IP: </em>
-                                    <strong><%= notification.notify_criteria.attacker_ips.blank? ? 'any' :  notification.notify_criteria.attacker_ips %></strong>
+                                    <strong><%= notification.notify_criteria.attacker_ips.blank? ? 'any' : notification.notify_criteria.attacker_ips %></strong>
                                     &nbsp;&nbsp;
                                     <em>target IP: </em>
                                     <strong><%= notification.notify_criteria.target_ips.blank? ? 'any' : notification.notify_criteria.target_ips %></strong>

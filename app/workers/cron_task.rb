@@ -18,35 +18,13 @@ class CronTask
       now = Time.now.strftime("%Y-%m-%d %H:%M:%S")
       elapsed = "#{now} %s#%s - #{message}" % [self.name, method]
       puts elapsed
-      # if message =~ /completed/i
-      #   m = "elapsed=#{elapsed}\nnow=#{now}\n5.minutes.ago=#{5.minutes.ago}\ncurrent=#{Time.now.utc}"
-      #   NotificationResult.create!(messages: m)
-      # end
     end
   end
 
-  # *** put resque-scheduler tasks ***
+  # the following methods are resque-scheduler tasks:
 
   def event_notifications
-    # FIXME this needs some TLC as I have not spent time on refactoring nor optimizing!
-
-    # general process flow:
-    # 1. get events from now back to 1 minute ago (or however often this job runs)
-    # 2. for each notification
-    #       - use criteria to find events based on this user's access (groups/memberships)
-    #       - save ids in notification_results, so this can be replayed/retrieve later by user
-    #       - save any error messages or stats/counts
-    #       - email each user a summary with a link to retrieve the events, i.e. notify them, we may
-    #         want to consider only sending out emails every 10-15 minutes instead of for each job run
-    #
-    # attributes:
-    #   event.key
-    #   event.timestamp.to_f (epoch seconds)
-    #   event.sid = sensor.id
-    #   event.priority ...via... event.signature
-    #   event.iphdr.ip_source      ...or... event.source_ip_port (this causes additional db finds)
-    #   event.iphdr.ip_destination ...or... event.destination_ip_port (this causes additional db finds)
-
+    # FIXME this needs some TLC as I have not spent any time on refactoring or optimizing!
     now_time = Time.now.utc
     one_minute_ago_time = 1.minute.ago
     if Rails.env.production?
@@ -59,28 +37,22 @@ class CronTask
     end
     Notification.all.each do |notification|
       next if notification.disabled
+      criteria = notification.notify_criteria # this was serialized as NotificationCriteria object
       matching_keys = []
       if notification.user.role? :admin
-        # if the user who owns this notification is an admin then groups/memberships don't matter:
-        users_sensors = nil
+        users_sensors = nil # admin's see everything
       else
-        # otherwise use the sensors(based on group memberships) for the user who owns this notification:
         users_sensors = notification.user.sensors
       end
       events.each do |event|
-        # does this event match all criteria (users_sensors are implied criteria):
-        next unless users_sensors.nil? || users_sensors.include?(event.sid)
-        matching_keys << event.key_as_array if notification.notify_criteria.matches?(event)
+        next unless users_sensors.nil? || users_sensors.include?(event.sid) # sensors are an implied criteria based on user's role
+        matching_keys << event.key_as_array if criteria.matches?(event)
       end
       matching_keys.uniq!
-      next unless notification.notify_criteria.minimum_matches.zero? || (matching_keys.size >= notification.notify_criteria.minimum_matches)
-#
-# * * *  add a notify_criteria attribute to NotificationResult, so the criteria used at run time is recorded,
-#        since the criteria in Notification can be changed after run time
-#        i.e. just dup it
-#
+      next unless criteria.minimum_matches.zero? || (matching_keys.size >= criteria.minimum_matches)
       nr = NotificationResult.create!(notification_id: notification.id,
                                       user_id: notification.user.id,
+                                      notify_criteria_for_this_result: criteria,
                                       total_matches: matching_keys.size,
                                       events_timestamped_from: one_minute_ago_time,
                                       events_timestamped_to: now_time,

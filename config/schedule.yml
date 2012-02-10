@@ -1,7 +1,7 @@
 process_event_notifications:
   # cron: "0 0 * * *"
   # you can use rufus-scheduler "every" syntax in place of cron if you prefer
-  # every: 1hr
+  # every: 12h
   every: 1m
   class: CronTask
   queue: notifications

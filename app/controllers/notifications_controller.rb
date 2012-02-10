@@ -17,7 +17,6 @@ class NotificationsController < ApplicationController
 
   def create
     @notification = Notification.new(params[:notification])
-    @notification.notify_criteria = NotificationCriteria.new
     @notification.user_id = current_user.id
     if @notification.save
       redirect_to @notification, notice: 'Notification was successfully created, and you will receive an email when your is matched.'

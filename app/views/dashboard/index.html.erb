@@ -37,7 +37,7 @@
                       "#{s.strftime("%l:%M")}-#{e.strftime("%l:%M %P")} (#{total == 0 ? 0 : (100.0 * hot_time.cnt / total).round}%)"
                     end
                     %>
-                    <%= image_tag(Gchart.pie_3d(data: data, labels: labels, size: '750x200', title: "Active Times", theme: :thirty7signals)) %>
+                    <%#= image_tag(Gchart.pie_3d(data: data, labels: labels, size: '750x200', title: "Active Times", theme: :thirty7signals)) %>
                     <table border="0" cellspacing="0" cellpadding="0">
                       <thead>
                         <tr>
