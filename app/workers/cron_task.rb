@@ -38,7 +38,6 @@ class CronTask
     Notification.all.each do |notification|
       next if notification.disabled
       criteria = notification.notify_criteria # this was serialized as NotificationCriteria object
-puts "\ncriteria=#{criteria.inspect}"
       matching_keys = []
       if notification.user.role? :admin
         users_sensors = nil # admin's see everything
@@ -51,7 +50,6 @@ puts "\ncriteria=#{criteria.inspect}"
       end
       matching_keys.uniq!
       next unless criteria.minimum_matches.zero? || (matching_keys.size >= criteria.minimum_matches)
-puts "matching_keys=#{matching_keys.inspect}"
       if matching_keys.size > 0
         nr = NotificationResult.new
         nr.notification_id = notification.id
@@ -63,13 +61,6 @@ puts "matching_keys=#{matching_keys.inspect}"
         nr.result_ids = matching_keys
         nr.save!
       end
-      # nr = NotificationResult.create!(notification_id: notification.id,
-      #                                 user_id: notification.user.id,
-      #                                 notify_criteria_for_this_result: criteria,
-      #                                 total_matches: matching_keys.size,
-      #                                 events_timestamped_from: one_minute_ago_time,
-      #                                 events_timestamped_to: now_time,
-      #                                 result_ids: matching_keys)
     end
   end
 
