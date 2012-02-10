@@ -1,8 +1,8 @@
 process_event_notifications:
   # cron: "0 0 * * *"
   # you can use rufus-scheduler "every" syntax in place of cron if you prefer
-  # every: 12h
-  every: 1m
+  every: 12h
+  # every: 1m
   class: CronTask
   queue: notifications
   # method to perform in app/workers/cron_task.rb:
