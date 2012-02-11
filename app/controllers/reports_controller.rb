@@ -1,11 +1,12 @@
 class ReportsController < ApplicationController
-  before_filter :authenticate_user!
-  before_filter :ensure_user_is_setup
-
-  respond_to :html
-  respond_to :pdf, only: [:index, :show]
+  # before_filter :authenticate_user!
+  # before_filter :ensure_user_is_setup
+  # 
+  # respond_to :html
+  # respond_to :pdf, only: [:index, :show]
 
   def index
+    render text: 'hello from Reports :-)'
   end
 
   def show
