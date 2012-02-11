@@ -33,7 +33,7 @@ class EventsController < ApplicationController
   end
 
   def create_pdf
-    Resque.enqueue(TestWorker, 1, "Major Spudmeister")
+    # Resque.enqueue(TestWorker, 1, "Major Spudmeister")
     respond_with do |format|
       format.html { redirect_to events_url }
       format.pdf do

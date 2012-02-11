@@ -329,8 +329,24 @@ Tom recommendations:
 4. http://code.google.com/p/flot/
     ... uses js/jQuery + html5 canvas ... graphing is in browser, so there's no image to include in pdf
 
+_________________________________________________________________________________________________________
+memory via htop on appsudo.com:
 
+... just: Snort, Barnyard2, MySQL, OsProtect: web(thin workers)+scheduler+workers
 
+ VIRT   RES  SHR S CPU% MEM%  TIME+  Command
+ 390M  137M 4080 S  0.0  6.9 1:27.47 /usr/local/snort/bin/snort -g snort -u snort -c /usr/local/snort/etc/snort.conf -i eth0 -D
+ 114M 23952 6512 S  0.0  1.2 4:26.85 /usr/sbin/mysqld
+  99M 87228 5248 S  0.0  4.2 3:06.76 ruby /home/cleesmith/apps/osprotect/releases/20120210-043244/vendor/bundle/ruby/1.9.1/bin/thin start -p 5001
+76152 60680 5256 S  0.0  2.9 0:33.45 ruby /home/cleesmith/apps/osprotect/releases/20120210-043244/vendor/bundle/ruby/1.9.1/bin/thin start -p 5000
+67080 51956 5076 S  0.0  2.5 0:33.45 resque-1.19.0: Waiting for *
+67080 51956 5076 S  0.0  2.5 0:33.31 resque-1.19.0: Waiting for *
+65892 47376 5036 S  0.0  2.3 0:44.93 ruby /home/cleesmith/apps/osprotect/releases/20120210-043244/vendor/bundle/ruby/1.9.1/bin/rake resque:scheduler
+27020  1816  972 S  0.0  0.1 9:56.11 /usr/local/bin/redis-server /etc/redis/redis.conf
+ 9392  5624 1008 S  0.0  0.3 1:48.83 /usr/local/bin/barnyard2 -c /usr/local/snort/etc/barnyard2.conf -d /var/log/snort -f snort.u2 -D
+
+VIRT = 868,472 = 850M
+ RES = 389,288 = 400M
 
 
 

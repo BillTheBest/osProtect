@@ -30,6 +30,8 @@ OsProtectRor320::Application.routes.draw do
   resources :notifications
   resources :notification_results, :only => [:index, :show, :destroy]
 
+  resources :reports
+
   resources :events, :only => [:index, :show, :create, :create_pdf]
   get "home" => "events#index", :as => "home"
   post "events_pdf" => "events#create_pdf", :as => "events_pdf"

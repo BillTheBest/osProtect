@@ -1,28 +1,28 @@
 #!/bin/bash
-# giddyup stop hook
+
 echo "...................................................." >> ${ROOT}/hook.log
 date >> ${ROOT}/hook.log
 echo "begin: giddyup stop hook" >> ${ROOT}/hook.log
 
 export RAILS_ENV="production"
-echo "RAILS_ENV=${RAILS_ENV}" >> ${ROOT}/hook.log
+# echo "RAILS_ENV=${RAILS_ENV}" >> ${ROOT}/hook.log
 
 source "/usr/local/rvm/scripts/rvm"
 
 cd $RELEASE
-echo "cd ${RELEASE}" >> ${ROOT}/hook.log
+# echo "cd ${RELEASE}" >> ${ROOT}/hook.log
 
-PATH="${PATH}"
-APP_ENV="${APP_ENV}"
-ROOT="${ROOT}"
-RELEASE="${RELEASE}"
-NEWREV="${NEWREV}"
-HOOKDIR="${HOOKDIR}"
-echo "path=$PATH" >> ${ROOT}/hook.log
-echo "app_env=$APP_ENV" >> ${ROOT}/hook.log
-echo "newrev=$NEWREV" >> ${ROOT}/hook.log
-echo "root=$ROOT" >> ${ROOT}/hook.log
-echo "hookdir=$HOOKDIR" >> ${ROOT}/hook.log
+# PATH="${PATH}"
+# APP_ENV="${APP_ENV}"
+# ROOT="${ROOT}"
+# RELEASE="${RELEASE}"
+# NEWREV="${NEWREV}"
+# HOOKDIR="${HOOKDIR}"
+# echo "path=$PATH" >> ${ROOT}/hook.log
+# echo "app_env=$APP_ENV" >> ${ROOT}/hook.log
+# echo "newrev=$NEWREV" >> ${ROOT}/hook.log
+# echo "root=$ROOT" >> ${ROOT}/hook.log
+# echo "hookdir=$HOOKDIR" >> ${ROOT}/hook.log
 
 sudo service osprotect stop
 
@@ -34,4 +34,3 @@ bundle install --deployment --without assets development test
 # we don't actually need an app-specific gemset, so delete it:
 # rvm gemset delete osProtect
 echo "end: giddyup stop hook" >> ${ROOT}/hook.log
-echo "...................................................." >> ${ROOT}/hook.log
