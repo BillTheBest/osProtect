@@ -13,9 +13,9 @@ class DownloadsController < ApplicationController
     # use params to get the filename and content_type
     filename = "snorby_event.pdf"
     content_type = "application/pdf"
-    # head( :x_accel_redirect => '/pdf_reports/' + filename,
-    #       :content_type => content_type,
-    #       :content_disposition => "attachment; filename=\"#{filename}\"")
-    send_file('/home/cleesmith/apps/osprotect/shared/reports/snorby_event.pdf')
+    head( :x_accel_redirect => '/private_files/' + filename,
+          :content_type => content_type,
+          :content_disposition => "attachment; filename=\"#{filename}\"")
+    # send_file('/home/cleesmith/apps/osprotect/shared/reports/snorby_event.pdf')
   end
 end
