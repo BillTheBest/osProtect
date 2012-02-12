@@ -30,7 +30,7 @@ OsProtectRor320::Application.routes.draw do
   resources :notifications
   resources :notification_results, :only => [:index, :show, :destroy]
 
-  resources :reports
+  resources :downloads
 
   resources :events, :only => [:index, :show, :create, :create_pdf]
   get "home" => "events#index", :as => "home"
