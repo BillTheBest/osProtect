@@ -47,11 +47,18 @@ class User < ActiveRecord::Base
   end
 
   def send_password_reset
+# puts "\n Resque.workers=#{Resque.workers.inspect}\n"
+# puts "\n Resque.methods=#{Resque.methods.to_yaml}\n"
     generate_token(:password_reset_token)
+    begin
+      # note: don't pass complex objects like ActiveRecord models, just pass an id as a reference
+      #       to the object(s) because the enqueue done by resque converts params to json:
+      UserBackgroundMailer.password_reset(self.id).deliver
+    rescue Exception => e
+      puts "\nUserBackgroundMailer failed!\n Exception: #{e.message}\n Attempting foreground mailer...\n"
+      UserMailer.password_reset(self.id).deliver
+    end
     self.password_reset_sent_at = Time.zone.now
     save!
-    # note: don't pass complex objects like ActiveRecord models, just pass an id as a reference
-    #       to the object(s) because the enqueue done by resque converts params to json:
-    UserMailer.password_reset(self.id).deliver
   end
 end
