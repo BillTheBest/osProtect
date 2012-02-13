@@ -1,0 +1,342 @@
+<div class="flashes">
+  <% flash.each do |name, msg| %>
+    <%= content_tag :div, msg, :class=>"flash flash_#{name}" %>
+  <% end %>
+</div>
+<div id="osprotect_content" class="without_sidebar">
+  <div id="main_content_wrapper">
+    <div id="main_content">
+      <% if @events_count > 0 %>
+        <table border="0" cellspacing="0" cellpadding="0" class="dashboard">
+          <tbody>
+            <tr>
+              <td>
+                <div class="dashboard_section panel">
+                  <div id="panel_header" style="margin-top:-26px">
+                    <ul class="tabbed_navigation" id="panel_tabs">
+                      <li><%= link_to 'Today', pulse_path %></li>
+                      <li><%= link_to 'Last 24 Hours', pulse_path %></li>
+                      <li><%= link_to 'Week', pulse_path %></li>
+                      <li><%= link_to 'Month', pulse_path %></li>
+                      <li><%= link_to 'Year', pulse_path %></li>
+                    </ul>
+                  </div>
+                  <div class="panel_contents">
+                    <br />
+                    <%
+                    total = 0
+                    data = []
+                    labels = []
+                    @hot_times.collect do |hot_time|
+                      total += hot_time.cnt
+                      data << hot_time.cnt
+                    end
+                    labels = @hot_times.collect do |hot_time|
+                      s = hot_time.minute
+                      e = hot_time.minute + 15.minutes
+                      "#{s.strftime("%l:%M")}-#{e.strftime("%l:%M %P")} (#{total == 0 ? 0 : (100.0 * hot_time.cnt / total).round}%)"
+                    end
+                    %>
+                    <%#
+                    // note: the image_tag will be a broken image if the user's browser doesn't have internet access, so we 
+                    //       use the following jquery code to fix that:
+                    $(window).bind('load', function() {
+                      $('img').each(function() {
+                        if((typeof this.naturalWidth != "undefined" && this.naturalWidth == 0 ) || this.readyState == 'uninitialized' ) {
+                          $(this).attr('src', 'missing.jpg');
+                        }
+                      });
+                    })
+                    %>
+                    <%#= image_tag(Gchart.pie_3d(data: data, labels: labels, size: '750x200', title: "Active Times", theme: :thirty7signals)) %>
+                    <table border="0" cellspacing="0" cellpadding="0">
+                      <thead>
+                        <tr>
+                          <th style="text-align:right"><small>count</small></th>
+                          <th style="text-align:left">Active Times (UTC)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr><td></td><td style="text-align:left"><small><em>15 minute intervals with more than 20 events</em></small></td></tr>
+                        <% @hot_times.each do |hot_time| %>
+                            <tr class="<%= cycle('even', 'odd') %>">
+                              <%
+                                s = hot_time.minute
+                                e = hot_time.minute + 15.minutes
+                                case hot_time.cnt
+                                  when 0..50; c = "black"; w = "normal"
+                                  when 51..99; c = "orange"; w = "normal"
+                                  else; c = "red"; w = "bold"
+                                end                                
+                              %>
+                              <td width="10%" align="right" style="color:<%=c%>; font-weight:<%=w%>"><%= number_with_delimiter(hot_time.cnt) %></td>
+                              <td width="50%" style="color:<%=c%>; font-weight:<%=w%>"><%= s.strftime("%l:%M") %> - <%= e.strftime("%l:%M %P") %> </td>
+                            </tr>
+                        <% end %>
+                      </tbody>
+                    </table>
+                    <hr style="background-color:#c0c0c0; border:0 none; color:#c0c0c0; height:5px" /><br />
+                    <%
+                    total = 0
+                    data = []
+                    labels = []
+                    @priorities.collect do |priority|
+                      total += priority.priority_cnt
+                      data << priority.priority_cnt
+                    end
+                    labels = @priorities.collect do |priority|
+                      "priority #{priority.sig_priority} (#{total == 0 ? 0 : (100.0 * priority.priority_cnt / total).round}%)"
+                    end
+                    %>
+                    <%# themes: keynote, thirty7signals, pastel, greyscale %>
+                    <%#= image_tag(Gchart.pie(data: data, labels: labels, size: '400x200', title: "Priority (googlecharts)", theme: :thirty7signals)) %>
+                    <!-- <canvas id="chartCanvasPriority" width="400" height="400" style="display:none;"> -->
+                    <canvas id="chartCanvasPriority" width="400" height="400" style="background:#fff">
+                        Your web-browser does not support the HTML 5 canvas element.
+                    </canvas>
+<!-- <img id="canvasImg" alt="right click to save me!"> -->
+                    <script type="application/javascript">
+                      var chartPriority = new AwesomeChart('chartCanvasPriority');
+                      // chartPriority.chartType = "exploded pie";
+                      chartPriority.chartType = "horizontal bars";
+                      chartPriority.title = "Priority";
+                      chartPriority.data = [<%=data.join(',')%>];
+                      chartPriority.labels = ['<%=labels.join("', '")%>'];
+                      chartPriority.randomColors = true;
+                      chartPriority.draw();
+// var canvas = document.getElementById("chartCanvasPriority");
+// // save canvas image as data url (png format by default):
+// var dataURL = canvas.toDataURL();
+// console.log(dataURL);
+// // set canvasImg image src to dataURL so it can be saved as an image:
+// document.getElementById("canvasImg").src = dataURL;
+// window.location = canvas.toDataURL("image/png");
+                    </script>
+                    <table border="0" cellspacing="0" cellpadding="0">
+                      <thead>
+                        <tr>
+                          <th style="text-align:left"><small>count (all time)</small></th>
+                          <th style="text-align:left">Priority</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% @priorities.each do |priority| %>
+                            <tr class="even">
+                              <td width="20%"><%= number_with_delimiter(priority.priority_cnt) %></td>
+                              <td><%= link_to priority.sig_priority, events_path('q[sig_priority]' => priority.sig_priority) %></td>
+                            </tr>
+                        <% end %>
+                      </tbody>
+                    </table>
+                    <hr style="background-color:#c0c0c0; border:0 none; color:#c0c0c0; height:5px" /><br />
+                    <%
+                    total = 0
+                    data = []
+                    labels = []
+                    @attackers.collect do |attack_ip|
+                      total += attack_ip.ipcnt
+                      data << attack_ip.ipcnt
+                    end
+                    labels = @attackers.collect do |attack_ip|
+                      "#{attack_ip.ip_source} (#{total == 0 ? 0 : (100.0 * attack_ip.ipcnt / total).round}%)"
+                    end
+                    %>
+                    <%# themes: keynote, thirty7signals, pastel, greyscale %>
+                    <%#= image_tag(Gchart.pie(data: data, labels: labels, size: '450x250', title: "Top Attackers", theme: :thirty7signals)) %>
+                    <canvas id="chartCanvasTopAttackers" width="400" height="400" style="background:#fff">
+                        Your web-browser does not support the HTML 5 canvas element.
+                    </canvas>
+                    <script type="application/javascript">
+                      var chartTopAttackers = new AwesomeChart('chartCanvasTopAttackers');
+                      chartTopAttackers.chartType = "horizontal bars";
+                      chartTopAttackers.title = "Top Attackers";
+                      chartTopAttackers.data = [<%=data.join(',')%>];
+                      chartTopAttackers.labels = ['<%=labels.join("', '")%>'];
+                      chartTopAttackers.randomColors = true;
+                      chartTopAttackers.draw();
+                    </script>
+                    <table border="0" cellspacing="0" cellpadding="0">
+                      <thead>
+                        <tr>
+                          <th style="text-align:left"><small>count (all time)</small></th>
+                          <th style="text-align:left">Top Attackers <small>(source IPs)</small></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% @attackers.each do |attack_ip| %>
+                            <tr class="odd">
+                              <td width="20%"><%= number_with_delimiter(attack_ip.ipcnt) %></td>
+                              <td><%= link_to attack_ip.ip_source, events_path('q[source_address]' => attack_ip.ip_source) %></td>
+                            </tr>
+                        <% end %>
+                      </tbody>
+                    </table>
+                    <hr style="background-color:#c0c0c0; border:0 none; color:#c0c0c0; height:5px" /><br />
+                    <%
+                    total = 0
+                    data = []
+                    labels = []
+                    @targets.collect do |target_ip|
+                      total += target_ip.ipcnt
+                      data << target_ip.ipcnt
+                    end
+                    labels = @targets.collect do |target_ip|
+                      "#{target_ip.ip_destination} (#{total == 0 ? 0 : (100.0 * target_ip.ipcnt / total).round}%)"
+                    end
+                    %>
+                    <%# themes: keynote, thirty7signals, pastel, greyscale %>
+                    <%#= image_tag(Gchart.pie(data: data, labels: labels, size: '450x250', title: "Top Targets", theme: :thirty7signals)) %>
+                    <canvas id="chartCanvasTopTargets" width="400" height="400" style="background:#fff">
+                        Your web-browser does not support the HTML 5 canvas element.
+                    </canvas>
+                    <script type="application/javascript">
+                      var chartTopTargets = new AwesomeChart('chartCanvasTopTargets');
+                      chartTopTargets.chartType = "horizontal bars";
+                      chartTopTargets.title = "Top Targets";
+                      chartTopTargets.data = [<%=data.join(',')%>];
+                      chartTopTargets.labels = ['<%=labels.join("', '")%>'];
+                      chartTopTargets.randomColors = true;
+                      chartTopTargets.draw();
+                    </script>
+                    <table border="0" cellspacing="0" cellpadding="0">
+                      <thead>
+                        <tr>
+                          <th style="text-align:left"><small>count (all time)</small></th>
+                          <th style="text-align:left">Top Targets <small>(destination IPs)</small></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% @targets.each do |target_ip| %>
+                            <tr class="even">
+                              <td width="20%"><%= number_with_delimiter(target_ip.ipcnt) %></td>
+                              <td><%= link_to target_ip.ip_destination, events_path('q[destination_address]' => target_ip.ip_destination) %></td>
+                            </tr>
+                        <% end %>
+                      </tbody>
+                    </table>
+                    <hr style="background-color:#c0c0c0; border:0 none; color:#c0c0c0; height:5px" /><br />
+                    <%
+                    total = 0
+                    data = []
+                    labels = []
+                    @events.collect do |event|
+                      total += event.event_cnt
+                      data << event.event_cnt
+                    end
+                    labels = @events.collect do |event|
+                      "#{event.sig_name} (#{total == 0 ? 0 : (100.0 * event.event_cnt / total).round}%)"
+                    end
+                    %>
+                    <%# themes: keynote, thirty7signals, pastel, greyscale %>
+                    <%#= image_tag(Gchart.pie(data: data, labels: labels, size: '850x250', title: "Top Events by Signature", theme: :thirty7signals)) %>
+                    <canvas id="chartCanvasTopEventsBySignature" width="400" height="400" style="background:#fff">
+                        Your web-browser does not support the HTML 5 canvas element.
+                    </canvas>
+                    <script type="application/javascript">
+                      var chartTopEventsBySignature = new AwesomeChart('chartCanvasTopEventsBySignature');
+                      chartTopEventsBySignature.chartType = "horizontal bars";
+                      chartTopEventsBySignature.title = "Top Events by Signature";
+                      chartTopEventsBySignature.data = [<%=data.join(',')%>];
+                      chartTopEventsBySignature.labels = ['<%=labels.join("', '")%>'];
+                      chartTopEventsBySignature.randomColors = true;
+                      chartTopEventsBySignature.draw();
+                    </script>
+                    <table border="0" cellspacing="0" cellpadding="0">
+                      <thead>
+                        <tr>
+                          <th style="text-align:left"><small>count (all time)</small></th>
+                          <th style="text-align:left">Top Events by Signature</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% @events.each do |event| %>
+                            <tr class="odd">
+                              <td width="20%"><%= number_with_delimiter(event.event_cnt) %></td>
+                              <td><%= link_to event.sig_name, events_path('q[sig_id]' => event.sig_id) %></td>
+                            </tr>
+                        <% end %>
+                      </tbody>
+                    </table>
+                    <hr style="background-color:#c0c0c0; border:0 none; color:#c0c0c0; height:5px" /><br />
+                    <%#=debug ProcTable.ps %>
+                    <% if false # Rails.env.production? %>
+                        <%#=debug Sys::CPU.cpu_stats # cls: this is just physical machine info%>
+                        <%#=debug Sys::CPU.processors # cls: this shows nothing %>
+                        <table border="0" cellspacing="0" cellpadding="0">
+                          <thead>
+                            <tr><th colspan="2" style="text-align:left">CPU Load Averages</th></tr>
+                          </thead>
+                          <tbody>
+                            <tr class="odd">
+                              <td width="20%">last minute</td>
+                              <td><%= Sys::CPU.load_avg[0] %></td>
+                            </tr>
+                            <tr class="odd">
+                              <td width="20%">last 5 minutes</td>
+                              <td><%= Sys::CPU.load_avg[1] %></td>
+                            </tr>
+                            <tr class="odd">
+                              <td width="20%">last 15 minutes</td>
+                              <td><%= Sys::CPU.load_avg[2] %></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    <% end %>
+                  </div> <!-- panel_contents -->
+                </div> <!-- dashboard_section -->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      <% end %>
+    </div> <!-- main_content -->
+  </div> <!-- main_content_wrapper -->
+
+  <% if @events_count > 0 %>
+    <div id="sidebar">
+      <div class="sidebar_section panel">
+        <div class="panel_contents" style="margin-top:15px">
+          <table border="0" cellspacing="0" cellpadding="0" style="margin-top:-20px">
+            <thead>
+              <tr>
+                <th style="text-align:left">
+                  <%#= form_tag incidents_path, method: :get do %>
+                    <div class="buttons" id="incidents">
+                      <%= submit_tag 'Incidents', title: 'view all Incidents' %>
+                    </div>
+                  <% end %>
+                </th>
+                <th style="text-align:left"><br />Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%# @incidents.each do |incident| %>
+                  <tr class="odd">
+                    <td style="white-space:nowrap"><%= link_to truncate(incident.incident_name, length: 25), edit_incident_path(incident), title: "#{incident.incident_name}" %></td>
+                    <td><span class="status <%=incident.status_class%>"><%= incident.status %></span></td>
+                  </tr>
+                  <tr><td colspan="2"></td></tr>
+              <%# end %>
+              <tr class="odd">
+                <td>pending</td>
+                <td><%= number_with_delimiter @pending_incidents %></td>
+              </tr>
+              <tr class="odd">
+                <td>suspicious</td>
+                <td><%= number_with_delimiter @suspicious_incidents %></td>
+              </tr>
+              <tr class="odd">
+                <td>resolved</td>
+                <td><%= number_with_delimiter @resolved_incidents %></td>
+              </tr>
+              <tr class="odd">
+                <td>total</td>
+                <td><%= number_with_delimiter Incident.count %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div> <!-- panel_contents -->
+      </div> <!-- sidebar_section -->
+    </div> <!-- sidebar -->
+  <% end %>
+</div> <!-- osprotect_content -->

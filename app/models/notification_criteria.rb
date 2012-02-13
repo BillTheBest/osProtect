@@ -23,9 +23,9 @@ class NotificationCriteria
   end
 
   def to_s
-    self.minimum_matches.to_s +
-    self.priorities.sort.to_s +
-    self.attacker_ips +
-    self.target_ips
+    'mm='  + (self.minimum_matches <= 0 ? 'any' : self.minimum_matches.to_s) +
+    'ps='  + (self.priorities.size <= 0 ? 'any' : self.priorities.to_s) +
+    'aip=' + (self.attacker_ips.blank?  ? 'any' : Iphdr.to_numeric(self.attacker_ips).to_s) +
+    'tip=' + (self.target_ips.blank?    ? 'any' : Iphdr.to_numeric(self.target_ips).to_s)
   end
 end

@@ -9,7 +9,8 @@ gem 'mysql2'
 
 # gem "composite_primary_keys", "~> 5.0.0.rc1"
 # gem 'composite_primary_keys', path: '~/Sites/composite_primary_keys'
-gem 'composite_primary_keys', git: 'git://github.com/cleesmith/composite_primary_keys.git'
+# gem 'composite_primary_keys', git: 'git://github.com/cleesmith/composite_primary_keys.git'
+gem 'composite_primary_keys'
 
 gem 'cancan'
 

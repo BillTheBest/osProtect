@@ -4,8 +4,8 @@ class Event < ActiveRecord::Base
   # see 'composite_primary_keys' gem for info:
   # alias_attribute :sid, 'event.sid'
   # alias_attribute :cid, 'event.cid'
-  # set_primary_keys "event.sid", "event.cid"
-  set_primary_keys [:sid, :cid]
+  # set_primary_keys [:sid, :cid]
+  self.primary_keys = [:sid, :cid]
 
   belongs_to :sensor, foreign_key: :sid
   belongs_to :iphdr, foreign_key: [:sid, :cid], :dependent => :destroy
