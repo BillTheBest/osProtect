@@ -29,10 +29,10 @@
                     &nbsp;&nbsp;-&nbsp;&nbsp;
                     <%= @end_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") %>
                   </h3>
-                  <hr style="clear: both; margin-bottom:30px; background-color:#c0c0c0; border:0 none; color:#c0c0c0; height:5px" />
 
+                  <h3 style="text-align:center; font-size:15px">Priorities</h3>
                   <% if @priorities.blank? %>
-                      <h3>no Priorities found during this time period.</h3>
+                      <h3>none</h3>
                   <% else 
                       total = 0
                       data = []
@@ -49,7 +49,7 @@
                       <div class="pulse_chart_data_wrapper">
                         <div class="pulse_chart" style="float:left">
                           <%#= image_tag(Gchart.pie(data: data, labels: labels, size: '400x200', title: "Priority (googlecharts)", theme: :thirty7signals)) %>
-                          <canvas id="chartCanvasPriority" width="850" height="400" style="background:#fff">
+                          <canvas id="chartCanvasPriority" width="850" height="420" style="background:#fff">
                               Your web-browser does not support the HTML 5 canvas element.
                           </canvas>
                           <script type="application/javascript">
@@ -60,7 +60,8 @@
                             // chartPriority.chartType = "doughnut";
                             // chartPriority.chartType = "exploded pie";
                             // chartPriority.chartType = "horizontal bars";
-                            chartPriority.title = "Priorities";
+                            // chartPriority.title = "Priorities";
+                            chartPriority.title = "   ";
                             chartPriority.data = [<%=data.join(',')%>];
                             chartPriority.labels = ['<%=labels.join("', '")%>'];
                             chartPriority.randomColors = true;
@@ -77,7 +78,7 @@
                             </thead>
                             <tbody>
                               <% @priorities.each do |priority| %>
-                                  <tr class="even">
+                                  <tr class="<%= cycle('even', 'odd') %>">
                                     <td align="right"><%= number_with_delimiter(priority.priority_cnt) %></td>
                                     <td align="left"><%= link_to priority.sig_priority, events_path('q[sig_priority]' => priority.sig_priority) %></td>
                                   </tr>
@@ -87,10 +88,11 @@
                         </div>
                       </div>
                   <% end %>
-                  <hr style="clear: both; margin-bottom:30px; background-color:#c0c0c0; border:0 none; color:#c0c0c0; height:5px" />
+                  <hr style="clear: both; margin-bottom:30px; height:5px" />
 
+                  <h3 style="clear: both; text-align:center; font-size:15px">Top Attackers</h3>
                   <% if @attackers.blank? %>
-                      <h3>no <strong>Top Attackers</strong> found during this time period.</h3>
+                      <h3>none</h3>
                   <% else
                       @attackers = @attackers.order('ipcnt DESC')
                       total = 0
@@ -107,7 +109,7 @@
                       <div class="pulse_chart_data_wrapper">
                         <div class="pulse_chart" style="float:left">
                           <%#= image_tag(Gchart.pie(data: data, labels: labels, size: '450x250', title: "Top Attackers", theme: :thirty7signals)) %>
-                          <canvas id="chartCanvasTopAttackers" width="850" height="400" style="background:#fff">
+                          <canvas id="chartCanvasTopAttackers" width="850" height="420" style="background:#fff">
                               Your web-browser does not support the HTML 5 canvas element.
                           </canvas>
                           <script type="application/javascript">
@@ -118,7 +120,8 @@
                             // chartTopAttackers.chartType = "doughnut";
                             // chartTopAttackers.chartType = "exploded pie";
                             // chartTopAttackers.chartType = "horizontal bars";
-                            chartTopAttackers.title = "Top Attackers";
+                            // chartTopAttackers.title = "Top Attackers";
+                            chartTopAttackers.title = "   ";
                             chartTopAttackers.data = [<%=data.join(',')%>];
                             chartTopAttackers.labels = ['<%=labels.join("', '")%>'];
                             chartTopAttackers.randomColors = true;
@@ -135,7 +138,7 @@
                             </thead>
                             <tbody>
                               <% @attackers.each do |attack_ip| %>
-                                  <tr class="odd">
+                                  <tr class="<%= cycle('even', 'odd') %>">
                                     <td align="right"><%= number_with_delimiter(attack_ip.ipcnt) %></td>
                                     <td><%= link_to attack_ip.ip_source, events_path('q[source_address]' => attack_ip.ip_source) %></td>
                                   </tr>
@@ -145,10 +148,11 @@
                         </div>
                       </div>
                   <% end %>
-                  <hr style="clear: both; margin-bottom:30px; background-color:#c0c0c0; border:0 none; color:#c0c0c0; height:5px" />
+                  <hr style="clear: both; margin-bottom:30px; height:5px" />
 
+                  <h3 style="clear: both; text-align:center; font-size:15px">Top Targets</h3>
                   <% if @targets.blank? %>
-                      <h3>no <strong>Top Targets</strong> found during this time period.</h3>
+                      <h3>none</h3>
                   <% else 
                       total = 0
                       data = []
@@ -164,13 +168,14 @@
                       <div class="pulse_chart_data_wrapper">
                         <div class="pulse_chart" style="float:left">
                           <%#= image_tag(Gchart.pie(data: data, labels: labels, size: '450x250', title: "Top Targets", theme: :thirty7signals)) %>
-                          <canvas id="chartCanvasTopTargets" width="850" height="400" style="background:#fff">
+                          <canvas id="chartCanvasTopTargets" width="850" height="420" style="background:#fff">
                               Your web-browser does not support the HTML 5 canvas element.
                           </canvas>
                           <script type="application/javascript">
                             var chartTopTargets = new AwesomeChart('chartCanvasTopTargets');
                             chartTopTargets.chartType = "pareto";
-                            chartTopTargets.title = "Top Targets";
+                            // chartTopTargets.title = "Top Targets";
+                            chartTopTargets.title = "  ";
                             chartTopTargets.data = [<%=data.join(',')%>];
                             chartTopTargets.labels = ['<%=labels.join("', '")%>'];
                             chartTopTargets.randomColors = true;
@@ -187,7 +192,7 @@
                             </thead>
                             <tbody>
                               <% @targets.order('ipcnt DESC').each do |target_ip| %>
-                                  <tr class="even">
+                                  <tr class="<%= cycle('even', 'odd') %>">
                                     <td align="right"><%= number_with_delimiter(target_ip.ipcnt) %></td>
                                     <td><%= link_to target_ip.ip_destination, events_path('q[destination_address]' => target_ip.ip_destination) %></td>
                                   </tr>
@@ -197,10 +202,11 @@
                         </div>
                       </div>
                   <% end %>
-                  <hr style="clear: both; margin-bottom:30px; background-color:#c0c0c0; border:0 none; color:#c0c0c0; height:5px" />
+                  <hr style="clear: both; margin-bottom:20px; height:5px" />
 
+                  <h3 style="clear: both; text-align:center; font-size:15px">Top Events by Signature</h3>
                   <% if @events.blank? %>
-                      <h3>no <strong>Top Events by Signature</strong> found during this time period.</h3>
+                      <h3>none</h3>
                   <% else 
                       total = 0
                       data = []
@@ -247,10 +253,11 @@
                         </tbody>
                       </table>
                   <% end %>
-                  <hr style="clear: both; margin-bottom:30px; background-color:#c0c0c0; border:0 none; color:#c0c0c0; height:5px" />
+                  <hr style="clear: both; margin-bottom:30px; height:5px" />
 
+                  <h3 style="clear: both; text-align:center; font-size:15px">Most Active Times</h3>
                   <% if @hot_times.blank? %>
-                      <h3>no <strong>Active Times</strong> found during this time period.</h3>
+                      <h3>none</h3>
                   <% else 
                       total = 0
                       data = []
@@ -281,7 +288,7 @@
                         <thead>
                           <tr>
                             <th style="text-align:right"><small>count</small></th>
-                            <th style="text-align:left">Active Times (UTC)</th>
+                            <th style="text-align:left">Most Active Times (UTC)</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -304,7 +311,7 @@
                         </tbody>
                       </table>
                   <% end %>
-                  <hr style="clear: both; margin-bottom:30px; background-color:#c0c0c0; border:0 none; color:#c0c0c0; height:5px" />
+                  <hr style="clear: both; margin-bottom:30px; height:5px" />
                 </div> <!-- panel_contents -->
               </div> <!-- dashboard_section -->
             </td>
