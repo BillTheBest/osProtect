@@ -15,6 +15,7 @@ class PdfWorker
       FileUtils.mkdir_p(path) # create path if doesn't exist already
       filename = "#{Time.now.utc.strftime("%Y%m%d%H%M%S%N%Z")}_events_report.pdf"
       pdf.render_file("#{path}/#{filename}")
+      # FIXME ensure PDF file was created ?
       # record PDF details:
       pdf_details = Pdf.new
       pdf_details.user_id = user_id

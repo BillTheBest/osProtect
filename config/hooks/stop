@@ -26,7 +26,7 @@ cd $RELEASE
 
 sudo service osprotect stop
 
-mkdir -p shared/reports
+mkdir -p shared
 ln -s "${ROOT}/shared/reports" "shared/reports"
 # share shared/reports
 

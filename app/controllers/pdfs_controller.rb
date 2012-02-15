@@ -25,6 +25,7 @@ class PdfsController < ApplicationController
   def destroy
     pdf = current_user.pdfs.find(params[:id])
     pdf.destroy
+    # FIXME if record delete then don't forget to delete the actual pdf file ?
     redirect_to pdfs_url
   end
 end
