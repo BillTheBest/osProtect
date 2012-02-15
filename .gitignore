@@ -16,3 +16,5 @@
 
 # Ignore the development equivalent of /home/cleesmith/apps/osprotect/shared/reports/ (i.e. production)
 /shared
+
+.DS_Store

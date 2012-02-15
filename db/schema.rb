@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120129160241) do
+ActiveRecord::Schema.define(:version => 20120215054002) do
 
   create_table "data", :id => false, :force => true do |t|
     t.integer "sid",          :null => false
@@ -206,6 +206,16 @@ ActiveRecord::Schema.define(:version => 20120129160241) do
     t.integer "opt_code",  :limit => 1, :null => false
     t.integer "opt_len",   :limit => 2
     t.text    "opt_data"
+  end
+
+  create_table "pdfs", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "report_id"
+    t.string   "path_to_file"
+    t.string   "file_name"
+    t.text     "creation_criteria"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
   end
 
   create_table "reference", :primary_key => "ref_id", :force => true do |t|

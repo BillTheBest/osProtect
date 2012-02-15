@@ -10,6 +10,7 @@
   <div id="osprotect_content" class="with_sidebar">
     <div id="main_content_wrapper">
       <div id="main_content">
+        <% no_events = false %>
         <% unless @events.blank? %>
           <div class="paginated_collection">
             <%= form_tag events_path, method: :post, :remote => :true, class: "event_select_form" do %>
@@ -58,6 +59,7 @@
                           </tbody>
                         </table>
                     <% else %>
+                        <% no_events = true %>
                         <br /><h2>No events found!</h2>
                     <% end %>
                   </div> <!-- index_as_table -->
@@ -66,24 +68,35 @@
             <% end %> <!-- form_tag events_path -->
 
             <div id="index_footer">
-              <div style="float:left">
-                <%= button_to 'report as PDF', events_pdf_url(q: params[:q], format: :pdf), method: "post", form: {"target" => "_blank"}, title: raw("Save this report as a PDF document.\n\nNote: some reports may be too long and will require processing as a background job.") %>
-                <%#= button_to 'PDF', events_pdf_url(q: params[:q], format: :pdf), :method => "post" %>
-              </div>
+              <!-- <div style="float:left">
+                <%#= button_to 'create PDF', events_pdf_url(q: params[:q], format: :pdf), method: "post" %>
+                <%# the following opens a new tab in the browser: %>
+                <%#= button_to 'create PDF', events_pdf_url(q: params[:q], format: :pdf), method: "post", form: {"target" => "_blank"} %>
+              </div> -->
               <%= will_paginate presenter.page_of_events %>
             </div>
           </div> <!-- paginated_collection -->
         <% else %>
+          <% no_events = true %>
           <br /><h2>No events found!</h2>
         <% end %>
       </div> <!-- main_content -->
     </div> <!-- main_content_wrapper -->
 
-    <% unless @events.blank? %>
+    <%# unless @events.blank? %>
       <div id="sidebar">
-        <br /><br />
+        <br />
+        <div class="buttons">
+          <% if no_events %>
+              <%= button_to 'create PDF of current results', events_pdf_url(q: params[:q], format: :pdf), method: "post", disabled: 'disabled', title: raw("There are no events to process."), style: 'text-decoration: line-through' %>
+          <% elsif @events.count > 1000 %>
+              <%= button_to 'create PDF of current results', events_pdf_url(q: params[:q], format: :pdf), method: "post", disabled: 'disabled', title: raw("There are more than 1,000 events,\nwhich is too many for PDF creation.\nPlease refine your search and try again."), style: 'text-decoration: line-through' %>
+          <% else %>
+              <%= button_to 'create PDF of current results', events_pdf_url(q: params[:q], format: :pdf), method: "post" %>
+          <% end %>
+        </div>
         <div class="sidebar_section panel" id="filters_sidebar_section">
-          <h3>&larr; search events based on:</h3>
+          <h3>&larr; Search Events:</h3>
           <div class="panel_contents">
             <%= form_tag events_path, method: 'get', class: "filter_form" do %>
               <div class="error_messages">
@@ -131,10 +144,17 @@
                 <%= submit_tag "Search" %>
                 <%= submit_tag "Reset" %>
               </div>
+              <div class="buttons">
+                <% if no_events %>
+                    <%= submit_tag "create Report like current results", disabled: 'disabled', title: 'no events available!', style: 'text-decoration: line-through' %>
+                <% else %>
+                    <%= submit_tag "create Report like current results" %>
+                <% end %>
+              </div>
             <% end %>
           </div> <!-- panel_contents -->
         </div> <!-- sidebar_section -->
       </div> <!-- sidebar -->
-    <% end %>
+    <%# end %>
   </div> <!-- osprotect_content -->
 <% end %>

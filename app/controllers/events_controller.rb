@@ -33,14 +33,30 @@ class EventsController < ApplicationController
   end
 
   def create_pdf
-    # Resque.enqueue(TestWorker, 1, "Major Spudmeister")
     respond_with do |format|
       format.html { redirect_to events_url }
       format.pdf do
-        get_events_based_on_groups_for_current_user
-        pdf = EventsPdf.new(@events, params[:q])
-        # send_data pdf.render, filename: "events_report", type: "application/pdf", disposition: "inline"
-        send_data pdf.render, filename: "events_report", type: "application/pdf"
+        queued = false
+        begin
+          if Resque.info[:workers] > 0
+            # note: if Redis is running Resque can enqueue, but results in a bunch of jobs waiting for workers, 
+            #       so we ensure that at least one worker has been started.
+            Resque.enqueue(PdfWorker, current_user.id, nil)
+            queued = true
+          end
+        rescue Exception => e
+          queued = false
+        end
+        if queued
+          redirect_to events_url(q: params[:q]), notice: "Your PDF document is being prepared, and in a few moments it will be available for download on the PDFs page."
+        else
+          redirect_to events_url(q: params[:q]), notice: "Background processing is offline, so PDF creation is not possible at this time."
+        end
+        # the following code immediately generates a PDF for downloading ... this is too time-consuming:
+        # get_events_based_on_groups_for_current_user
+        # pdf = EventsPdf.new(@events, params[:q])
+        # # send_data pdf.render, filename: "events_report", type: "application/pdf", disposition: "inline"
+        # send_data pdf.render, filename: "events_report", type: "application/pdf"
       end
     end
   end
@@ -51,8 +67,6 @@ class EventsController < ApplicationController
     # note: if current_user is an admin, groups/memberships don't matter since an admin can do anything:
     if current_user.role? :admin
       @events = Event.includes(:sensor, :signature_detail, :iphdr, :tcphdr, :udphdr).order("timestamp desc")
-      # @events = Event.includes(:iphdr).order("timestamp desc")
-      # @events = Iphdr.includes(:events).order("event.timestamp desc")
     else
       # use current_user's sensors based on group memberships:
       @events = Event.where("event.sid IN (?)", current_user.sensors).includes(:sensor, :signature_detail, :iphdr, :tcphdr, :udphdr).order("timestamp desc")

@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   has_many :groups, through: :memberships
   has_many :notifications
   has_many :notification_results
+  has_many :pdfs
 
   has_secure_password
 

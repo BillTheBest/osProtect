@@ -1,7 +1,3 @@
-require "sys/cpu"
-require 'sys/proctable'
-include Sys
-
 class DashboardController < ApplicationController
   before_filter :authenticate_user!
   before_filter :ensure_user_is_setup, only: [:index]

@@ -26,7 +26,9 @@ cd $RELEASE
 
 sudo service osprotect stop
 
-ln -s "${ROOT}/shared/bundled_gems" "vendor/bundle"  
+ln -s "${ROOT}/shared/reports" "shared/reports"
+
+ln -s "${ROOT}/shared/bundled_gems" "vendor/bundle"
 
 bundle install --deployment --without assets development test
 

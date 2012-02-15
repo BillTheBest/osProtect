@@ -348,7 +348,15 @@ memory via htop on appsudo.com:
 VIRT = 868,472 = 850M
  RES = 389,288 = 400M
 
+_________________________________________________________________________________________________________
+PDF generation in the background:
+... ~3,000 events takes 3 minutes and generates a 10MB pdf file
+... ~1,000 events takes 30 seconds and generates a 2.5MB pdf file
 
+online pdf creation:
+http://pdfcrowd.com/pricing/
+http://docraptor.com/plans
+https://www.acrobat.com/createpdf/en/pricing.html
 
 
 

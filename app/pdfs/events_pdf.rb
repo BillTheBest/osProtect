@@ -3,9 +3,12 @@ class EventsPdf < Prawn::Document
     super(top_margin: 30, left_margin: 5, right_margin: 5, font: "Helvetica", page_size: "A4", page_layout: :portrait)
     self.font_size = 8
     @events = events
-    @search_params = search_params
     set_title_for_every_page
-    text search_params.to_yaml
+    if search_params.nil?
+      text "No search criteria was specified."
+    else
+      text search_params.to_yaml 
+    end
     start_new_page
     put_events_into_table
     # note: always do this last so Prawn's "number_pages" will number every page:
@@ -38,8 +41,8 @@ class EventsPdf < Prawn::Document
 
   def set_title_for_every_page
     repeat :all do
-      tl = bounds.top_left # an array and we want to change the value at [1]
-      text_box "Events for 1/22/2012", at: [30, tl[1]+20], size: 20, style: :bold, align: :center
+      tl = bounds.top_left # this is an array and we want to change the value at [1]:
+      text_box "Events Report      #{Time.now.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z")}", at: [30, tl[1]+20], size: 20, style: :bold, align: :center
     end
   end
 
