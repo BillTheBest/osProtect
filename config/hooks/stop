@@ -27,8 +27,8 @@ cd $RELEASE
 sudo service osprotect stop
 
 mkdir -p shared/reports
-# ln -s "${ROOT}/shared/reports" "shared/reports"
-share shared/reports
+ln -s "${ROOT}/shared/reports" "shared/reports"
+# share shared/reports
 
 ln -s "${ROOT}/shared/bundled_gems" "vendor/bundle"
 bundle install --deployment --without assets development test
