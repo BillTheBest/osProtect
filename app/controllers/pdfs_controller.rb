@@ -13,7 +13,7 @@ class PdfsController < ApplicationController
       # note: '/private_files/' is aliased to '/home/cleesmith/apps/osprotect/shared/reports'
       #       see details in /etc/nginx/nginx.conf
       # use 'head()' to let nginx handle downloading the file, which frees up rails to handle the next user:
-      head(x_accel_redirect: '/private_files/#{current_user.id}/' + pdf.file_name,
+      head(x_accel_redirect: "/private_files/#{current_user.id}/" + pdf.file_name,
            content_type: content_type,
            content_disposition: "attachment; filename=\"#{pdf.file_name}\"")
     else
