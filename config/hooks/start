@@ -21,6 +21,9 @@ rvm gemset name >> ${ROOT}/hook.log
 mkdir -p tmp/
 touch tmp/restart.txt
 
+mkdir -p shared/reports
+ln -s "${ROOT}/shared/reports" "shared/reports"
+
 bundle exec rake assets:precompile
 
 sudo service osprotect start
