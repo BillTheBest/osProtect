@@ -145,10 +145,11 @@
                 <%= submit_tag "Reset" %>
               </div>
               <div class="buttons">
-                <% if no_events %>
-                    <%= submit_tag "create Report like current results", disabled: 'disabled', title: 'no events available!', style: 'text-decoration: line-through' %>
+                <%# if no_events %>
+                <% if params[:q].blank? %>
+                    <%= submit_tag "create Report using search criteria", disabled: 'disabled', title: 'no search criteria entered!', style: 'text-decoration: line-through' %>
                 <% else %>
-                    <%= submit_tag "create Report like current results" %>
+                    <%= submit_tag "create Report using search criteria" %>
                 <% end %>
               </div>
             <% end %>

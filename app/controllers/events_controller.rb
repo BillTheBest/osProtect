@@ -15,11 +15,12 @@ class EventsController < ApplicationController
       format.html do
         @event = Event.includes(:sensor, :signature_detail, :iphdr, :tcphdr, :icmphdr, :udphdr, :payload).find(params[:id])
       end
-      format.pdf do
-        pdf = EventsPdf.new
-        send_data pdf.render, filename: "events_report_#{3}", type: "application/pdf", disposition: "inline"
-        return
-      end
+      # FIXME this isn't working, due to route error:
+      # format.pdf do
+      #   pdf = EventsPdf.new
+      #   send_data pdf.render, filename: "events_report_#{3}", type: "application/pdf", disposition: "inline"
+      #   return
+      # end
     end
   end
 

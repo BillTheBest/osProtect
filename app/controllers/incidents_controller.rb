@@ -29,7 +29,7 @@ class IncidentsController < ApplicationController
 
   def edit
     @incident = Incident.accessible_by(current_ability).find(params[:id])
-    # add pagination: @incident_events = @incident.incident_events.page(params[:page]).per_page(12)
+    @incident_events = @incident.incident_events.page(params[:page]).per_page(12)
   end
 
   def update

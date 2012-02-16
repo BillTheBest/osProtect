@@ -32,11 +32,11 @@
                   </li>
                   <li class="description">
                     <label>Description</label>
-                    <%= f.text_area :incident_description, :rows => 4, :cols => 50 %>
+                    <%= f.text_area :incident_description, :rows => 3, :cols => 50 %>
                   </li>
                   <li class="resolution">
                     <label>Resolution</label>
-                    <%= f.text_area :incident_resolution, :rows => 4, :cols => 50 %>
+                    <%= f.text_area :incident_resolution, :rows => 3, :cols => 50 %>
                   </li>
                   <li class="buttons commit">
                     <label>&nbsp;</label>
@@ -65,5 +65,5 @@
 </div> <!-- wrapper -->
 
 <% if @incident.incident_events.count > 0 %>
-    <%= render partial: 'incident_events', locals: {incident_events: @incident.incident_events} %>
+    <%= render partial: 'incident_events', locals: {incident_events: @incident_events} %>
 <% end %>

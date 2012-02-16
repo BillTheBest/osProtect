@@ -2,25 +2,33 @@
   <div id="main_content_wrapper">
     <div id="main_content">
       <div class="paginated_collection">
-        <!-- <div class="pagination_information"><%#= page_entries_info incident_events %></div> -->
+        <div class="pagination_information"><%= page_entries_info incident_events %></div>
         <div class="paginated_collection_contents">
           <div class="index_content">
             <div class="index_as_table">
               <table border="0" cellspacing="0" cellpadding="0" id="events" class="index_table">
                 <thead>
                   <tr>
-                    <th class="sortable" colspan="2" style="text-align:center">Events for this Incident</th>
+                    <th class="sortable" colspan="6" style="text-align:center">Events for this Incident</th>
                   </tr>
                   <tr>
                     <th class="sortable">priority</th>
                     <th class="sortable">signature</th>
+                    <th class="sortable">source</th>
+                    <th class="sortable">destination</th>
+                    <th class="sortable">sensor</th>
+                    <th class="sortable">timestamp</th>
                   </tr>
                 </thead>
                 <tbody>
                   <% incident_events.each do |ie| %>
                       <tr class="<%= cycle('even', 'odd') %>">
                         <td><%= ie.sig_priority %></td>
-                        <td><%= SignatureDetail.where(sig_id: ie.signature).first.sig_name %></td>
+                        <td><%= ie.sig_name %></td>
+                        <td><%= ie.ip_source %></td>
+                        <td><%= ie.ip_destination %></td>
+                        <td><%= ie.hostname %></td>
+                        <td><%= ie.timestamp %></td>
                       </tr>
                   <% end %>
                 </tbody>
@@ -28,12 +36,12 @@
             </div> <!-- index_as_table -->
           </div> <!-- index_content -->
         </div> <!-- paginated_collection_contents -->
-        <!-- <div id="index_footer"><%#= will_paginate incident_events %></div> -->
+        <div id="index_footer"><%= will_paginate incident_events %></div>
       </div> <!-- paginated_collection -->
     </div> <!-- main_content -->
   </div> <!-- main_content_wrapper -->
 
-  <div id="sidebar">
+  <!-- <div id="sidebar">
     <div class="sidebar_section panel">
       <div class="panel_contents">
         <h4>notes/todos:</h4>
@@ -41,7 +49,8 @@
           <li>paginate events for this incident</li>
           <li>allow filtering of events for this incident</li>
         </ul>
-      </div> <!-- panel_contents -->
-    </div> <!-- sidebar_section -->
-  </div> <!-- sidebar -->
+      </div>
+    </div>
+  </div> -->
+
 </div> <!-- osprotect_content -->
