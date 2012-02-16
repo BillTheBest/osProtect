@@ -30,66 +30,6 @@
                     <%= @end_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") %>
                   </h3>
 
-                  <h3 style="text-align:center; font-size:15px">Priorities</h3>
-                  <% if @priorities.blank? %>
-                      <h3>none</h3>
-                  <% else 
-                      total = 0
-                      data = []
-                      labels = []
-                      @priorities.collect do |priority|
-                        total += priority.priority_cnt
-                        data << priority.priority_cnt
-                      end
-                      labels = @priorities.collect do |priority|
-                        # "priority #{priority.sig_priority} (#{total == 0 ? 0 : (100.0 * priority.priority_cnt / total).round(2)}%)"
-                        "priority #{priority.sig_priority}"
-                      end
-                      %>
-                      <div class="pulse_chart_data_wrapper">
-                        <div class="pulse_chart" style="float:left">
-                          <%#= image_tag(Gchart.pie(data: data, labels: labels, size: '400x200', title: "Priority (googlecharts)", theme: :thirty7signals)) %>
-                          <canvas id="chartCanvasPriority" width="850" height="440" style="background:#fff">
-                              Your web-browser does not support the HTML 5 canvas element.
-                          </canvas>
-                          <script type="application/javascript">
-                            var chartPriority = new AwesomeChart('chartCanvasPriority');
-                            chartPriority.chartType = "pareto";
-                            // chartPriority.chartType = "default"; // vertical bars
-                            // chartPriority.chartType = "pie";
-                            // chartPriority.chartType = "doughnut";
-                            // chartPriority.chartType = "exploded pie";
-                            // chartPriority.chartType = "horizontal bars";
-                            // chartPriority.title = "Priorities";
-                            chartPriority.title = "   ";
-                            chartPriority.data = [<%=data.join(',')%>];
-                            chartPriority.labels = ['<%=labels.join("', '")%>'];
-                            chartPriority.randomColors = true;
-                            chartPriority.draw();
-                          </script>
-                        </div>
-                        <div class="pulse_data" style="float:right">
-                          <table border="0" cellspacing="0" cellpadding="0">
-                            <thead>
-                              <tr>
-                                <th style="text-align:left"><small>count</small></th>
-                                <th style="text-align:left">Priority</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <% @priorities.each do |priority| %>
-                                  <tr class="<%= cycle('even', 'odd') %>">
-                                    <td align="right"><%= number_with_delimiter(priority.priority_cnt) %></td>
-                                    <td align="left"><%= link_to priority.sig_priority, events_path('q[sig_priority]' => priority.sig_priority) %></td>
-                                  </tr>
-                              <% end %>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                  <% end %>
-                  <hr style="clear: both; margin-bottom:30px; height:5px" />
-
                   <h3 style="clear: both; text-align:center; font-size:15px">Top Attackers</h3>
                   <% if @attackers.blank? %>
                       <h3>none</h3>
@@ -203,6 +143,66 @@
                       </div>
                   <% end %>
                   <hr style="clear: both; margin-bottom:20px; height:5px" />
+
+                  <h3 style="text-align:center; font-size:15px">Priorities</h3>
+                  <% if @priorities.blank? %>
+                      <h3>none</h3>
+                  <% else 
+                      total = 0
+                      data = []
+                      labels = []
+                      @priorities.collect do |priority|
+                        total += priority.priority_cnt
+                        data << priority.priority_cnt
+                      end
+                      labels = @priorities.collect do |priority|
+                        # "priority #{priority.sig_priority} (#{total == 0 ? 0 : (100.0 * priority.priority_cnt / total).round(2)}%)"
+                        "priority #{priority.sig_priority}"
+                      end
+                      %>
+                      <div class="pulse_chart_data_wrapper">
+                        <div class="pulse_chart" style="float:left">
+                          <%#= image_tag(Gchart.pie(data: data, labels: labels, size: '400x200', title: "Priority (googlecharts)", theme: :thirty7signals)) %>
+                          <canvas id="chartCanvasPriority" width="850" height="440" style="background:#fff">
+                              Your web-browser does not support the HTML 5 canvas element.
+                          </canvas>
+                          <script type="application/javascript">
+                            var chartPriority = new AwesomeChart('chartCanvasPriority');
+                            chartPriority.chartType = "pareto";
+                            // chartPriority.chartType = "default"; // vertical bars
+                            // chartPriority.chartType = "pie";
+                            // chartPriority.chartType = "doughnut";
+                            // chartPriority.chartType = "exploded pie";
+                            // chartPriority.chartType = "horizontal bars";
+                            // chartPriority.title = "Priorities";
+                            chartPriority.title = "   ";
+                            chartPriority.data = [<%=data.join(',')%>];
+                            chartPriority.labels = ['<%=labels.join("', '")%>'];
+                            chartPriority.randomColors = true;
+                            chartPriority.draw();
+                          </script>
+                        </div>
+                        <div class="pulse_data" style="float:right">
+                          <table border="0" cellspacing="0" cellpadding="0">
+                            <thead>
+                              <tr>
+                                <th style="text-align:left"><small>count</small></th>
+                                <th style="text-align:left">Priority</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <% @priorities.each do |priority| %>
+                                  <tr class="<%= cycle('even', 'odd') %>">
+                                    <td align="right"><%= number_with_delimiter(priority.priority_cnt) %></td>
+                                    <td align="left"><%= link_to priority.sig_priority, events_path('q[sig_priority]' => priority.sig_priority) %></td>
+                                  </tr>
+                              <% end %>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                  <% end %>
+                  <hr style="clear: both; margin-bottom:30px; height:5px" />
 
                   <h3 style="clear: both; text-align:center; font-size:15px">Top Events by Signature</h3>
                   <% if @events.blank? %>
