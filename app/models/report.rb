@@ -4,11 +4,107 @@ class Report < ActiveRecord::Base
 
   serialize :report_criteria, ActiveSupport::HashWithIndifferentAccess
 
-  # virtual attributes ... these allow us to create/update the NotificationCriteria
-  #                        object in the notify_criteria column:
-  # attr_accessible :priority_ids, :minimum_matches, :attacker_ips, :target_ips
-  attr_accessor :sig_priority, :sig_id, :source_address, :source_port, :destination_address, :destination_port, :sensor_id, :timestamp_gte, :timestamp_lte
-  # validates :notify_criteria_as_string, uniqueness: {scope: :user_id, message: "you already have a Notification with the same criteria!"}
+  attr_accessible :name, :include_summary, :user_id, :run_status, :report_criteria, :report_criteria_as_string
 
+  before_validation :set_report_criteria_as_string
+
+  validates :report_criteria_as_string, uniqueness: {scope: :user_id, message: "you already have a Report with the same criteria!"}
   validates :name, presence: true
+  validate :source_address_ok
+  validate :source_port_ok
+  validate :destination_address_ok
+  validate :destination_port_ok
+  validate :timestamp_gte_ok
+  validate :timestamp_lte_ok
+  validate :date_range_presence
+  validate :date_range_is_relative_or_fixed_but_not_both
+  validate :date_range_is_fixed_so_both_dates_required
+  validate :date_range_is_fixed_so_range_must_be_proper
+
+  class Selection
+    attr_accessor :id, :name
+    def initialize(attributes = {})
+      attributes.each do |name, value|
+        send("#{name}=", value)
+      end unless attributes.nil?
+    end
+  end
+
+  def self.relative_date_ranges
+    rdr = []
+    rdr << Selection.new({id: 'today',      name: 'Today'})
+    rdr << Selection.new({id: 'last_24',    name: 'Last 24 Hours'})
+    rdr << Selection.new({id: 'this_week',  name: 'This Week'})
+    rdr << Selection.new({id: 'last_week',  name: 'Last Week'})
+    rdr
+  end
+
+  def disabled
+    self.run_status == false
+  end
+
+  def status
+    self.run_status ? 'enabled' : 'disabled'
+  end
+
+  private
+
+  def set_report_criteria_as_string
+    self.report_criteria_as_string = self.report_criteria.to_s
+  end
+
+  def source_address_ok
+    self.errors[:source_address] << "is invalid" unless Iphdr.is_valid?(self.report_criteria[:source_address])
+  end
+
+  def source_port_ok
+    self.errors[:source_port] << "must be a number" unless Iphdr.numeric?(self.report_criteria[:source_port])
+  end
+
+  def destination_address_ok
+    self.errors[:destination_address] << "is invalid" unless Iphdr.is_valid?(self.report_criteria[:destination_address])
+  end
+
+  def destination_port_ok
+    self.errors[:destination_port] << "must be a number" unless Iphdr.numeric?(self.report_criteria[:destination_port])
+  end
+
+  def timestamp_gte_ok
+    self.errors[:timestamp_gte] << "is invalid" unless valid_date? self.report_criteria[:timestamp_gte]
+  end
+
+  def timestamp_lte_ok
+    self.errors[:timestamp_lte] << "is invalid" unless valid_date? self.report_criteria[:timestamp_lte]
+  end
+
+  def date_range_presence
+    self.errors[:date_range] << "a relative or fixed date range is required" if self.report_criteria[:relative_date_range].blank? && self.report_criteria[:timestamp_gte].blank? && self.report_criteria[:timestamp_lte].blank?
+  end
+
+  def date_range_is_relative_or_fixed_but_not_both
+    self.errors[:date_range] << "can not be both relative and fixed, please enter only a relative or fixed date range" if self.report_criteria[:relative_date_range].present? && (self.report_criteria[:timestamp_gte].present? || self.report_criteria[:timestamp_lte].present?)
+  end
+
+  def date_range_is_fixed_so_both_dates_required
+    if (self.report_criteria[:timestamp_lte].present? && self.report_criteria[:timestamp_gte].blank?) ||
+       (self.report_criteria[:timestamp_gte].present? && self.report_criteria[:timestamp_lte].blank?)
+      self.errors[:fixed_date_range] << "both dates are required when either is entered"
+    end
+  end
+
+  def date_range_is_fixed_so_range_must_be_proper
+    return if self.report_criteria[:timestamp_lte].blank? && self.report_criteria[:timestamp_gte].blank?
+    begin
+      self.errors[:fixed_date_range] << "begin and end dates must specify a proper range" if self.report_criteria[:timestamp_lte].to_date < self.report_criteria[:timestamp_gte].to_date
+    rescue Exception => e
+      return # invalid dates already handled by another validation
+    end
+  end
+
+  def valid_date?(adate)
+    adate.to_date
+    true
+  rescue Exception => e
+    false
+  end
 end

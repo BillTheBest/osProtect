@@ -86,7 +86,6 @@ class Notification < ActiveRecord::Base
     self.errors[:attacker_ips] << "is invalid" unless Iphdr.is_valid?(self.attacker_ips)
   end
 
-  validate :target_ips_ok
   def target_ips_ok
     self.errors[:target_ips] << "is invalid" unless Iphdr.is_valid?(self.target_ips)
   end

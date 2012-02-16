@@ -16,3 +16,15 @@ en:
           notify_criteria_as_string: "Match Events: "
           attacker_ips: "Attacker IP: "
           target_ips: "Target IP: "
+        report:
+          priority_ids: "Priority: "
+          report_criteria_as_string: "Report criteria: "
+          source_address: "Source IP Address: "
+          source_port: "Source Port: "
+          destination_address: "Destination IP Address: "
+          destination_port: "Destination Port: "
+          timestamp_gte: "Begin Date: "
+          timestamp_lte: "End Date: "
+          date_range: "Date Range: "
+          fixed_date_range: "Fixed Date Range: "
+

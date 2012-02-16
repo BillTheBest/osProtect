@@ -17,7 +17,6 @@ class ReportsController < ApplicationController
   end
 
   def create
-    # params[:report].merge!(params[:q])
     @report = Report.new(params[:report])
     @report.user_id = current_user.id
     @report.report_criteria = params[:q]
@@ -41,6 +40,7 @@ class ReportsController < ApplicationController
     if @report.update_attributes(params[:report])
       redirect_to @report, notice: 'Report was successfully updated.'
     else
+      @event_search = EventSearch.new(params[:q])
       render action: "edit"
     end
   end

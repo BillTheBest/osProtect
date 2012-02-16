@@ -2,6 +2,7 @@ class CreateReports < ActiveRecord::Migration
   def change
     create_table :reports do |t|
       t.integer     :user_id
+      t.boolean     :run_status, default: false # enabled or disabled
       t.string      :name
       t.boolean     :include_summary
       t.text        :report_criteria

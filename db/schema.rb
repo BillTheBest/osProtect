@@ -229,12 +229,13 @@ ActiveRecord::Schema.define(:version => 20120216042027) do
 
   create_table "reports", :force => true do |t|
     t.integer  "user_id"
+    t.boolean  "run_status",                :default => false
     t.string   "name"
     t.boolean  "include_summary"
     t.text     "report_criteria"
     t.string   "report_criteria_as_string"
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
   end
 
   create_table "schema", :primary_key => "vseq", :force => true do |t|
