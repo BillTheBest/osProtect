@@ -1,3 +1,4 @@
+IncidentEvent:
 t.integer   :incident_id
 t.integer   :sid
 t.integer   :cid
@@ -62,7 +63,7 @@ t.text      :sig_name
 65,535 - 268 = 65,267
 t.string    :sig_class_name
 
-> rails g scaffold Incident group_id integer, user_id integer, incident_name character varying(255), incident_description text, incident_resolution text
+> be rails g scaffold Incident group_id:integer, user_id:integer, incident_name:string, incident_description:text, incident_resolution:text
 
 create_table "incident_events" do |t|
   # event:
@@ -212,8 +213,8 @@ stop on shutdown
 exec /usr/bin/redis-server /etc/redis/redis.conf
 respawn
 
-
 _________________________________________________________________________________________________________
+2012-12-12 - error FIXED by Charlie Savage based on my suggestion:
 ... error caused by gem "composite_primary_keys", "~> 5.0.0.rc1"
 ActiveRecord::StatementInvalid in Events#index
 Showing /Users/cleesmith/Sites/osProtect_ror320/app/views/events/index.html.erb where line #13 raised:
@@ -298,19 +299,6 @@ where timestamp between "2011-10-25 00:00:00" and "2011-10-25 23:59:59";
 
 _________________________________________________________________________________________________________
 
-For the reporting I'd like to see a way for the admin to be able to upload, disable, delete report profiles. 
-Examples of report profiles would be:
-
-a) A Summary report profile listing everything on the pulse page
-b) A Detailed report profile listing all the info in the events page
-c) A Critical report profile listing all the High Priority info (Level 1) priority events.
-d) A Combo report profile listing a & b in one report
-
-You should be able to select a timeframe for each report you generate. 
-You can setup a calendar option similar to the one on "Events" --> "search events based on:" --> "Date Range"
-
-_________________________________________________________________________________________________________
-
 Graph/Chart options:
 - googlecharts ... easy/simple, does all of the work, and returns an image as png file to use in img tag
 
@@ -360,6 +348,47 @@ https://www.acrobat.com/createpdf/en/pricing.html
 
 charts:
 https://dbinsights.herokuapp.com/
+
+_____________________________________________________________________________________________________________________
+For the reporting I'd like to see a way for the admin to be able to upload, disable, delete report profiles. 
+Examples of report profiles would be:
+a) A Summary report profile listing everything on the pulse page
+b) A Detailed report profile listing all the info in the events page
+c) A Critical report profile listing all the High Priority info (Level 1) priority events.
+d) A Combo report profile listing a & b in one report
+You should be able to select a timeframe for each report you generate. 
+You can setup a calendar option similar to the one on "Events" --> "search events based on:" --> "Date Range"
+_____________________________________________________________________________________________________________________
+so what's a Report:
+- lists Events or Incidents
+- name or just id#
+- criteria to select records, including:
+  - relative time range (like: today, last 24, ...)
+  - specific time range (like date range on Events search page)
+- may include the Pulse(summary) page (without graphics), and for the same time period in the criteria
+- created_at/updated_at
+Report attributes:
+1. name:string
+2. include_summary:boolean
+3. report_criteria:text ... object is ReportCriteria
+    params= {"utf8"=>"✓", "q"=>{"sig_priority"=>"2", "sig_id"=>"9", "source_address"=>"", "source_port"=>"", "destination_address"=>"", "destination_port"=>"", "sensor_id"=>"", "timestamp_gte"=>"", "timestamp_lte"=>""}, "commit"=>"Search", "action"=>"index", "controller"=>"events"}
+    class= ActiveSupport::HashWithIndifferentAccess
+4. report_criteria_as_string:string ... to ensure there are no duplicate reports for a user
+5. timestamps
+
+> be rails g model report user:references name:string include_summary:boolean report_criteria:text report_criteria_as_string:string --no-test-framework
+
+_____________________________________________________________________________________________________________________
+ToDo's:
+1. *done* app config:
+    - records per page for listings ... or have this settable in each user's profile
+    - PDF records limit, instead of the default of 1,000
+2. Incidents: delete Events from an Incident
+3. Incidents: click to show details for an Event in an Incident
+4. Incidents: search criteria for Incidents and their Events, including Description and Resolution
+5. Events: create pdf of event show page ... useful ?
+
+
 
 
 

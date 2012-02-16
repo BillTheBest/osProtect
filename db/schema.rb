@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120215054002) do
+ActiveRecord::Schema.define(:version => 20120216042027) do
 
   create_table "data", :id => false, :force => true do |t|
     t.integer "sid",          :null => false
@@ -225,6 +225,16 @@ ActiveRecord::Schema.define(:version => 20120215054002) do
 
   create_table "reference_system", :primary_key => "ref_system_id", :force => true do |t|
     t.string "ref_system_name", :limit => 20
+  end
+
+  create_table "reports", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.boolean  "include_summary"
+    t.text     "report_criteria"
+    t.string   "report_criteria_as_string"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
   create_table "schema", :primary_key => "vseq", :force => true do |t|

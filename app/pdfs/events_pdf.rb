@@ -34,18 +34,18 @@ class EventsPdf < Prawn::Document
       # self.cell_style = {border_width: 1, borders: [:left, :right, :bottom], border_color: "F0F0F0"}
     end
   end
-
+  
   def set_table_header_row
     [ ["priority", "signature", "source", "destination", "sensor", "timestamp"] ]
   end
-
+  
   def set_title_for_every_page
     repeat :all do
       tl = bounds.top_left # this is an array and we want to change the value at [1]:
       text_box "Events Report      #{Time.now.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z")}", at: [30, tl[1]+20], size: 20, style: :bold, align: :center
     end
   end
-
+  
   def set_footer_for_every_page
     page_footer = "page <page> of <total>"
     page_options = {:at => [bounds.right - 150, 0],

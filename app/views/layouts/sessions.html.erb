@@ -10,9 +10,8 @@
   <%= yield %>
   <div id="footer">
     <p>
-      2011 &nbsp;&nbsp;osprotect.appsudo.com 0.3.0
-      &nbsp;&nbsp; Ruby <%=RUBY_VERSION%> 
-      &nbsp;and&nbsp; Rails <%=Rails::VERSION::STRING%> 
+      2012 &nbsp;&nbsp;osprotect.appsudo.com 0.3.0
+      &nbsp;version: <%= APP_CONFIG[:version] %>
       &nbsp;&nbsp;<%= Time.now.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") %>
     </p>
   </div>

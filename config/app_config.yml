@@ -1,0 +1,14 @@
+development:
+  version: 1.0.0
+  show_versions_and_limits: true
+  pdf_max_records: 1000
+
+test:
+  version: 1.0.0
+  show_versions_and_limits: true
+  pdf_max_records: 1000
+
+production:
+  version: 1.0.0
+  show_versions_and_limits: true
+  pdf_max_records: 1000

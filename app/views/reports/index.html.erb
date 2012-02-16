@@ -1,0 +1,63 @@
+<div class="flashes">
+  <% flash.each do |name, msg| %>
+    <%= content_tag :div, msg, :class=>"flash flash_#{name}" %>
+  <% end %>
+</div>
+<div id="osprotect_content" class="without_sidebar">
+  <div id="main_content_wrapper">
+    <div id="main_content">
+      <div class="pagination_information"><%= page_entries_info @reports %></div>
+      <div class="paginated_collection">
+        <%= form_tag new_report_path, method: :get do %>
+          <div class="buttons" id="add_new_report">
+            <%= submit_tag 'create Report' %>
+          </div>
+        <% end %>
+        <br />
+        <div class="paginated_collection_contents">
+          <div class="index_content">
+            <div class="index_as_table">
+              <table border="0" cellspacing="0" cellpadding="0" id="events" class="index_table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>PDFs</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% unless @reports.blank? %>
+                      <% @reports.each do |report| %>
+                          <tr class="<%= cycle('even', 'odd') %>">
+                            <td><%= link_to report.name, edit_report_path(report) %></td>
+                            <td>
+                              <% if report.pdfs.count > 0 %>
+                                  <%= link_to "#{report.pdfs.count}", pdfs_path(id: report.id) %>
+                              <% else %>
+                                  none
+                              <% end %>
+                            </td>
+                            <td>
+                              <%= link_to 'HTML', reports_path %>
+                              &nbsp;|&nbsp;
+                              <%= link_to 'PDF', reports_path %>
+                              &nbsp;|&nbsp;
+                              <%= link_to 'delete', report, confirm: 'Are you sure?', method: :delete %>
+                            </td>
+                          </tr>
+                      <% end %>
+                  <% else %>
+                    <tr><td colspan="6"><h3>No reports found!</h3></td></tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div> <!-- index_as_table -->
+          </div> <!-- index_content -->
+        </div> <!-- paginated_collection_contents -->
+        <div id="index_footer">
+          <%= will_paginate @reports %>
+        </div> <!-- index_footer -->
+      </div> <!-- paginated_collection -->
+    </div> <!-- main_content -->
+  </div> <!-- main_content_wrapper -->
+</div> <!-- osprotect_content -->
