@@ -31,6 +31,7 @@ OsProtectRor320::Application.routes.draw do
   resources :notification_results, :only => [:index, :show, :destroy]
 
   resources :reports
+  get "report_listing_events" => "reports#events_listing", :as => "report_listing_events"
 
   resources :pdfs, :only => [:index, :show, :destroy]
 

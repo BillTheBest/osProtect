@@ -29,7 +29,13 @@
                   <% unless @reports.blank? %>
                       <% @reports.each do |report| %>
                           <tr class="<%= cycle('even', 'odd') %>">
-                            <td><%= link_to report.name, edit_report_path(report) %></td>
+                            <td>
+                              <% if current_user.id == report.user_id %>
+                                  <%= link_to report.name, edit_report_path(report) %>
+                              <% else %>
+                                  <%= report.name %>
+                              <% end %>
+                            </td>
                             <td>
                               <% if report.pdfs.count > 0 %>
                                   <%= link_to "#{report.pdfs.count}", pdfs_path(id: report.id) %>
@@ -38,11 +44,15 @@
                               <% end %>
                             </td>
                             <td>
-                              <%= link_to 'HTML', reports_path %>
-                              &nbsp;|&nbsp;
+                              <%= link_to 'HTML', report_listing_events_path(id: report.id, q: report.report_criteria) %>
+                              &nbsp;&nbsp;&nbsp;
                               <%= link_to 'PDF', reports_path %>
-                              &nbsp;|&nbsp;
-                              <%= link_to 'delete', report, confirm: 'Are you sure?', method: :delete %>
+                              <% if current_user.id == report.user_id %>
+                                  &nbsp;&nbsp;&nbsp;
+                                  <%= link_to 'delete', report, confirm: 'Are you sure?', method: :delete %>
+                              <% else %>
+                                  &nbsp;
+                              <% end %>
                             </td>
                           </tr>
                       <% end %>

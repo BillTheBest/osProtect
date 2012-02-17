@@ -1,0 +1,11 @@
+jQuery ->
+  $('.events_listing #q_sig_priority').attr('disabled',true)
+  $('.events_listing #q_sig_id').attr('disabled',true)
+  $('.events_listing #q_source_address').attr('disabled',true)
+  $('.events_listing #q_source_port').attr('disabled',true)
+  $('.events_listing #q_destination_address').attr('disabled',true)
+  $('.events_listing #q_destination_port').attr('disabled',true)
+  $('.events_listing #q_sensor_id').attr('disabled',true)
+  $('.events_listing #q_relative_date_range').attr('disabled',true)
+  $('.events_listing #q_timestamp_gte').attr('disabled',true)
+  $('.events_listing #q_timestamp_te').attr('disabled',true)

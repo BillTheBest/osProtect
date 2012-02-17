@@ -370,11 +370,13 @@ so what's a Report:
 Report attributes:
 1. name:string
 2. include_summary:boolean
-3. report_criteria:text ... object is ReportCriteria
+3. run_status:boolean
+4. auto_run:boolean
+5. report_criteria:text ... object is ReportCriteria
     params= {"utf8"=>"✓", "q"=>{"sig_priority"=>"2", "sig_id"=>"9", "source_address"=>"", "source_port"=>"", "destination_address"=>"", "destination_port"=>"", "sensor_id"=>"", "timestamp_gte"=>"", "timestamp_lte"=>""}, "commit"=>"Search", "action"=>"index", "controller"=>"events"}
     class= ActiveSupport::HashWithIndifferentAccess
-4. report_criteria_as_string:string ... to ensure there are no duplicate reports for a user
-5. timestamps
+6. report_criteria_as_string:string ... to ensure there are no duplicate reports for a user
+7. timestamps
 
 > be rails g model report user:references name:string include_summary:boolean report_criteria:text report_criteria_as_string:string --no-test-framework
 
