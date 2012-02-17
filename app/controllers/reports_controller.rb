@@ -10,7 +10,7 @@ class ReportsController < ApplicationController
   include Osprotect::RestrictEventsBasedOnUsersAccess
 
   def events_listing
-    @report = Report.where('(for_all_users = ? OR user_id = ?) AND id = ?', true, current_user.id, params[:id])
+    @report = Report.where('(for_all_users = ? OR user_id = ?) AND id = ?', true, current_user.id, params[:id]).first
     get_events_based_on_groups_for_user(current_user.id) # sets @events
     filter_events_based_on(params[:q]) # sets @event_search
     @events = @events.page(params[:page]).per_page(12)
