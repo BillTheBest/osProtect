@@ -30,6 +30,10 @@
                     <label>Status</label>
                     <%= f.select(:run_status, options_for_select([["enabled", true], ["disabled", false]], selected: @report.run_status)) %>
                   </li>
+                  <!-- <li class="auto_run">
+                    <label>Auto-run daily</label>
+                    <%#= f.select(:auto_run, options_for_select([["enabled", true], ["disabled", false]], selected: @report.auto_run)) %>
+                  </li> -->
                   <li class="include_summary required">
                     <label>Include Summary Page</label>
                     <%= f.select(:include_summary, options_for_select([["yes", true], ["no", false]], selected: @report.include_summary)) %>

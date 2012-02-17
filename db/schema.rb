@@ -230,6 +230,7 @@ ActiveRecord::Schema.define(:version => 20120216042027) do
   create_table "reports", :force => true do |t|
     t.integer  "user_id"
     t.boolean  "run_status",                :default => false
+    t.boolean  "auto_run",                  :default => false
     t.string   "name"
     t.boolean  "include_summary"
     t.text     "report_criteria"

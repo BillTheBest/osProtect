@@ -1,3 +1,5 @@
+# note: we are doing explicit require's and include's so it is clear as to what is going on, and
+#       just in case some brave soul will try to run this app in thread safe mode
 # require "#{Rails.root}/lib/osprotect/date_ranges"
 require "osprotect/date_ranges"
 

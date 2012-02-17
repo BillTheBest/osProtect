@@ -1,3 +1,8 @@
+# note: we are doing explicit require's and include's so it is clear as to what is going on, and
+#       just in case some brave soul will try to run this app in thread safe mode
+# require "#{Rails.root}/lib/osprotect/restrict_events_based_on_users_access"
+require "osprotect/restrict_events_based_on_users_access"
+
 class EventsController < ApplicationController
   before_filter :authenticate_user!
   before_filter :ensure_user_is_setup
@@ -6,8 +11,17 @@ class EventsController < ApplicationController
   respond_to :js, only: :create
   respond_to :pdf, only: [:index, :create_pdf]
 
+  include Osprotect::RestrictEventsBasedOnUsersAccess
+
   def index
-    get_events_based_on_groups_for_current_user
+    get_events_based_on_groups_for_user(current_user.id)
+    filter_events_based_on(params[:q])
+    if params.present?
+      if params[:commit] == 'Reset'
+        @event_search.reset_search
+        redirect_to events_path
+      end
+    end
   end
 
   def show
@@ -59,30 +73,6 @@ class EventsController < ApplicationController
         # # send_data pdf.render, filename: "events_report", type: "application/pdf", disposition: "inline"
         # send_data pdf.render, filename: "events_report", type: "application/pdf"
       end
-    end
-  end
-
-  private
-
-  def get_events_based_on_groups_for_current_user
-    # note: if current_user is an admin, groups/memberships don't matter since an admin can do anything:
-    if current_user.role? :admin
-      @events = Event.includes(:sensor, :signature_detail, :iphdr, :tcphdr, :udphdr).order("timestamp desc")
-    else
-      # use current_user's sensors based on group memberships:
-      @events = Event.where("event.sid IN (?)", current_user.sensors).includes(:sensor, :signature_detail, :iphdr, :tcphdr, :udphdr).order("timestamp desc")
-    end
-    # handle any filter/search criteria, if provided:
-    @event_search = EventSearch.new(params[:q])
-    if params.present?
-      if params[:commit] == 'Reset'
-        @event_search.reset_search
-        redirect_to events_path
-      end
-      # if any errors just return and the filter form will display them:
-      return if @event_search.errors.size > 0
-      # otherwise let's apply the filter/search criteria to the events relation:
-      @events = @event_search.filter @events
     end
   end
 end
