@@ -1,14 +1,15 @@
+# require "#{Rails.root}/lib/osprotect/date_ranges"
+require "osprotect/date_ranges"
+
 class DashboardController < ApplicationController
   before_filter :authenticate_user!
   before_filter :ensure_user_is_setup, only: [:index]
 
+  include Osprotect::DateRanges
+
   def index
-    if params[:range].blank?
-      @range = 'today'.to_sym
-    else
-      @range = params[:range].to_sym
-    end
-    set_time_range(@range)
+    params[:range] = 'today' if params[:range].blank?
+    set_time_range(params[:range])
     # note: if current_user is an admin, groups/memberships don't matter since an admin can do anything:
     if current_user.role? :admin
       # every 15 minutes (900 seconds = 15  * 60):
@@ -59,45 +60,5 @@ class DashboardController < ApplicationController
 
   def user_setup_required
     # this allows to show a page telling user to have an admin set up their account
-  end
-
-  private
-
-  def set_time_range(range)
-    case range
-    when :last_24
-      @start_time = Time.now.utc.yesterday
-      @end_time = Time.now.utc
-    when :yesterday
-      @start_time = (Time.now.utc - 1.day).beginning_of_day
-      @end_time = (Time.now.utc - 1.day).end_of_day
-    when :week
-      @start_time = Time.now.utc.beginning_of_week(start_day = :sunday)
-      @end_time = Time.now.utc.end_of_week(start_day = :sunday)
-    when :last_week
-      @start_time = (Time.now.utc - 1.week).beginning_of_week(start_day = :sunday)
-      @end_time = (Time.now.utc - 1.week).end_of_week(start_day = :sunday)
-    when :month
-      @start_time = Time.now.utc.beginning_of_month
-      @end_time = Time.now.utc.end_of_month
-    when :last_month
-      @start_time = (Time.now.utc - 1.months).beginning_of_month
-      @end_time = (Time.now.utc - 1.months).end_of_month
-    when :quarter
-      @start_time = Time.now.utc.beginning_of_quarter
-      @end_time = Time.now.utc.end_of_quarter
-    when :past_year
-      @start_time = (Time.now.utc - 12.months)
-      @end_time = Time.now.utc
-    when :year
-      @start_time = Time.now.utc.beginning_of_year
-      @end_time = Time.now.utc.end_of_year
-    when :today
-      @start_time = Time.now.utc.beginning_of_day
-      @end_time = Time.now.utc.end_of_day
-    else
-      @start_time = Time.now.utc.beginning_of_day
-      @end_time = Time.now.utc.end_of_day
-    end
   end
 end

@@ -135,7 +135,11 @@
                 <%= collection_select('q', :sensor_id, Sensor.selections(current_user), :id, :hostname, include_blank: true, selected: @event_search.sensor_id) %>
               </div>
               <div class="filter_form_field filter_date_range">
-                <%= label_tag "Date range" %>
+                <%= label_tag "Date Range" %>
+                <%= collection_select('q', :relative_date_range, Report.relative_date_ranges, :id, :name, include_blank: true, selected: @event_search.relative_date_range) %>
+              </div>
+              <div class="filter_form_field filter_date_range">
+                <%= label_tag "Custom Date Range" %>
                 <%= text_field_tag 'q[timestamp_gte]', @event_search.timestamp_gte, size: "12", maxlength: "10", class: "datepicker" %>
                 <span class="seperator">-</span>
                 <%= text_field_tag 'q[timestamp_lte]', @event_search.timestamp_lte, size: "12", maxlength: "10", class: "datepicker" %>
@@ -144,15 +148,15 @@
                 <%= submit_tag "Search" %>
                 <%= submit_tag "Reset" %>
               </div>
-              <div class="buttons">
-                <%# if no_events %>
-                <% if params[:q].blank? %>
-                    <%= submit_tag "create Report using search criteria", disabled: 'disabled', title: 'no search criteria entered!', style: 'text-decoration: line-through' %>
-                <% else %>
-                    <%= submit_tag "create Report using search criteria" %>
-                <% end %>
-              </div>
             <% end %>
+            <br />
+            <div class="buttons">
+              <% if params[:q].blank? %>
+                  <%= button_to 'create Report using search criteria', reports_path, method: "post", disabled: 'disabled', title: 'no search criteria entered!', style: 'text-decoration: line-through' %>
+              <% else %>
+                  <%= button_to 'create Report using search criteria', reports_path(q: params[:q]), method: "post" %>
+              <% end %>
+            </div>
           </div> <!-- panel_contents -->
         </div> <!-- sidebar_section -->
       </div> <!-- sidebar -->

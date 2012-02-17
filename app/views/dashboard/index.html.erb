@@ -24,7 +24,7 @@
                 </div>
                 <div class="panel_contents">
                   <h3>
-                    <%= @range.to_s.titleize %>:&nbsp;&nbsp;
+                    <%= params[:range].to_s.titleize %>:&nbsp;&nbsp;
                     <%= @start_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") %>
                     &nbsp;&nbsp;-&nbsp;&nbsp;
                     <%= @end_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") %>

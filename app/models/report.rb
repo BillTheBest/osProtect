@@ -34,8 +34,11 @@ class Report < ActiveRecord::Base
     rdr = []
     rdr << Selection.new({id: 'today',      name: 'Today'})
     rdr << Selection.new({id: 'last_24',    name: 'Last 24 Hours'})
-    rdr << Selection.new({id: 'this_week',  name: 'This Week'})
+    rdr << Selection.new({id: 'week',       name: 'This Week'})
     rdr << Selection.new({id: 'last_week',  name: 'Last Week'})
+    rdr << Selection.new({id: 'this_month', name: 'This Month'})
+    rdr << Selection.new({id: 'past_year',  name: 'Past Year'})
+    rdr << Selection.new({id: 'year',       name: 'Year'})
     rdr
   end
 
