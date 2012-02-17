@@ -32,6 +32,7 @@ OsProtectRor320::Application.routes.draw do
 
   resources :reports
   get "report_listing_events" => "reports#events_listing", :as => "report_listing_events"
+  get "reports_pdf" => "reports#create_pdf", :as => "reports_pdf"
 
   resources :pdfs, :only => [:index, :show, :destroy]
 

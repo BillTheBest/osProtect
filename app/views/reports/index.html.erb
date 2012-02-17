@@ -46,10 +46,10 @@
                             <td>
                               <%= link_to 'HTML', report_listing_events_path(id: report.id, q: report.report_criteria) %>
                               &nbsp;&nbsp;&nbsp;
-                              <%= link_to 'PDF', reports_path %>
+                              <%= link_to 'PDF', reports_pdf_path(id: report.id, format: :pdf) %>
                               <% if current_user.id == report.user_id %>
                                   &nbsp;&nbsp;&nbsp;
-                                  <%= link_to 'delete', report, confirm: 'Are you sure?', method: :delete %>
+                                  <%= link_to 'delete', report, confirm: "\n*** WARNING ***\n\nThis will also delete all PDF's created by this report.\n\nAre you sure?\n\n", method: :delete %>
                               <% else %>
                                   &nbsp;
                               <% end %>

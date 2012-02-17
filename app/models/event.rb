@@ -1,3 +1,8 @@
+# note: we are doing explicit require's and include's so it is clear as to what is going on, and
+#       just in case some brave soul will try to run this app in thread safe mode
+# require "#{Rails.root}/lib/osprotect/restrict_events_based_on_users_access"
+require "osprotect/restrict_events_based_on_users_access"
+
 class Event < ActiveRecord::Base
   self.pluralize_table_names = false
 
@@ -6,6 +11,8 @@ class Event < ActiveRecord::Base
   # alias_attribute :cid, 'event.cid'
   # set_primary_keys [:sid, :cid]
   self.primary_keys = [:sid, :cid]
+
+  include Osprotect::RestrictEventsBasedOnUsersAccess
 
   belongs_to :sensor, foreign_key: :sid
   belongs_to :iphdr, foreign_key: [:sid, :cid], :dependent => :destroy
@@ -38,6 +45,10 @@ class Event < ActiveRecord::Base
     incident.incident_name = "Incident ##{incident.id}" if incident.incident_name.blank?
     incident.save(validate: false)
     incident || nil
+  end
+
+  def events
+    @events
   end
 
   def key

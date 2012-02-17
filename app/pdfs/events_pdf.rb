@@ -7,12 +7,45 @@ class EventsPdf < Prawn::Document
     if search_params.nil?
       text "No search criteria was specified."
     else
-      text search_params.to_yaml 
+      move_down 20
+      @criteria = search_params
+      put_criteria_into_table
     end
     start_new_page
     put_events_into_table
     # note: always do this last so Prawn's "number_pages" will number every page:
     set_footer_for_every_page
+  end
+
+  def put_criteria_into_table
+    criteria_table =  [ ["criteria", "value"] ] + 
+                      @criteria.map do |key, value|
+                        k = "priority"          if key == "sig_priority"
+                        if key == "sig_id"
+                          k = "signature"
+                          value = SignatureDetail.find(value).sig_name unless value.blank?
+                        end
+                        k = "source IP"         if key == "source_address"
+                        k = "source port"       if key == "source_port"
+                        k = "destination IP"    if key == "destination_address"
+                        k = "destination port"  if key == "destination_port"
+                        if key == "sensor_id"
+                          k = "sensor"
+                          value = Sensor.find(value).hostname unless value.blank?
+                        end
+                        k = "date range"        if key == "relative_date_range"
+                        k = "begin date"        if key == "timestamp_gte"
+                        k = "end date"          if key == "timestamp_lte"
+                        [k, value]
+                      end
+    table criteria_table do
+      self.header = true
+      row(0).background_color = "6A7176"
+      row(0).text_color = "FFFFFF"
+      row(0).font_style = :bold
+      self.row_colors = ["F0F0F0", "FFFFFF"]
+      self.cell_style = {overflow: :shrink_to_fit, min_font_size: 8, border_width: 1, borders: [:left, :right, :bottom], border_color: "F0F0F0"}
+    end
   end
 
   def put_events_into_table

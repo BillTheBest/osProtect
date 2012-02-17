@@ -53,7 +53,7 @@ class Report < ActiveRecord::Base
   private
 
   def set_report_criteria_as_string
-    self.report_criteria_as_string = self.report_criteria.to_s
+    self.report_criteria_as_string = "report=#{self.report_type}," + self.report_criteria.to_s
   end
 
   def source_address_ok

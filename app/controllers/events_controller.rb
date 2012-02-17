@@ -52,11 +52,16 @@ class EventsController < ApplicationController
       format.html { redirect_to events_url }
       format.pdf do
         queued = false
+        pdf = Pdf.new
+        pdf.user_id = current_user.id
+        pdf.pdf_type = 3
+        pdf.creation_criteria = params[:q]
+        pdf.save!
         begin
           if Resque.info[:workers] > 0
-            # note: if Redis is running Resque can enqueue, but results in a bunch of jobs waiting for workers, 
+            # note: if Redis is running then Resque can enqueue, but results in a bunch of jobs waiting for workers, 
             #       so we ensure that at least one worker has been started.
-            Resque.enqueue(PdfWorker, current_user.id, nil)
+            Resque.enqueue(PdfWorker, current_user.id, pdf.id)
             queued = true
           end
         rescue Exception => e
@@ -65,6 +70,7 @@ class EventsController < ApplicationController
         if queued
           redirect_to events_url(q: params[:q]), notice: "Your PDF document is being prepared, and in a few moments it will be available for download on the PDFs page."
         else
+          pdf.destroy
           redirect_to events_url(q: params[:q]), notice: "Background processing is offline, so PDF creation is not possible at this time."
         end
         # the following code immediately generates a PDF for downloading ... this is too time-consuming:

@@ -12,6 +12,9 @@ class ReportsController < ApplicationController
   include Osprotect::RestrictEventsBasedOnUsersAccess
   include Osprotect::DateRanges
 
+  respond_to :html
+  respond_to :pdf, only: [:create_pdf]
+
   def events_listing
     # only allow reports for the current_user or reports that an admin created for all users:
     @report = Report.where('(for_all_users = ? OR user_id = ?) AND id = ?', true, current_user.id, params[:id]).first
@@ -39,6 +42,7 @@ class ReportsController < ApplicationController
   def create
     @report = Report.new(params[:report])
     @report.user_id = current_user.id
+    @report.report_type = 1 # 1=EventsReport
     @report.for_all_users = true if current_user.role? :admin
     @report.report_criteria = params[:q]
     if @report.save
@@ -67,8 +71,54 @@ class ReportsController < ApplicationController
 
   def destroy
     @report = current_user.reports.find(params[:id])
+    @report.pdfs.each do |pdf|
+      file = pdf.path_to_file + '/' + pdf.file_name
+      begin
+        FileUtils.rm(file) if File.exist?(file)
+      rescue Errno::ENOENT => e
+        # ignore file-not-found, let everything else pass
+      end
+    end
     @report.destroy
     redirect_to reports_url
+  end
+
+  def create_pdf
+    respond_with do |format|
+      format.html { redirect_to reports_url }
+      format.pdf do
+        # only allow reports for the current_user or reports that an admin created for all users:
+        report = Report.where('(for_all_users = ? OR user_id = ?) AND id = ?', true, current_user.id, params[:id]).first
+        queued = false
+        pdf = Pdf.new
+        pdf.user_id = current_user.id
+        pdf.report_id = report.id
+        pdf.pdf_type = 1
+        pdf.creation_criteria = report.report_criteria
+        pdf.save!
+        begin
+          if Resque.info[:workers] > 0
+            # note: if Redis is running then Resque can enqueue, but results in a bunch of jobs waiting for workers, 
+            #       so we ensure that at least one worker has been started.
+            Resque.enqueue(PdfWorker, current_user.id, pdf.id)
+            queued = true
+          end
+        rescue Exception => e
+          queued = false
+        end
+        if queued
+          redirect_to events_url(q: report.report_criteria), notice: "Your PDF document is being prepared, and in a few moments it will be available for download on the PDFs page."
+        else
+          pdf.destroy
+          redirect_to events_url(q: report.report_criteria), notice: "Background processing is offline, so PDF creation is not possible at this time."
+        end
+        # the following code immediately generates a PDF for downloading ... this is too time-consuming:
+        # get_events_based_on_groups_for_current_user
+        # pdf = EventsPdf.new(@events, params[:q])
+        # # send_data pdf.render, filename: "events_report", type: "application/pdf", disposition: "inline"
+        # send_data pdf.render, filename: "events_report", type: "application/pdf"
+      end
+    end
   end
 
   private

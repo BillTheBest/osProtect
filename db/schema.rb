@@ -210,6 +210,7 @@ ActiveRecord::Schema.define(:version => 20120216042027) do
 
   create_table "pdfs", :force => true do |t|
     t.integer  "user_id"
+    t.integer  "pdf_type"
     t.integer  "report_id"
     t.string   "path_to_file"
     t.string   "file_name"
@@ -229,6 +230,7 @@ ActiveRecord::Schema.define(:version => 20120216042027) do
 
   create_table "reports", :force => true do |t|
     t.integer  "user_id"
+    t.integer  "report_type"
     t.boolean  "for_all_users",             :default => false
     t.boolean  "run_status",                :default => false
     t.boolean  "auto_run",                  :default => false
