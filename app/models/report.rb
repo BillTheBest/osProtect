@@ -4,7 +4,7 @@ class Report < ActiveRecord::Base
 
   serialize :report_criteria, ActiveSupport::HashWithIndifferentAccess
 
-  attr_accessible :name, :include_summary, :user_id, :auto_run, :run_status, :report_criteria, :report_criteria_as_string
+  attr_accessible :for_all_users, :name, :include_summary, :user_id, :auto_run, :run_status, :report_criteria, :report_criteria_as_string
 
   before_validation :set_report_criteria_as_string
 
