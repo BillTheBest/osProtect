@@ -161,7 +161,7 @@ class ReportsController < ApplicationController
         @targets = Iphdr.where("iphdr.sid IN (?)", sensors_for_user).select("#{Iphdr.table_name}.ip_dst, COUNT(#{Iphdr.table_name}.ip_dst) as ipcnt").group('iphdr.sid', 'iphdr.ip_dst')
         @targets = @targets.joins(:events).where('timestamp between ? and ?', @start_time, @end_time).limit(10)
         @events_by_signature = SignatureDetail.select("#{SignatureDetail.table_name}.sig_id, #{SignatureDetail.table_name}.sig_name, COUNT(#{SignatureDetail.table_name}.sig_name) as event_cnt").group(:sig_id, :sig_name).joins(:events).where("event.sid IN (?)", sensors_for_user)
-        @events_by_signature = @events.where('timestamp between ? and ?', @start_time, @end_time).order('event_cnt desc').limit(10)
+        @events_by_signature = @events_by_signature.where('timestamp between ? and ?', @start_time, @end_time).order('event_cnt desc').limit(10)
         @events_count = @events_by_signature.length
       end
     end

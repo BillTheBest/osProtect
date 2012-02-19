@@ -18,6 +18,9 @@ require 'resque_scheduler'
 #
 # NOTE the above only applies to resque workers, as the resque-web server will still use localhost:port !!!!!!!!!!
 
+# this must be before the YAML.load_file's:
+# Resque::Scheduler.dynamic = true
+
 config = YAML.load_file(Rails.root.join('config', 'resque.yml'))
 schedule = YAML.load_file(Rails.root.join('config', 'schedule.yml'))
 

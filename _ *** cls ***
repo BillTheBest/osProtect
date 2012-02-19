@@ -390,9 +390,44 @@ ToDo's:
 4. Incidents: search criteria for Incidents and their Events, including Description and Resolution
 5. Events: create pdf of event show page ... useful ?
 
+_____________________________________________________________________________________________________________________
+cls: why I don't use PDFKit and wkhtmltopdf:
 
+Jul 15, 2010 ... see: http://aaronvb.com/articles/page/4
+PDFKit and wkhtmltopdf without X Server, using qt
+If your PDFKit and wkhtmltopdf is working on your development server, probably in OSX, but not working on 
+your production server, which is probably running linux, it's because you're missing X Server.
 
+There are a few ways around this, some emulate X Server, but that seems hacky. I read through the 
+wkhtmltopdf docs and read that a patched qt framework will allow you to use wkhtmltopdf without using X Server.
 
+Here's what I did on my Ubuntu Box to get this to work (note: the compile time for qt was almost 2 hours, 
+and you'll also need to have git installed):
+
+sudo apt-get build-dep libqt4-gui libqt4-network libqt4-webkit
+sudo apt-get install openssl build-essential xorg git-core git-doc libssl-dev
+
+mkdir ~/sources
+cd ~/sources
+git clone git://gitorious.org/+wkhtml2pdf/qt/wkhtmltopdf-qt.git wkhtmltopdf-qt
+cd wkhtmltopdf-qt
+./configure -nomake tools,examples,demos,docs,translations -opensource -prefix ../wkqt
+make -j3
+make install
+cd ..
+
+next install wkhtmltopdf:
+git clone git://github.com/antialize/wkhtmltopdf.git wkhtmltopdf
+cd wkhtmltopdf
+../wkqt/bin/qmake
+make -j3
+make install
+
+Run 'wkhtmltopdf' in shell and you should see it load correctly instead of seeing the x server error. 
+Running 'wkhtmltopdf-proxy' should do the same, which is what PDFKit uses.
+
+... is it worth all of this madness ?
+_____________________________________________________________________________________________________________________
 
 
 
