@@ -49,8 +49,6 @@ class User < ActiveRecord::Base
   end
 
   def send_password_reset
-# puts "\n Resque.workers=#{Resque.workers.inspect}\n"
-# puts "\n Resque.methods=#{Resque.methods.to_yaml}\n"
     generate_token(:password_reset_token)
     begin
       # note: don't pass complex objects like ActiveRecord models, just pass an id as a reference

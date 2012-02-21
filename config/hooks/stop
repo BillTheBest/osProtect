@@ -1,17 +1,12 @@
 #!/bin/bash
-
 echo "...................................................." >> ${ROOT}/hook.log
 date >> ${ROOT}/hook.log
-echo "begin: giddyup stop hook" >> ${ROOT}/hook.log
-
+echo "begin: giddyup STOP HOOK (git'r done!)" >> ${ROOT}/hook.log
 export RAILS_ENV="production"
-# echo "RAILS_ENV=${RAILS_ENV}" >> ${ROOT}/hook.log
-
 source "/usr/local/rvm/scripts/rvm"
-
 cd $RELEASE
+# if you're nosey uncomment these:
 # echo "cd ${RELEASE}" >> ${ROOT}/hook.log
-
 # PATH="${PATH}"
 # APP_ENV="${APP_ENV}"
 # ROOT="${ROOT}"
@@ -24,16 +19,17 @@ cd $RELEASE
 # echo "root=$ROOT" >> ${ROOT}/hook.log
 # echo "hookdir=$HOOKDIR" >> ${ROOT}/hook.log
 
+# "lower our shields", i.e. stop the app server using Upstart service created via Foreman/Procfile:
 sudo service osprotect stop
 
+# keep PDF files created between app releases:
 mkdir -p shared
 ln -s "${ROOT}/shared/reports" "shared/reports"
+# ... or use giddyup's builtin share for symlinking:
+# . /usr/local/lib/giddyup/functions.sh
 # share shared/reports
 
-ln -s "${ROOT}/shared/bundled_gems" "vendor/bundle"
-bundle install --deployment --without assets development test
+# ln -s "${ROOT}/shared/bundled_gems" "vendor/bundle"
+# bundle install --deployment --without assets development test
 
-# since vendor/bundle is used for gems in production,
-# we don't actually need an app-specific gemset, so delete it:
-# rvm gemset delete osProtect
 echo "end: giddyup stop hook" >> ${ROOT}/hook.log

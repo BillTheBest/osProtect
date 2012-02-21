@@ -1,0 +1,286 @@
+rails -v
+ruby -v
+apt-get update
+apt-get upgrade
+apt-get dist-upgrade
+apt-get install gcc g++ build-essential libssl-dev libreadline5-dev zlib1g-dev linux-headers-generic libsqlite3-dev sqlite3 git-core python-software-properties
+mkdir /TEMP
+cd /TEMP/
+wget ftp://ftp.ruby-lang.org//pub/ruby/1.9/ruby-1.9.2-p290.tar.gz
+tar -xvzf ruby-1.9.2-p290.tar.gz
+cd ruby-1.9.2-p0/
+ls
+cd ruby-1.9.2-p290/
+./configure --prefix=/usr/local/ruby
+make && sudo make install
+nano /etc/environment
+source /etc/environment
+ruby -v
+sudo ln -s /usr/local/ruby/bin/ruby /usr/local/bin/ruby
+sudo ln -s /usr/local/ruby/bin/gem /usr/bin/gem
+gem install tzinfo builder memcache-client rack rack-test erubis mail text-format bundler thor i18n sqlite3-ruby thin
+gem install rack-mount --version=0.4.0
+gem install rails --version 3.0.0
+sqlite -version
+sqlite3 -version
+rails -v
+thin -v
+sudo gem update rails
+reboot
+git -help
+git --version
+exit
+nano /etc/hosts
+nano /etc/hostname 
+nano /etc/network/interfaces 
+rm /etc/udev/rules.d/70-persistent-net.rules 
+reboot
+exit
+find -name index.php
+find -name index.*
+cd /
+find -name index.*
+ls
+mkdir /var/www
+cd /var/www
+rails new osProtect
+ls
+cd osProtect/
+ls
+cd app/views/
+cd /var/www/osProtect/Gemfile
+nano /var/www/osProtect/Gemfile
+cd /var/www/osProtect/
+bundle install
+rails server
+gem install execjs
+bundle install
+rails server
+nano /var/www/osProtect/Gemfile
+bundle install
+rails server
+nano /var/www/osProtect/Gemfile
+bundle install
+rails server
+nano /var/www/osProtect/Gemfile
+ls
+rails server
+rails server -help
+rails server -d
+ls
+ls -la
+nano .gitignore 
+git init
+git add .
+git status
+exit
+nano /etc/network/interfaces 
+nano /etc/hosts
+apt-get update
+apt-get dist-upgrade
+nano /etc/network/interfaces 
+shutdown -P now
+apt-get update
+apt-get dist-upgrade
+ping 192.168.11.112
+ifconfig
+ping 192.168.11.1
+ping 192.168.11.112
+ping 192.168.11.113
+ping 192.168.11.111
+ping 192.168.11.110
+ping 192.168.11.112
+ping 192.168.11.110
+ping 192.168.11.112
+ping 192.168.11.1
+reboot
+ping 192.168.11.112
+arp -a
+apt-get update
+apt-get dist-upgrade
+mount /dev/cdrom /mnt
+cd /mnt/
+ls
+cd Linux/
+ls
+cp xe-guest-utilities_6.0.0-743_amd64.de /
+cp xe-guest-utilities_6.0.0-743_amd64.deb /
+cd /
+mkdir TEMP
+cp xe-guest-utilities_6.0.0-743_amd64.deb /TEMP/
+cd TEMP/
+ls
+dpkg -i xe-guest-utilities_6.0.0-743_amd64.deb 
+shutdown -P now
+cd /var/www/osProtect/
+rails server --help
+rails server -d
+nano /etc/network/interfaces 
+exit
+ifconfig -a | grep eth
+apt-get update
+apt-get dist-upgrade
+ruby -v
+rails -v
+shutdown -P now
+apt-get update
+apt-get dist-upgrade
+cd /TEMP/
+ls
+apt-get install lynx
+lynx http://whatismyip.com
+'
+
+
+
+exit
+quit
+cd /
+ifconfig
+shutdown -P now
+sudo passwd root
+ifconfig -a |  more
+nano /etc/network/interfaces 
+reboot
+ps aux
+apt-get update
+apt-get upgrade
+sudo apt-get install nmap nbtscan apache2 php5 php5-mysql php5-gd libpcap0.8-dev libpcre3-dev g++ bison flex libpcap-ruby mysql-server libmysqlclient16-dev
+apt-get update
+apt-get upgrade
+mkdir /TEMP
+cd /TEMP/
+ls
+wget http://www.snort.org/downloads/1408
+mv 1408 daq.tar.gz
+tar -zxvf daq.tar.gz 
+cd daq
+ls
+cd daq-0.6.2/
+ls
+./configure 
+make
+make install
+ldconfig
+cd ..
+wget http://libdnet.googlecode.com/files/libdnet-1.12.tgz
+ls
+rm daq*
+ls
+rm -rf daq*
+ls
+tar -zxvf libdnet-1.12.tgz 
+cd libdnet-1.12
+./configure
+make
+make install
+ln -s /usr/local/lib/libdnet.1.0.1 /usr/lib/libdnet.1
+cd ..
+ls
+rm -rf libdnet-1.12*
+ls
+wget http://zlib.net/zlib-1.2.6.tar.gz
+cd zlib-1.2.6.tar.gz 
+tar -zxvf zlib-1.2.6.tar.gz 
+cd zlib-1.2.6
+./configure 
+make
+make install
+cd ..
+ls
+rm -rf zlib-1.2.6*
+wget http://www.snort.org/downloads/1416
+tar -zxvf 1416 
+rm 1416 
+cd snort-2.9.2.1/
+./configure --prefix=/usr/local/snort
+make
+make install
+sudo mkdir /var/log/snort
+sudo mkdir /var/snort
+sudo groupadd snort
+sudo useradd -g snort snort
+echo "create database snort;" | mysql -u root -p
+mysql -u root -p -D snort < ./schemas/create_mysql
+echo "grant create, insert, select, delete, update on snort.* to snort@localhost identified by 'cl0nesys01'" | mysql -u root -p
+cd ..
+ls
+rm -rf snort-2.9.2.1
+ls
+wget http://www.snort.org/sub-rules/snortrules-snapshot-2921.tar.gz/23fe804749726f14ae4fc135e4540ad81f27510d -O snortrules-snapshot-2921.tar.gz
+wget http://www.snort.org/sub-rules/snortrules-snapshot-2920.tar.gz/23fe804749726f14ae4fc135e4540ad81f27510d -O snortrules-snapshot-2920.tar.gz
+tar zxvf snortrules-snapshot-2920.tar.gz -C /usr/local/snort
+mkdir /usr/local/snort/lib/snort_dynamicrules
+cp /usr/local/snort/so_rules/precompiled/Ubuntu-10-4/x86-64/2.9.1.2/* /usr/local/snort/lib/snort_dynamicrules
+cp /usr/local/snort/so_rules/precompiled/Ubuntu-10-4/x86-64/2.9.2.0/* /usr/local/snort/lib/snort_dynamicrules
+touch /usr/local/snort/rules/white_list.rules
+touch /usr/local/snort/rules/black_list.rules
+nano /usr/local/snort/etc/snort.conf
+cp /usr/local/snort/etc/snort.conf  /usr/local/snort/etc/snort-eth0.conf
+cp /usr/local/snort/etc/snort.conf  /usr/local/snort/etc/snort-eth1.conf
+wget https://github.com/firnsy/barnyard2/tarball/master
+ls
+tar -zxvf master 
+rm master 
+ls
+cd firnsy-barnyard2-c8e30b8/
+ls
+./configure --with-mysql
+./autogen.sh 
+cd ..
+rm -rf firnsy-barnyard2-c8e30b8/
+ls
+rm snortrules-snapshot-292*
+ls
+wget http://www.securixlive.com/download/barnyard2/barnyard2-1.9.tar.gz
+tar -zxvf barnyard2-1.9.tar.gz 
+cd barnyard2-1.9
+ls
+./configure --with-mysql
+make
+make install
+cp etc/barnyard2.conf /usr/local/snort/etc
+mkdir /var/log/barnyard2
+sudo chmod 667 /var/log/barnyard2
+sudo touch /var/log/snort/barnyard2.waldo
+sudo chown snort:snort /var/log/snort/barnyard2.waldo
+sudo nano /usr/local/snort/etc/barnyard2.conf
+sudo cp /usr/local/snort/etc/barnyard2.conf  /usr/local/snort/etc/barnyard2-eth0.conf
+sudo nano /usr/local/snort/etc/barnyard2-eth0.conf
+sudo cp /usr/local/snort/etc/barnyard2.conf  /usr/local/snort/etc/barnyard2-eth1.conf
+sudo nano /usr/local/snort/etc/barnyard2-eth1.conf
+mkdir /var/log/snort/eth0
+chmod 667 /var/log/snort/eth0
+mkdir /var/log/snort/eth1
+chmod 667 /var/log/snort/eth1
+touch /var/log/snort/eth0/barnyard2.waldo
+chown snort:snort /var/log/snort/eth0/barnyard2.waldo
+touch /var/log/snort/eth1/barnyard2.waldo
+chown snort:snort /var/log/snort/eth1/barnyard2.waldo
+cd ..
+rm -rf barnyard2-1.9
+ls
+rm barnyard2-1.9.tar.gz 
+sudo nano /etc/rc.local
+apt-get install phpmyadmin
+ls
+exit
+ls /usr/local/snort/etc/
+rm /usr/local/snort/etc/barnyard2-eth1.conf.save
+nano /usr/local/snort/etc/barnyard2-eth1.conf
+exit
+ifconfig
+ifconfig -a
+/etc/rc.local start
+ps -ef | grep snort
+nano /etc/rc.local 
+kill -9 21389
+kill -9 21392
+ps -ef | grep snort
+/etc/rc.local start
+ps -ef | grep snort
+nano /etc/rc.local 
+ifconfig
+ifconfig -a
+nano /etc/network/interfaces 
+reboot

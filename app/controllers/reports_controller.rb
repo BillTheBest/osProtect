@@ -1,8 +1,6 @@
 # note: we are doing explicit require's and include's so it is clear as to what is going on, and
 #       just in case some brave soul will try to run this app in thread safe mode
-# require "#{Rails.root}/lib/osprotect/restrict_events_based_on_users_access"
 require "osprotect/restrict_events_based_on_users_access"
-# require "#{Rails.root}/lib/osprotect/date_ranges"
 require "osprotect/date_ranges"
 
 class ReportsController < ApplicationController
@@ -26,7 +24,7 @@ class ReportsController < ApplicationController
   end
 
   def index
-    # only allow reports for the current_user or reports that an admin created for all users:
+    # list reports for current_user, or current_user.groups, or admin created for all users:
     @reports = Report.where('for_all_users = ? OR user_id = ?', true, current_user.id).order("updated_at desc").page(params[:page]).per_page(12)
   end
 
@@ -40,9 +38,13 @@ class ReportsController < ApplicationController
   end
 
   def create
+    # FIXME report accessible by: 
+    #       admins: 'only me', 'any group', 'group 1', 'group 2', ... selecting all groups='any group'
+    #       users:  'only me', 'current_user's group(s)', ...
+    #       - report_groups ... a model/table to link a report to group(s)
     @report = Report.new(params[:report])
     @report.user_id = current_user.id
-    @report.report_type = 1 # 1=EventsReport
+    # @report.report_type = 1 # default is 1=EventsReport
     @report.for_all_users = true if current_user.role? :admin
     @report.report_criteria = params[:q]
     if @report.save

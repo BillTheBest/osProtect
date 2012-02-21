@@ -35,6 +35,9 @@ gem 'resque_mailer'
 
 gem 'googlecharts'
 
+# to easily create cron jobs:
+gem 'whenever', :require => false
+
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
 
@@ -42,7 +45,6 @@ group :development do
   gem 'letter_opener'
   gem 'thin'
   gem 'foreman'
-  # web: bundle exec thin start -p $PORT -e production
 end
 
 gem "rspec-rails", :group => [:development, :test]

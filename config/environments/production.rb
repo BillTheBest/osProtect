@@ -66,7 +66,7 @@ OsProtectRor320::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
-  # for sending mail on Heroku:
+  # for sending mail on Heroku using sendgrid (basically the same as any smtp):
   # config.action_mailer.default_url_options = { :host => "osprotect.herokuapp.com" }
   # config.action_mailer.smtp_settings = {
   #   :address        => 'smtp.sendgrid.net',
@@ -78,7 +78,12 @@ OsProtectRor320::Application.configure do
   # }
   # config.action_mailer.delivery_method = :smtp
 
-  # for sending mail on Linode:
+  # for sending mail via sendmail (usually installed with postfix):
+  # FYI ... defaults to:
+  #     config.action_mailer.sendmail_settings = {
+  #       :location => '/usr/sbin/sendmail',
+  #       :arguments => '-i -t'
+  #     }  config.action_mailer.delivery_method = :sendmail
   config.action_mailer.delivery_method = :sendmail
   # ignore_exceptions = ExceptionNotifier.default_ignore_exceptions + [ActionView::MissingTemplate]
   # config.middleware.use ExceptionNotifier, :email_prefix => "[ERROR] ", :sender_address => 'noreply@osprotect.appsudo.com', :exception_recipients => "support@osprotect.appsudo.com", :ignore_exceptions => ignore_exceptions
