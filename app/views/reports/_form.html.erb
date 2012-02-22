@@ -81,18 +81,18 @@
                   </li>
                   <fieldset class="inputs" style="margin-top:-12px; margin-left:240px">
                     <ol>
-                      <li class="date_ranges">
+                      <li class="date_ranges_description date_ranges">
                         <label>Date Ranges</label>
                         please select either a Relative or Fixed date range but not both:
                       </li>
-                      <li class="relative_date_range" style="margin-top:-10px">
+                      <li class="relative_date_range date_ranges" style="margin-top:-10px">
                         <label>Relative</label>
                         <%= collection_select('q', :relative_date_range, Report.relative_date_ranges, :id, :name, include_blank: true, selected: @report.report_criteria[:relative_date_range]) %>
                       </li>
-                      <li>
+                      <li class="date_ranges">
                         <label>Fixed</label>
                       </li>
-                      <fieldset class="inputs" style="margin-top:-12px; margin-left:190px">
+                      <fieldset class="inputs date_ranges" style="margin-top:-12px; margin-left:190px">
                         <ol>
                           <li class="fixed_begin_date" style="margin-top:-10px">
                             <label>Begin Date</label>
@@ -104,7 +104,7 @@
                           </li>
                         </ol>
                       </fieldset>
-                      <li class="priority" style="margin-top:-20px">
+                      <li class="priority" style="margin-top:-10px">
                         <label>Priority</label>
                         <%= collection_select('q', :sig_priority, SignatureDetail.priorities(current_user), :sig_priority, :sig_priority, include_blank: true, selected: @event_search.sig_priority) %>
                       </li>
@@ -132,8 +132,8 @@
                         <label>Sensor</label>
                         <%= collection_select('q', :sensor_id, Sensor.selections(current_user), :id, :hostname, include_blank: true, selected: @event_search.sensor_id) %>
                       </li>
-                      </ol>
-                      </fieldset>
+                    </ol>
+                  </fieldset>
                   <li class="buttons commit" style="margin-top:-40px">
                     <label>&nbsp;</label>
                     <%= f.submit %>

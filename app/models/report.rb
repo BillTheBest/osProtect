@@ -6,14 +6,16 @@ class Report < ActiveRecord::Base
 
   serialize :report_criteria, ActiveSupport::HashWithIndifferentAccess
 
-  attr_accessible :group_ids, :user_id, :accessible_by, :report_type, :for_all_users, :name, :include_summary, :auto_run_at, :run_status, :report_criteria, :report_criteria_as_string
-
   attr_accessor :accessible_by
+
+  attr_accessible :accessible_by, :group_ids, :user_id, :report_type, :for_all_users, :name, :include_summary, 
+                  :auto_run_at, :run_status, :report_criteria, :report_criteria_as_string
 
   before_validation :set_report_criteria_as_string
 
-  validates :report_criteria_as_string, uniqueness: {scope: :user_id, message: "you already have a Report with the same criteria!"}
+  validates :report_criteria_as_string, uniqueness: {scope: :user_id, message: "a similar Report already exists"}
   validates :name, presence: true
+  validate :group_ids_ok
   validate :source_address_ok
   validate :source_port_ok
   validate :destination_address_ok
@@ -83,7 +85,16 @@ class Report < ActiveRecord::Base
   private
 
   def set_report_criteria_as_string
-    self.report_criteria_as_string = "report=#{self.report_type}," + self.report_criteria.to_s
+    self.report_criteria_as_string =  "report=#{self.report_type}," +
+                                      "include_summary=#{self.include_summary}," +
+                                      "auto_run_at=#{self.auto_run_at}," +
+                                      self.report_criteria.to_s
+  end
+
+  def group_ids_ok
+    self.errors[:group_ids] << "missing Group selection(s)" if self.accessible_by == 'g' && self.groups.blank?
+    self.errors[:group_ids] << "Group(s) selected but 'To' is 'only me'" if self.accessible_by == 'm' && self.groups.any?
+    self.errors[:group_ids] << "Group(s) selected but 'To' is 'any group or user'" if self.accessible_by == 'a' && self.groups.any?
   end
 
   def source_address_ok
@@ -103,22 +114,27 @@ class Report < ActiveRecord::Base
   end
 
   def timestamp_gte_ok
+    return unless self.auto_run_at.blank?
     self.errors[:timestamp_gte] << "is invalid" unless valid_date? self.report_criteria[:timestamp_gte]
   end
 
   def timestamp_lte_ok
+    return unless self.auto_run_at.blank?
     self.errors[:timestamp_lte] << "is invalid" unless valid_date? self.report_criteria[:timestamp_lte]
   end
 
   def date_range_presence
+    return unless self.auto_run_at.blank?
     self.errors[:date_range] << "a relative or fixed date range is required" if self.report_criteria[:relative_date_range].blank? && self.report_criteria[:timestamp_gte].blank? && self.report_criteria[:timestamp_lte].blank?
   end
 
   def date_range_is_relative_or_fixed_but_not_both
+    return unless self.auto_run_at.blank?
     self.errors[:date_range] << "can not be both relative and fixed, please enter only a relative or fixed date range" if self.report_criteria[:relative_date_range].present? && (self.report_criteria[:timestamp_gte].present? || self.report_criteria[:timestamp_lte].present?)
   end
 
   def date_range_is_fixed_so_both_dates_required
+    return unless self.auto_run_at.blank?
     if (self.report_criteria[:timestamp_lte].present? && self.report_criteria[:timestamp_gte].blank?) ||
        (self.report_criteria[:timestamp_gte].present? && self.report_criteria[:timestamp_lte].blank?)
       self.errors[:fixed_date_range] << "both dates are required when either is entered"
@@ -126,6 +142,7 @@ class Report < ActiveRecord::Base
   end
 
   def date_range_is_fixed_so_range_must_be_proper
+    return unless self.auto_run_at.blank?
     return if self.report_criteria[:timestamp_lte].blank? && self.report_criteria[:timestamp_gte].blank?
     begin
       self.errors[:fixed_date_range] << "begin and end dates must specify a proper range" if self.report_criteria[:timestamp_lte].to_date < self.report_criteria[:timestamp_gte].to_date

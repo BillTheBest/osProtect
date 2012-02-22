@@ -49,15 +49,9 @@ class ReportsController < ApplicationController
   end
 
   def create
-    # FIXME report accessible by: 
-    #       admins: 'only me', 'any group', 'group 1', 'group 2', ... selecting all groups='any group'
-    #       users:  'only me', 'current_user's group(s)', ...
-    #       - report_groups ... a model/table to link a report to group(s)
+    adjust_params
     @report = Report.new(params[:report])
-    @report.user_id = current_user.id
-    @report.for_all_users = true if params[:report][:accessible_by] == 'a' && current_user.role?(:admin)
-    # @report.report_type = 1 # default is 1=EventsReport
-    @report.report_criteria = params[:q]
+    adjust_report_attributes
     if @report.save
       redirect_to @report, notice: 'Report was successfully created.'
     else
@@ -72,10 +66,9 @@ class ReportsController < ApplicationController
   end
 
   def update
+    adjust_params
     @report = current_user.reports.find(params[:id])
-    @report.for_all_users = false
-    @report.for_all_users = true if params[:report][:accessible_by] == 'a' && current_user.role?(:admin)
-    @report.report_criteria = params[:q]
+    adjust_report_attributes
     if @report.update_attributes(params[:report])
       redirect_to @report, notice: 'Report was successfully updated.'
     else
@@ -137,6 +130,27 @@ class ReportsController < ApplicationController
   end
 
   private
+
+  def adjust_params
+    if ['a', 'm'].include?(params[:report][:accessible_by])
+      params[:report][:group_ids] = []
+    end
+    auto_run_types = Report.auto_run_selections.collect {|p| p.id}
+    if auto_run_types.include?(params[:report][:auto_run_at])
+      # ignore date ranges by resetting them:
+      params[:q][:relative_date_range] = ""
+      params[:q][:timestamp_gte] = ""
+      params[:q][:timestamp_lte] = ""
+    end
+  end
+
+  def adjust_report_attributes
+    # @report.report_type = 1 # default is 1=EventsReport
+    @report.user_id = current_user.id
+    @report.for_all_users = false # only admins can set this to true
+    @report.for_all_users = true if params[:report][:accessible_by] == 'a' && current_user.role?(:admin)
+    @report.report_criteria = params[:q]
+  end
 
   def pulse
     set_time_range(@report.report_criteria[:relative_date_range])

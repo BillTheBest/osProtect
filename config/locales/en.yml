@@ -17,6 +17,7 @@ en:
           attacker_ips: "Attacker IP: "
           target_ips: "Target IP: "
         report:
+          group_ids: "Access Allowed: "
           priority_ids: "Priority: "
           report_criteria_as_string: "Report criteria: "
           source_address: "Source IP Address: "
