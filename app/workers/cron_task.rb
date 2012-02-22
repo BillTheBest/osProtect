@@ -70,7 +70,7 @@ class CronTask
       next if notification.notification_results.where(email_sent: false).count < 1
       # note: don't pass complex objects like ActiveRecord models, just pass id's as references
       #       to the object(s) because the enqueue method in resque converts params to json:
-      UserMailer.batched_email_notifications(notification.id).deliver
+      UserBackgroundMailer.batched_email_notifications(notification.id).deliver
     end
   end
 end
