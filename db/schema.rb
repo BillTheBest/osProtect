@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120216042027) do
+ActiveRecord::Schema.define(:version => 20120221205257) do
 
   create_table "data", :id => false, :force => true do |t|
     t.integer "sid",          :null => false
@@ -228,18 +228,28 @@ ActiveRecord::Schema.define(:version => 20120216042027) do
     t.string "ref_system_name", :limit => 20
   end
 
+  create_table "report_groups", :force => true do |t|
+    t.integer  "report_id"
+    t.integer  "group_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "report_groups", ["group_id"], :name => "index_report_groups_on_group_id"
+  add_index "report_groups", ["report_id"], :name => "index_report_groups_on_report_id"
+
   create_table "reports", :force => true do |t|
     t.integer  "user_id"
-    t.integer  "report_type"
-    t.boolean  "for_all_users",             :default => false
-    t.boolean  "run_status",                :default => false
-    t.boolean  "auto_run",                  :default => false
+    t.boolean  "for_all_users",                          :default => false
+    t.integer  "report_type",                            :default => 1
+    t.boolean  "run_status",                             :default => false
+    t.string   "auto_run_at",               :limit => 1, :default => "n"
+    t.boolean  "include_summary",                        :default => false
     t.string   "name"
-    t.boolean  "include_summary"
     t.text     "report_criteria"
     t.string   "report_criteria_as_string"
-    t.datetime "created_at",                                   :null => false
-    t.datetime "updated_at",                                   :null => false
+    t.datetime "created_at",                                                :null => false
+    t.datetime "updated_at",                                                :null => false
   end
 
   create_table "schema", :primary_key => "vseq", :force => true do |t|

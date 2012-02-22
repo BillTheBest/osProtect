@@ -5,6 +5,7 @@ echo "begin: giddyup STOP HOOK (git'r done!)" >> ${ROOT}/hook.log
 export RAILS_ENV="production"
 source "/usr/local/rvm/scripts/rvm"
 cd $RELEASE
+
 # if you're nosey uncomment these:
 # echo "cd ${RELEASE}" >> ${ROOT}/hook.log
 # PATH="${PATH}"

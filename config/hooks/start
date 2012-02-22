@@ -4,6 +4,12 @@ export RAILS_ENV="production"
 # echo "RAILS_ENV=${RAILS_ENV}" >> ${ROOT}/hook.log
 source "/usr/local/rvm/scripts/rvm"
 cd $RELEASE
+
+# just in case, tell rvm to trust our .rvmrc file:
+# rvm rvmrc trust "${RELEASE}"
+# ... or ... even better, put this in /etc/rvmrc:
+# export rvm_trust_rvmrcs_flag=1
+
 # coz we are nosey about such things:
 ruby -v >> ${ROOT}/hook.log
 rvm gemset name >> ${ROOT}/hook.log

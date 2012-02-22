@@ -1,10 +1,14 @@
 class Report < ActiveRecord::Base
   belongs_to :user
+  has_many :report_groups, dependent: :destroy
+  has_many :groups, through: :report_groups
   has_many :pdfs, dependent: :destroy
 
   serialize :report_criteria, ActiveSupport::HashWithIndifferentAccess
 
-  attr_accessible :for_all_users, :name, :include_summary, :user_id, :auto_run, :run_status, :report_criteria, :report_criteria_as_string
+  attr_accessible :group_ids, :user_id, :accessible_by, :report_type, :for_all_users, :name, :include_summary, :auto_run_at, :run_status, :report_criteria, :report_criteria_as_string
+
+  attr_accessor :accessible_by
 
   before_validation :set_report_criteria_as_string
 
@@ -42,6 +46,22 @@ class Report < ActiveRecord::Base
     rdr
   end
 
+  def self.auto_run_selections
+    ar = []
+    ar << Selection.new({id: 'd', name: 'Daily'})
+    ar << Selection.new({id: 'w', name: 'Weekly'})
+    ar << Selection.new({id: 'm', name: 'Monthly'})
+    ar
+  end
+
+  def self.access_allowed_selections(user)
+    ar = []
+    ar << Selection.new({id: 'm', name: 'only me'})
+    ar << Selection.new({id: 'a', name: 'any group or user'}) if user && user.role?(:admin)
+    ar << Selection.new({id: 'g', name: 'for group(s) selected below'})
+    ar
+  end
+
   def enabled
     self.run_status == true
   end
@@ -52,6 +72,12 @@ class Report < ActiveRecord::Base
 
   def status
     self.run_status ? 'enabled' : 'disabled'
+  end
+
+  def group_ids_as_array
+    gids = []
+    self.groups.map {|g| gids << g.id}
+    gids
   end
 
   private

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# ruby_string="ruby-1.9.2-p290"
-# gemset_name="osProtect"
+# put this in /etc/rvmrc is better:
+# export rvm_trust_rvmrcs_flag=1
 ruby_string="ruby-1.9.3-p0"
 gemset_name="ruby-1.9.3-osProtect"
 

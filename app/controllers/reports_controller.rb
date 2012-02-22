@@ -15,8 +15,13 @@ class ReportsController < ApplicationController
 
   def events_listing
     # only allow reports for the current_user or reports that an admin created for all users:
-    @report = Report.where('(for_all_users = ? OR user_id = ?) AND id = ?', true, current_user.id, params[:id]).first
-    redirect_to reports_url if @report.blank?
+    if current_user.role?(:admin)
+      @report = Report.find(params[:id])
+    else
+      @report = Report.where('(for_all_users = ? OR user_id = ?) AND id = ?', true, current_user.id, params[:id]).first
+      @report = Report.includes(:groups).where('groups.id IN (?)', current_user.groups).first if @reports.blank?
+    end
+    redirect_to reports_url and return if @report.blank?
     get_events_based_on_groups_for_user(current_user.id) # sets @events
     filter_events_based_on(params[:q]) # sets @event_search
     @events = @events.page(params[:page]).per_page(12)
@@ -25,7 +30,13 @@ class ReportsController < ApplicationController
 
   def index
     # list reports for current_user, or current_user.groups, or admin created for all users:
-    @reports = Report.where('for_all_users = ? OR user_id = ?', true, current_user.id).order("updated_at desc").page(params[:page]).per_page(12)
+    if current_user.role?(:admin)
+      @reports = Report
+    else
+      @reports = Report.where('for_all_users = ? OR user_id = ?', true, current_user.id)
+      @reports = Report.includes(:groups).where('groups.id IN (?)', current_user.groups) if @reports.blank?
+    end
+    @reports = @reports.order("reports.updated_at desc").page(params[:page]).per_page(12)
   end
 
   def show
@@ -44,8 +55,8 @@ class ReportsController < ApplicationController
     #       - report_groups ... a model/table to link a report to group(s)
     @report = Report.new(params[:report])
     @report.user_id = current_user.id
+    @report.for_all_users = true if params[:report][:accessible_by] == 'a' && current_user.role?(:admin)
     # @report.report_type = 1 # default is 1=EventsReport
-    @report.for_all_users = true if current_user.role? :admin
     @report.report_criteria = params[:q]
     if @report.save
       redirect_to @report, notice: 'Report was successfully created.'
@@ -62,6 +73,8 @@ class ReportsController < ApplicationController
 
   def update
     @report = current_user.reports.find(params[:id])
+    @report.for_all_users = false
+    @report.for_all_users = true if params[:report][:accessible_by] == 'a' && current_user.role?(:admin)
     @report.report_criteria = params[:q]
     if @report.update_attributes(params[:report])
       redirect_to @report, notice: 'Report was successfully updated.'
