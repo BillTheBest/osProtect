@@ -1,10 +1,6 @@
 class UserMailer < ActionMailer::Base
 
-  if Rails.env.production?
-    default from: "do.not.reply@osprotect.appsudo.com"
-  else
-    default from: "do.not.reply@localhost"
-  end
+  default from: APP_CONFIG[:emails_from]
 
   def password_reset(user_id)
     @user = User.find(user_id)

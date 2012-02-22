@@ -1,11 +1,7 @@
 class UserBackgroundMailer < ActionMailer::Base
   include Resque::Mailer
 
-  if Rails.env.production?
-    default from: "do.not.reply@osprotect.appsudo.com"
-  else
-    default from: "do.not.reply@localhost"
-  end
+  default from: APP_CONFIG[:emails_from]
 
   def password_reset(user_id)
     @user = User.find(user_id)
@@ -14,15 +10,16 @@ class UserBackgroundMailer < ActionMailer::Base
     mail :to => @user.email, :subject => "Password Reset"
   end
 
-  def event_notify(notification_id, notification_result_id)
-    @notification_result = NotificationResult.find(notification_result_id)
-    @notification = Notification.find(notification_id)
-    @user = User.find(@notification.user_id)
-    send_to = @notification.email.blank? ? @user.email : @notification.email
-    @notification_result.email_sent = true
-    @notification_result.save!
-    mail :to => send_to, :subject => "osProtect: Event Notification Results"
-  end
+  # used to test notifications:
+  # def event_notify(notification_id, notification_result_id)
+  #   @notification_result = NotificationResult.find(notification_result_id)
+  #   @notification = Notification.find(notification_id)
+  #   @user = User.find(@notification.user_id)
+  #   send_to = @notification.email.blank? ? @user.email : @notification.email
+  #   @notification_result.email_sent = true
+  #   @notification_result.save!
+  #   mail :to => send_to, :subject => "osProtect: Event Notification Results"
+  # end
 
   def batched_email_notifications(notification_id)
     @notification = Notification.find(notification_id)
