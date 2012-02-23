@@ -154,7 +154,7 @@
               <% if params[:q].blank? %>
                   <%= button_to 'create Report using search criteria', reports_path, method: "post", disabled: 'disabled', title: 'no search criteria entered!', style: 'text-decoration: line-through' %>
               <% else %>
-                  <%= button_to 'create Report using search criteria', reports_path(q: params[:q]), method: "post" %>
+                  <%= button_to 'create Report using search criteria', reports_path(report: {accessible_by: 'm'}, q: params[:q]), method: "post" %>
               <% end %>
             </div>
           </div> <!-- panel_contents -->

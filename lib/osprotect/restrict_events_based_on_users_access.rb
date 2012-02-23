@@ -7,7 +7,7 @@ module Osprotect
         @events = Event.includes(:sensor, :signature_detail, :iphdr, :tcphdr, :udphdr).order("timestamp desc")
       else
         # only use this user's sensors based on group memberships:
-        @events = Event.where("event.sid IN (?)", current_user.sensors).includes(:sensor, :signature_detail, :iphdr, :tcphdr, :udphdr).order("timestamp desc")
+        @events = Event.where("event.sid IN (?)", user.sensors).includes(:sensor, :signature_detail, :iphdr, :tcphdr, :udphdr).order("timestamp desc")
       end
       @events
     end

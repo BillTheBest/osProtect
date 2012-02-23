@@ -34,14 +34,22 @@ jQuery ->
   rara = $(".inputs .auto_run #report_auto_run_at option:selected").text()
   if rara == ''
     $('.date_ranges').show()
+    $('#set_access_allowed').show()
+    $('#allow_all').hide()
   else
     $('.date_ranges').hide()
+    $('#set_access_allowed').hide()
+    $('#allow_all').show()
 
   # show/hide date ranges if Run Automatically is Daily/Weekly/Monthly or not selected(blank):
   $('.inputs .auto_run #report_auto_run_at').change ->
     s = $(".inputs .auto_run #report_auto_run_at option:selected").text()
     if s == ''
       $('.date_ranges').show()
+      $('#set_access_allowed').show()
+      $('#allow_all').hide()
     else
       $('.date_ranges').hide()
+      $('#set_access_allowed').hide()
+      $('#allow_all').show()
     return true

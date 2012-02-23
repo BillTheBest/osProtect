@@ -30,10 +30,15 @@
                     <label>Run Status</label>
                     <%= f.select(:run_status, options_for_select([["enabled", true], ["disabled", false]], selected: @report.run_status)) %>
                   </li>
+                  <li class="auto_run">
+                    <label>Run Automatically</label>
+                    <%= f.select(:auto_run_at, Report.auto_run_selections.collect {|p| [p.name, p.id]}, include_blank: true, selected: @report.auto_run_at) %>
+                  </li>
                   <li>
                     <label>Access Allowed</label>
+                    <span id="allow_all" style="display:none;">All<br /><br /></span>
                   </li>
-                  <fieldset class="inputs" style="margin-top:-12px; margin-left:240px">
+                  <fieldset id="set_access_allowed" class="inputs" style="margin-top:-12px; margin-left:240px">
                     <ol>
                       <li class="access_allowed" style="margin-top:-10px">
                         <label>To</label>
@@ -51,7 +56,7 @@
                         <span>&nbsp;</span>
                         <fieldset style="margin-top:-15px">
                           <ol>
-                            <li>As the group(s) selected determine which sensor(s) are available, the sensor criteria has been hidden below.</li>
+                            <li>As the group(s) selected determine which sensor(s) are available, the sensor criteria is not necessary.</li>
                             <% if current_user.role?(:admin)
                                 groups = Group.all
                                else
@@ -72,10 +77,6 @@
                   <li class="include_summary" style="margin-top:-20px">
                     <label>Include Summary(Pulse)</label>
                     <%= f.select(:include_summary, options_for_select([["yes", true], ["no", false]], selected: @report.include_summary)) %>
-                  </li>
-                  <li class="auto_run">
-                    <label>Run Automatically</label>
-                    <%= f.select(:auto_run_at, Report.auto_run_selections.collect {|p| [p.name, p.id]}, include_blank: true, selected: @report.auto_run_at) %>
                   </li>
                   <li>
                     <label>Event Selection Criteria</label>
