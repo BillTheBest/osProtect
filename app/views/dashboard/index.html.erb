@@ -54,7 +54,6 @@
                           <table border="0" cellspacing="0" cellpadding="0">
                             <thead>
                               <tr>
-                                <th style="text-align:left"><small>%</small></th>
                                 <th style="text-align:right"><small>count</small></th>
                                 <th style="text-align:left">Top Attackers <small>(source IPs)</small></th>
                               </tr>
@@ -62,9 +61,6 @@
                             <tbody>
                               <% @attackers.each do |attack_ip| %>
                                   <tr class="<%= cycle('even', 'odd') %>">
-                                    <td align="right">
-                                      <%= "#{total == 0 ? 0 : (100.0 * attack_ip.ipcnt / total).round(2)}%" %>
-                                    </td>
                                     <td align="right"><%= number_with_delimiter(attack_ip.ipcnt) %></td>
                                     <td><%= link_to attack_ip.ip_source, events_path('q[source_address]' => attack_ip.ip_source) %></td>
                                   </tr>
@@ -99,7 +95,6 @@
                           <table border="0" cellspacing="0" cellpadding="0">
                             <thead>
                               <tr>
-                                <th style="text-align:left"><small>%</small></th>
                                 <th style="text-align:left"><small>count</small></th>
                                 <th style="text-align:left">Top Targets <small>(destination IPs)</small></th>
                               </tr>
@@ -107,9 +102,6 @@
                             <tbody>
                               <% @targets.order('ipcnt DESC').each do |target_ip| %>
                                   <tr class="<%= cycle('even', 'odd') %>">
-                                    <td align="right">
-                                      <%= "#{total == 0 ? 0 : (100.0 * target_ip.ipcnt / total).round(2)}%" %>
-                                    </td>
                                     <td align="right"><%= number_with_delimiter(target_ip.ipcnt) %></td>
                                     <td><%= link_to target_ip.ip_destination, events_path('q[destination_address]' => target_ip.ip_destination) %></td>
                                   </tr>
@@ -144,7 +136,6 @@
                           <table border="0" cellspacing="0" cellpadding="0">
                             <thead>
                               <tr>
-                                <th style="text-align:left"><small>%</small></th>
                                 <th style="text-align:left"><small>count</small></th>
                                 <th style="text-align:left">Priority</th>
                               </tr>
@@ -152,12 +143,7 @@
                             <tbody>
                               <% @priorities.each do |priority| %>
                                   <tr class="<%= cycle('even', 'odd') %>">
-                                    <td align="right">
-                                      <%= "#{total == 0 ? 0 : (100.0 * priority.priority_cnt / total).round(2)}%" %>
-                                    </td>
-                                    <td align="right">
-                                      <%= number_with_delimiter(priority.priority_cnt) %>
-                                    </td>
+                                    <td align="right"><%= number_with_delimiter(priority.priority_cnt) %></td>
                                     <td align="left"><%= link_to priority.sig_priority, events_path('q[sig_priority]' => priority.sig_priority) %></td>
                                   </tr>
                               <% end %>
@@ -191,7 +177,6 @@
                           <table border="0" cellspacing="0" cellpadding="0">
                             <thead>
                               <tr>
-                                <th style="text-align:left"><small>%</small></th>
                                 <th style="text-align:left"><small>count</small></th>
                                 <th style="text-align:left">Top Events by Signature</th>
                               </tr>
@@ -199,12 +184,7 @@
                             <tbody>
                               <% @events.each do |event| %>
                                   <tr class="<%= cycle('even', 'odd') %>">
-                                    <td align="right">
-                                      <%= "#{total == 0 ? 0 : (100.0 * event.event_cnt / total).round(2)}%" %>
-                                    </td>
-                                    <td align="right">
-                                      <%= number_with_delimiter(event.event_cnt) %>
-                                    </td>
+                                    <td align="right"><%= number_with_delimiter(event.event_cnt) %></td>
                                     <td><%= link_to event.sig_name, events_path('q[sig_id]' => event.sig_id) %></td>
                                   </tr>
                               <% end %>
@@ -229,7 +209,7 @@
                       labels = @hot_times.collect do |hot_time|
                         s = hot_time.minute
                         e = hot_time.minute + 15.minutes
-                        "#{s.strftime("%l:%M")}-#{e.strftime("%l:%M %P")} (#{total == 0 ? 0 : (100.0 * hot_time.cnt / total).round}%)"
+                        "#{s.strftime("%l:%M")}-#{e.strftime("%l:%M %P")}"
                       end
                       %>
                       <%#
@@ -243,7 +223,7 @@
                         });
                       })
                       %>
-                      <%#= image_tag(Gchart.pie_3d(data: data, labels: labels, size: '750x200', title: "Active Times", theme: :thirty7signals)) %>
+                      <%= image_tag(Gchart.pie_3d(data: data, labels: labels, size: '850x350', title: "", theme: :thirty7signals)) %>
                       <table border="0" cellspacing="0" cellpadding="0">
                         <thead>
                           <tr>
