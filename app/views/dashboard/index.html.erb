@@ -29,6 +29,7 @@
                     &nbsp;&nbsp;-&nbsp;&nbsp;
                     <%= @end_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") %>
                   </h3>
+                  <% chart_size = '900x300' %>
 
                   <h3 style="clear: both; text-align:center; font-size:15px">Top Attackers</h3>
                   <% if @attackers.blank? %>
@@ -48,7 +49,7 @@
                       %>
                       <div class="pulse_chart_data_wrapper">
                         <div class="pulse_chart" style="float:left">
-                          <%= image_tag(Gchart.pie_3d(data: data, labels: labels, size: '850x350', title: "", theme: :thirty7signals)) %>
+                          <%= image_tag(Gchart.pie_3d(data: data, labels: labels, size: chart_size, title: "", theme: :thirty7signals)) %>
                         </div>
                         <div class="pulse_data" style="float:right">
                           <table border="0" cellspacing="0" cellpadding="0">
@@ -89,7 +90,7 @@
                       %>
                       <div class="pulse_chart_data_wrapper">
                         <div class="pulse_chart" style="float:left">
-                          <%= image_tag(Gchart.pie_3d(data: data, labels: labels, size: '850x350', title: "", theme: :thirty7signals)) %>
+                          <%= image_tag(Gchart.pie_3d(data: data, labels: labels, size: chart_size, title: "", theme: :thirty7signals)) %>
                         </div>
                         <div class="pulse_data" style="float:right">
                           <table border="0" cellspacing="0" cellpadding="0">
@@ -130,7 +131,7 @@
                       %>
                       <div class="pulse_chart_data_wrapper">
                         <div class="pulse_chart" style="float:left">
-                          <%= image_tag(Gchart.pie_3d(data: data, labels: labels, size: '850x350', title: "", theme: :thirty7signals)) %>
+                          <%= image_tag(Gchart.pie_3d(data: data, labels: labels, size: chart_size, title: "", theme: :thirty7signals)) %>
                         </div>
                         <div class="pulse_data" style="float:right">
                           <table border="0" cellspacing="0" cellpadding="0">
@@ -166,12 +167,12 @@
                         data << event.event_cnt
                       end
                       labels = @events.collect do |event|
-                        "#{truncate(event.sig_name, length: 30)}"
+                        "#{truncate(event.sig_name, length: 40)}"
                       end
                       %>
                       <div class="pulse_chart_data_wrapper">
                         <div class="pulse_chart" style="float:left">
-                          <%= image_tag(Gchart.pie_3d(data: data, labels: labels, size: '850x350', title: "", theme: :thirty7signals)) %>
+                          <%= image_tag(Gchart.pie_3d(data: data, labels: labels, size: chart_size, title: "", theme: :thirty7signals)) %>
                         </div>
                         <div class="pulse_data" style="float:right">
                           <table border="0" cellspacing="0" cellpadding="0">
@@ -223,7 +224,7 @@
                         });
                       })
                       %>
-                      <%= image_tag(Gchart.pie_3d(data: data, labels: labels, size: '850x350', title: "", theme: :thirty7signals)) %>
+                      <%= image_tag(Gchart.pie_3d(data: data, labels: labels, size: chart_size, title: "", theme: :thirty7signals)) %>
                       <table border="0" cellspacing="0" cellpadding="0">
                         <thead>
                           <tr>
