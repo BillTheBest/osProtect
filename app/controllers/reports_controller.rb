@@ -13,21 +13,6 @@ class ReportsController < ApplicationController
   respond_to :html
   respond_to :pdf, only: [:create_pdf]
 
-  def events_listing
-    # only allow reports for the current_user or reports that an admin created for all users:
-    if current_user.role?(:admin)
-      @report = Report.find(params[:id])
-    else
-      @report = Report.where('(for_all_users = ? OR user_id = ?) AND id = ?', true, current_user.id, params[:id]).first
-      @report = Report.includes(:groups).where('groups.id IN (?)', current_user.groups).first if @reports.blank?
-    end
-    redirect_to reports_url and return if @report.blank?
-    get_events_based_on_groups_for_user(current_user.id) # sets @events
-    filter_events_based_on(params[:q]) # sets @event_search
-    @events = @events.page(params[:page]).per_page(12)
-    pulse
-  end
-
   def index
     # list reports for current_user, or current_user.groups, or admin created for all users:
     if current_user.role?(:admin)
@@ -93,12 +78,40 @@ class ReportsController < ApplicationController
     redirect_to reports_url
   end
 
+  # HTML version of report
+  def events_listing
+    if current_user.role?(:admin)
+      @report = Report.find(params[:id])
+    else
+      @report = Report.where('(for_all_users = ? OR user_id = ?) AND id = ?', true, current_user.id, params[:id]).first
+      @report = Report.includes(:groups).where('groups.id IN (?)', current_user.groups).first if @reports.blank?
+    end
+    if @report.blank?
+      redirect_to reports_url, notice: "Access denied."
+      return
+    end
+    get_events_based_on_groups_for_user(current_user.id) # sets @events
+    filter_events_based_on(params[:q]) # sets @event_search
+    @events = @events.page(params[:page]).per_page(12)
+    pulse
+  end
+
+  # PDF version of report
   def create_pdf
     respond_with do |format|
       format.html { redirect_to reports_url }
       format.pdf do
         # only allow reports for the current_user or reports that an admin created for all users:
-        report = Report.where('(for_all_users = ? OR user_id = ?) AND id = ?', true, current_user.id, params[:id]).first
+        if current_user.role?(:admin)
+          report = Report.find(params[:id])
+        else
+          report = Report.where('(for_all_users = ? OR user_id = ?) AND id = ?', true, current_user.id, params[:id]).first
+          report = Report.includes(:groups).where('groups.id IN (?)', current_user.groups).first if @reports.blank?
+        end
+        if report.blank?
+          redirect_to reports_url, notice: "Access denied."
+          return
+        end
         queued = false
         pdf = Pdf.new
         pdf.user_id = current_user.id
