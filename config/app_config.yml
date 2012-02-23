@@ -1,17 +1,17 @@
 development:
   version: 1.0.0
   show_versions_and_limits: true
-  pdf_max_records: 1000
+  pdf_max_records: 100
   emails_from: do.not.reply@localhost
 
 test:
   version: 1.0.0
   show_versions_and_limits: true
-  pdf_max_records: 1000
+  pdf_max_records: 100
   emails_from: do.not.reply@localhost
 
 production:
   version: 1.0.0
   show_versions_and_limits: true
-  pdf_max_records: 5000
+  pdf_max_records: 500
   emails_from: do.not.reply@osprotect.appsudo.com

@@ -78,11 +78,11 @@ class CronTask
   def daily_report_emailed_as_pdf
     pdf_max_records = APP_CONFIG[:pdf_max_records]
     Report.where(auto_run_at: 'd', run_status: true).each do |report|
-      # if Rails.env.production?
-      #   users = User.all
-      # else
+      if Rails.env.production?
+        users = User.all
+      else
         users = User.where(id: 1)
-      # end
+      end
       users.each do |user|
         # note: don't pass complex objects like ActiveRecord models, just pass id's as references
         #       to the object(s) because the enqueue method in resque converts params to json:
