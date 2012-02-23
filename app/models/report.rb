@@ -92,6 +92,10 @@ class Report < ActiveRecord::Base
     gids
   end
 
+  def users_pdf_count_for_this_report(user_id)
+    Pdf.includes(:report, :user).where(user_id: user_id, report_id: self.id).count
+  end
+
   private
 
   def set_report_criteria_as_string
