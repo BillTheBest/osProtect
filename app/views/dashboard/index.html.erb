@@ -77,6 +77,7 @@
                   <% if @targets.blank? %>
                       <h3>none</h3>
                   <% else 
+                      @targets = @targets.order('ipcnt DESC')
                       total = 0
                       data = []
                       labels = []
@@ -101,7 +102,7 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <% @targets.order('ipcnt DESC').each do |target_ip| %>
+                              <% @targets.each do |target_ip| %>
                                   <tr class="<%= cycle('even', 'odd') %>">
                                     <td align="right"><%= number_with_delimiter(target_ip.ipcnt) %></td>
                                     <td><%= link_to target_ip.ip_destination, events_path('q[destination_address]' => target_ip.ip_destination) %></td>
@@ -159,6 +160,7 @@
                   <% if @events.blank? %>
                       <h3>none</h3>
                   <% else 
+                      @events = @events.order('event_cnt DESC')
                       total = 0
                       data = []
                       labels = []

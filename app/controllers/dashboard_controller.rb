@@ -22,8 +22,8 @@ class DashboardController < ApplicationController
       @attackers = @attackers.joins(:events).where('timestamp between ? and ?', @start_time, @end_time).limit(10)
       @targets = Iphdr.select("#{Iphdr.table_name}.ip_dst, COUNT(#{Iphdr.table_name}.ip_dst) as ipcnt").group('iphdr.sid', 'iphdr.ip_dst')
       @targets = @targets.joins(:events).where('timestamp between ? and ?', @start_time, @end_time).limit(10)
-      @events = SignatureDetail.select("#{SignatureDetail.table_name}.sig_id, #{SignatureDetail.table_name}.sig_name, COUNT(#{SignatureDetail.table_name}.sig_name) as event_cnt").group(:sig_id, :sig_name).joins(:events).order('event_cnt desc').limit(10)
-      @events = @events.where('timestamp between ? and ?', @start_time, @end_time)
+      @events = SignatureDetail.select("#{SignatureDetail.table_name}.sig_id, #{SignatureDetail.table_name}.sig_name, COUNT(#{SignatureDetail.table_name}.sig_name) as event_cnt").group(:sig_id, :sig_name).joins(:events)
+      @events = @events.where('timestamp between ? and ?', @start_time, @end_time).limit(10)
       @events_count = @events.length
       # @incidents = Incident.order('updated_at desc').limit(5)
       # @pending_incidents = Incident.where(status: 'pending').count
