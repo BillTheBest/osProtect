@@ -107,6 +107,21 @@
       </div> <!-- panel_contents -->
     </div> <!-- sidebar_section -->
   </div> <!-- sidebar -->
-  <hr />
-  <%= render partial: 'pulse' %>
+
+  <div class="dashboard_section panel">
+    <div class="panel_contents">
+      <h3 style="clear: both; text-align:center">
+        Pulse for 
+        <% if @report.report_criteria[:relative_date_range].blank? %>
+            Date Range:&nbsp;&nbsp;
+        <% else %>
+            <%= @report.report_criteria[:relative_date_range].to_s.titleize %>:&nbsp;&nbsp;
+        <% end %>
+        <%= @start_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") %>
+        &nbsp;&nbsp;-&nbsp;&nbsp;
+        <%= @end_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") %>
+      </h3>
+      <%= render partial: 'shared/pulse' %>
+    </div> <!-- panel_contents -->
+  </div> <!-- dashboard_section -->
 </div> <!-- osprotect_content -->

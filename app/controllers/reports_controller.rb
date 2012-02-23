@@ -2,6 +2,7 @@
 #       just in case some brave soul will try to run this app in thread safe mode
 require "osprotect/restrict_events_based_on_users_access"
 require "osprotect/date_ranges"
+require "osprotect/pulse_top_tens"
 
 class ReportsController < ApplicationController
   before_filter :authenticate_user!
@@ -9,6 +10,7 @@ class ReportsController < ApplicationController
 
   include Osprotect::RestrictEventsBasedOnUsersAccess
   include Osprotect::DateRanges
+  include Osprotect::PulseTopTens
 
   respond_to :html
   respond_to :pdf, only: [:create_pdf]
@@ -93,7 +95,7 @@ class ReportsController < ApplicationController
     get_events_based_on_groups_for_user(current_user.id) # sets @events
     filter_events_based_on(params[:q]) # sets @event_search
     @events = @events.page(params[:page]).per_page(12)
-    pulse
+    set_pulse_for_partial
   end
 
   # PDF version of report
@@ -167,47 +169,7 @@ class ReportsController < ApplicationController
     @report.report_criteria = params[:q]
   end
 
-  def pulse
-    set_time_range(@report.report_criteria[:relative_date_range])
-    if @start_time.nil? || @end_time.nil?
-      # use custom/fixed date range:
-      @start_time = Time.parse("#{@report.report_criteria[:timestamp_gte]} 00:00:00 +0000")
-      @end_time = Time.parse("#{@report.report_criteria[:timestamp_lte]} 23:59:59 +0000")
-    end
-    # note: if current_user is an admin, groups/memberships don't matter since an admin can do anything:
-    if current_user.role? :admin
-      # every 15 minutes (900 seconds = 15  * 60):
-      @hot_times = Event.find_by_sql ["SELECT SEC_TO_TIME(FLOOR(TIME_TO_SEC(timestamp)/900)*900) AS `minute`, count(*) as `cnt` from event where timestamp BETWEEN ? AND ? GROUP BY SEC_TO_TIME(FLOOR(TIME_TO_SEC(timestamp)/900)*900) HAVING `cnt` > 10", @start_time, @end_time]
-      @priorities = SignatureDetail.select("#{SignatureDetail.table_name}.sig_priority, COUNT(#{SignatureDetail.table_name}.sig_priority) as priority_cnt").where("sig_priority IS NOT NULL").group(:sig_priority).joins(:events).order('sig_priority asc')
-      @priorities = @priorities.where('timestamp between ? and ?', @start_time, @end_time)
-      @attackers = Iphdr.select("#{Iphdr.table_name}.ip_src, COUNT(#{Iphdr.table_name}.ip_src) AS ipcnt").group('iphdr.sid', 'iphdr.ip_src')
-      @attackers = @attackers.joins(:events).where('timestamp between ? and ?', @start_time, @end_time).limit(10)
-      @targets = Iphdr.select("#{Iphdr.table_name}.ip_dst, COUNT(#{Iphdr.table_name}.ip_dst) as ipcnt").group('iphdr.sid', 'iphdr.ip_dst')
-      @targets = @targets.joins(:events).where('timestamp between ? and ?', @start_time, @end_time).limit(10)
-      @events_by_signature = SignatureDetail.select("#{SignatureDetail.table_name}.sig_id, #{SignatureDetail.table_name}.sig_name, COUNT(#{SignatureDetail.table_name}.sig_name) as event_cnt").group(:sig_id, :sig_name).joins(:events).order('event_cnt desc').limit(10)
-      @events_by_signature = @events_by_signature.where('timestamp between ? and ?', @start_time, @end_time)
-      @events_count = @events_by_signature.length
-    else
-      # get current_user's Sensors based on group memberships:
-      sensors_for_user = current_user.sensors
-      if sensors_for_user.blank?
-        @events_by_signature = []
-        flash.now[:error] = "No sensors were found for you, perhaps you are not a member of any group. Please contact an administrator to resolve this issue."
-        @events_count = 0
-        return
-      else
-        # every 15 minutes (900 seconds = 15  * 60):
-        @hot_times = Event.find_by_sql ["SELECT SEC_TO_TIME(FLOOR(TIME_TO_SEC(timestamp)/900)*900) AS `minute`, count(*) as `cnt` from event where event.sid IN (?) AND timestamp BETWEEN ? AND ? GROUP BY SEC_TO_TIME(FLOOR(TIME_TO_SEC(timestamp)/900)*900) HAVING `cnt` > 10", sensors_for_user, @start_time, @end_time]
-        @priorities = SignatureDetail.select("#{SignatureDetail.table_name}.sig_priority, COUNT(#{SignatureDetail.table_name}.sig_priority) as priority_cnt").where("sig_priority IS NOT NULL").group(:sig_priority).joins(:events).where("event.sid IN (?)", sensors_for_user).order('sig_priority asc')
-        @priorities = @priorities.where('timestamp between ? and ?', @start_time, @end_time)
-        @attackers = Iphdr.where("iphdr.sid IN (?)", sensors_for_user).select("#{Iphdr.table_name}.ip_src, COUNT(#{Iphdr.table_name}.ip_src) as ipcnt").group('iphdr.sid', 'iphdr.ip_src')
-        @attackers = @attackers.joins(:events).where('timestamp between ? and ?', @start_time, @end_time).limit(10)
-        @targets = Iphdr.where("iphdr.sid IN (?)", sensors_for_user).select("#{Iphdr.table_name}.ip_dst, COUNT(#{Iphdr.table_name}.ip_dst) as ipcnt").group('iphdr.sid', 'iphdr.ip_dst')
-        @targets = @targets.joins(:events).where('timestamp between ? and ?', @start_time, @end_time).limit(10)
-        @events_by_signature = SignatureDetail.select("#{SignatureDetail.table_name}.sig_id, #{SignatureDetail.table_name}.sig_name, COUNT(#{SignatureDetail.table_name}.sig_name) as event_cnt").group(:sig_id, :sig_name).joins(:events).where("event.sid IN (?)", sensors_for_user)
-        @events_by_signature = @events_by_signature.where('timestamp between ? and ?', @start_time, @end_time).order('event_cnt desc').limit(10)
-        @events_count = @events_by_signature.length
-      end
-    end
+  def set_pulse_for_partial
+    take_pulse(current_user, @report.report_criteria[:relative_date_range])
   end
 end
