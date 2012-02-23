@@ -33,6 +33,8 @@ class ReportsController < ApplicationController
     if current_user.role?(:admin)
       @reports = Report
     else
+      # note if 'user_id = current_user.id' then this user is the owner of this report or 
+      # the user set this report with 'Access Allowed' 'To' 'only me' (but they are still the owner)
       @reports = Report.where('for_all_users = ? OR user_id = ?', true, current_user.id)
       @reports = Report.includes(:groups).where('groups.id IN (?)', current_user.groups) if @reports.blank?
     end
@@ -146,7 +148,7 @@ class ReportsController < ApplicationController
 
   def adjust_report_attributes
     # @report.report_type = 1 # default is 1=EventsReport
-    @report.user_id = current_user.id
+    @report.user_id = current_user.id if @report.user_id.blank? # i.e. don't lose original creator/owner id
     @report.for_all_users = false # only admins can set this to true
     @report.for_all_users = true if params[:report][:accessible_by] == 'a' && current_user.role?(:admin)
     @report.report_criteria = params[:q]

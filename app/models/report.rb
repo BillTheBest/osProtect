@@ -72,6 +72,16 @@ class Report < ActiveRecord::Base
     self.run_status == false
   end
 
+  def auto_run_at_to_s
+    return "" if self.auto_run_at.blank?
+    return Report.auto_run_selections.select {|p| p.id == self.auto_run_at}.first.name
+  end
+
+  def is_auto_run?
+    return false if self.auto_run_at.blank?
+    return Report.auto_run_selections.select {|p| p.id == self.auto_run_at}.first.id == self.auto_run_at
+  end
+
   def status
     self.run_status ? 'enabled' : 'disabled'
   end

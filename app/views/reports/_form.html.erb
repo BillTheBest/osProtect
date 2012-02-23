@@ -51,6 +51,7 @@
                         <span>&nbsp;</span>
                         <fieldset style="margin-top:-15px">
                           <ol>
+                            <li>As the group(s) selected determine which sensor(s) are available, the sensor criteria has been hidden below.</li>
                             <% if current_user.role?(:admin)
                                 groups = Group.all
                                else
@@ -83,7 +84,7 @@
                     <ol>
                       <li class="date_ranges_description date_ranges">
                         <label>Date Ranges</label>
-                        please select either a Relative or Fixed date range but not both:
+                        please enter either a Relative or Fixed date range but not both:
                       </li>
                       <li class="relative_date_range date_ranges" style="margin-top:-10px">
                         <label>Relative</label>

@@ -48,13 +48,30 @@
                       %>
                       <div class="pulse_chart_data_wrapper">
                         <div class="pulse_chart" style="float:left">
-                          <%= image_tag(Gchart.pie_3d(data: data, labels: labels, size: '650x350', title: "", theme: :thirty7signals)) %>
+                          <%= image_tag(Gchart.pie_3d(data: data, labels: labels, size: '450x250', title: "Top Attackers", theme: :thirty7signals)) %>
+                          <canvas id="chartCanvasTopAttackers" width="850" height="440" style="background:#fff">
+                              Your web-browser does not support the HTML 5 canvas element.
+                          </canvas>
+                          <script type="application/javascript">
+                            var chartTopAttackers = new AwesomeChart('chartCanvasTopAttackers');
+                            chartTopAttackers.chartType = "pareto";
+                            // chartTopAttackers.chartType = "default"; // vertical bars
+                            // chartTopAttackers.chartType = "pie";
+                            // chartTopAttackers.chartType = "doughnut";
+                            // chartTopAttackers.chartType = "exploded pie";
+                            // chartTopAttackers.chartType = "horizontal bars";
+                            // chartTopAttackers.title = "Top Attackers";
+                            chartTopAttackers.title = "   ";
+                            chartTopAttackers.data = [<%=data.join(',')%>];
+                            chartTopAttackers.labels = ['<%=labels.join("', '")%>'];
+                            chartTopAttackers.randomColors = true;
+                            chartTopAttackers.draw();
+                          </script>
                         </div>
                         <div class="pulse_data" style="float:right">
                           <table border="0" cellspacing="0" cellpadding="0">
                             <thead>
                               <tr>
-                                <th style="text-align:left"><small>%</small></th>
                                 <th style="text-align:right"><small>count</small></th>
                                 <th style="text-align:left">Top Attackers <small>(source IPs)</small></th>
                               </tr>
@@ -62,9 +79,6 @@
                             <tbody>
                               <% @attackers.each do |attack_ip| %>
                                   <tr class="<%= cycle('even', 'odd') %>">
-                                    <td align="right">
-                                      <%= "#{total == 0 ? 0 : (100.0 * attack_ip.ipcnt / total).round(2)}%" %>
-                                    </td>
                                     <td align="right"><%= number_with_delimiter(attack_ip.ipcnt) %></td>
                                     <td><%= link_to attack_ip.ip_source, events_path('q[source_address]' => attack_ip.ip_source) %></td>
                                   </tr>
@@ -93,13 +107,25 @@
                       %>
                       <div class="pulse_chart_data_wrapper">
                         <div class="pulse_chart" style="float:left">
-                          <%= image_tag(Gchart.pie_3d(data: data, labels: labels, size: '650x350', title: "", theme: :thirty7signals)) %>
+                          <%#= image_tag(Gchart.pie(data: data, labels: labels, size: '450x250', title: "Top Targets", theme: :thirty7signals)) %>
+                          <canvas id="chartCanvasTopTargets" width="850" height="440" style="background:#fff">
+                              Your web-browser does not support the HTML 5 canvas element.
+                          </canvas>
+                          <script type="application/javascript">
+                            var chartTopTargets = new AwesomeChart('chartCanvasTopTargets');
+                            chartTopTargets.chartType = "pareto";
+                            // chartTopTargets.title = "Top Targets";
+                            chartTopTargets.title = "  ";
+                            chartTopTargets.data = [<%=data.join(',')%>];
+                            chartTopTargets.labels = ['<%=labels.join("', '")%>'];
+                            chartTopTargets.randomColors = true;
+                            chartTopTargets.draw();
+                          </script>
                         </div>
                         <div class="pulse_data" style="float:right">
                           <table border="0" cellspacing="0" cellpadding="0">
                             <thead>
                               <tr>
-                                <th style="text-align:left"><small>%</small></th>
                                 <th style="text-align:left"><small>count</small></th>
                                 <th style="text-align:left">Top Targets <small>(destination IPs)</small></th>
                               </tr>
@@ -107,9 +133,6 @@
                             <tbody>
                               <% @targets.order('ipcnt DESC').each do |target_ip| %>
                                   <tr class="<%= cycle('even', 'odd') %>">
-                                    <td align="right">
-                                      <%= "#{total == 0 ? 0 : (100.0 * target_ip.ipcnt / total).round(2)}%" %>
-                                    </td>
                                     <td align="right"><%= number_with_delimiter(target_ip.ipcnt) %></td>
                                     <td><%= link_to target_ip.ip_destination, events_path('q[destination_address]' => target_ip.ip_destination) %></td>
                                   </tr>
@@ -133,18 +156,36 @@
                         data << priority.priority_cnt
                       end
                       labels = @priorities.collect do |priority|
+                        # "priority #{priority.sig_priority} (#{total == 0 ? 0 : (100.0 * priority.priority_cnt / total).round(2)}%)"
                         "priority #{priority.sig_priority}"
                       end
                       %>
                       <div class="pulse_chart_data_wrapper">
                         <div class="pulse_chart" style="float:left">
-                          <%= image_tag(Gchart.pie_3d(data: data, labels: labels, size: '650x350', title: "", theme: :thirty7signals)) %>
+                          <%#= image_tag(Gchart.pie(data: data, labels: labels, size: '400x200', title: "Priority (googlecharts)", theme: :thirty7signals)) %>
+                          <canvas id="chartCanvasPriority" width="850" height="440" style="background:#fff">
+                              Your web-browser does not support the HTML 5 canvas element.
+                          </canvas>
+                          <script type="application/javascript">
+                            var chartPriority = new AwesomeChart('chartCanvasPriority');
+                            chartPriority.chartType = "pareto";
+                            // chartPriority.chartType = "default"; // vertical bars
+                            // chartPriority.chartType = "pie";
+                            // chartPriority.chartType = "doughnut";
+                            // chartPriority.chartType = "exploded pie";
+                            // chartPriority.chartType = "horizontal bars";
+                            // chartPriority.title = "Priorities";
+                            chartPriority.title = "   ";
+                            chartPriority.data = [<%=data.join(',')%>];
+                            chartPriority.labels = ['<%=labels.join("', '")%>'];
+                            chartPriority.randomColors = true;
+                            chartPriority.draw();
+                          </script>
                         </div>
                         <div class="pulse_data" style="float:right">
                           <table border="0" cellspacing="0" cellpadding="0">
                             <thead>
                               <tr>
-                                <th style="text-align:left"><small>%</small></th>
                                 <th style="text-align:left"><small>count</small></th>
                                 <th style="text-align:left">Priority</th>
                               </tr>
@@ -152,12 +193,7 @@
                             <tbody>
                               <% @priorities.each do |priority| %>
                                   <tr class="<%= cycle('even', 'odd') %>">
-                                    <td align="right">
-                                      <%= "#{total == 0 ? 0 : (100.0 * priority.priority_cnt / total).round(2)}%" %>
-                                    </td>
-                                    <td align="right">
-                                      <%= number_with_delimiter(priority.priority_cnt) %>
-                                    </td>
+                                    <td align="right"><%= number_with_delimiter(priority.priority_cnt) %></td>
                                     <td align="left"><%= link_to priority.sig_priority, events_path('q[sig_priority]' => priority.sig_priority) %></td>
                                   </tr>
                               <% end %>
@@ -180,38 +216,42 @@
                         data << event.event_cnt
                       end
                       labels = @events.collect do |event|
-                        "#{truncate(event.sig_name, length: 30)}"
+                        "#{event.sig_name} (#{total == 0 ? 0 : (100.0 * event.event_cnt / total).round(2)}%)"
                       end
                       %>
-                      <div class="pulse_chart_data_wrapper">
-                        <div class="pulse_chart" style="float:left">
-                          <%= image_tag(Gchart.pie_3d(data: data, labels: labels, size: '850x350', title: "", theme: :thirty7signals)) %>
-                        </div>
-                        <div class="pulse_data" style="float:right">
-                          <table border="0" cellspacing="0" cellpadding="0">
-                            <thead>
-                              <tr>
-                                <th style="text-align:left"><small>%</small></th>
-                                <th style="text-align:left"><small>count</small></th>
-                                <th style="text-align:left">Top Events by Signature</th>
+                      <%#= image_tag(Gchart.pie(data: data, labels: labels, size: '850x250', title: "Top Events by Signature", theme: :thirty7signals)) %>
+                      <!-- <canvas id="chartCanvasTopEventsBySignature" width="850" height="440" style="background:#fff">
+                          Your web-browser does not support the HTML 5 canvas element.
+                      </canvas>
+                      <script type="application/javascript">
+                        var chartTopEventsBySignature = new AwesomeChart('chartCanvasTopEventsBySignature');
+                        chartTopEventsBySignature.chartType = "horizontal bars";
+                        chartTopEventsBySignature.title = "Top Events by Signature";
+                        chartTopEventsBySignature.data = [<%=data.join(',')%>];
+                        chartTopEventsBySignature.labels = ['<%=labels.join("', '")%>'];
+                        chartTopEventsBySignature.randomColors = true;
+                        chartTopEventsBySignature.draw();
+                      </script> -->
+                      <table border="0" cellspacing="0" cellpadding="0">
+                        <thead>
+                          <tr>
+                            <th style="text-align:right"><small>count</small></th>
+                            <th style="text-align:left">Top Events by Signature</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% @events.each do |event| %>
+                              <tr class="<%= cycle('even', 'odd') %>">
+                                <td align="right">
+                                  <%= "#{total == 0 ? 0 : (100.0 * event.event_cnt / total).round(2)}%" %>
+                                  &nbsp;&nbsp;&nbsp;&nbsp;
+                                  <%= number_with_delimiter(event.event_cnt) %>
+                                </td>
+                                <td><%= link_to event.sig_name, events_path('q[sig_id]' => event.sig_id) %></td>
                               </tr>
-                            </thead>
-                            <tbody>
-                              <% @events.each do |event| %>
-                                  <tr class="<%= cycle('even', 'odd') %>">
-                                    <td align="right">
-                                      <%= "#{total == 0 ? 0 : (100.0 * event.event_cnt / total).round(2)}%" %>
-                                    </td>
-                                    <td align="right">
-                                      <%= number_with_delimiter(event.event_cnt) %>
-                                    </td>
-                                    <td><%= link_to event.sig_name, events_path('q[sig_id]' => event.sig_id) %></td>
-                                  </tr>
-                              <% end %>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
+                          <% end %>
+                        </tbody>
+                      </table>
                   <% end %>
                   <hr style="clear: both; margin-bottom:30px; height:5px" />
 

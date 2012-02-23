@@ -10,20 +10,24 @@ jQuery ->
   $('.events_listing #q_timestamp_gte').attr('disabled',true)
   $('.events_listing #q_timestamp_te').attr('disabled',true)
 
-  # if Access Allowed To is 'only me'(m) or 'any group or user'(a) then don't show groups:
+  # show/hide groups/sensor if 'Access Allowed' 'To' is 'for group(s) selected below'(g):
+  # also hide sensor criteria when groups are shown:
   aat = $(".inputs .access_allowed #report_accessible_by option:selected").val()
   if aat == 'g'
     $('.groups').show()
+    $('.sensor').hide()
   else
     $('.groups').hide()
+    $('.sensor').show()
 
-  # show/hide groups if Access Allowed To is 'for group(s) selected below'(g):
   $('.inputs .access_allowed #report_accessible_by').change ->
     att = $(".inputs .access_allowed #report_accessible_by option:selected").val()
     if att == 'g'
       $('.groups').show()
+      $('.sensor').hide()
     else
       $('.groups').hide()
+      $('.sensor').show()
     return true
 
   # if Run Automatically is Daily/Weekly/Monthly then don't show date ranges:

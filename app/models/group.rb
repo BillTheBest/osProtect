@@ -5,6 +5,7 @@ class Group < ActiveRecord::Base
   has_many :group_sensors, dependent: :destroy
   has_many :sensors, through: :group_sensors
   has_many :notifications
+  has_many :report_groups, dependent: :destroy
 
   attr_accessible :name, :user_ids, :user_tokens, :sensor_ids
   attr_reader :user_tokens
