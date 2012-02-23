@@ -1,4 +1,5 @@
 class CronTask
+
   class << self
     def perform(method)
       with_logging method do
@@ -22,6 +23,16 @@ class CronTask
   end
 
   # the following methods are resque-scheduler tasks:
+
+  def batched_email_notifications
+    Notification.all.each do |notification|
+      next if notification.disabled
+      next if notification.notification_results.where(email_sent: false).count < 1
+      # note: don't pass complex objects like ActiveRecord models, just pass id's as references
+      #       to the object(s) because the enqueue method in resque converts params to json:
+      UserBackgroundMailer.batched_email_notifications(notification.id).deliver
+    end
+  end
 
   def event_notifications
     # FIXME this needs some TLC as I have not spent any time on refactoring or optimizing!
@@ -64,13 +75,26 @@ class CronTask
     end
   end
 
-  def batched_email_notifications
-    Notification.all.each do |notification|
-      next if notification.disabled
-      next if notification.notification_results.where(email_sent: false).count < 1
-      # note: don't pass complex objects like ActiveRecord models, just pass id's as references
-      #       to the object(s) because the enqueue method in resque converts params to json:
-      UserBackgroundMailer.batched_email_notifications(notification.id).deliver
+  def daily_report_emailed_as_pdf
+    pdf_max_records = APP_CONFIG[:pdf_max_records]
+    Report.where(auto_run_at: 'd', run_status: true).each do |report|
+      # if Rails.env.production?
+      #   users = User.all
+      # else
+        users = User.where(id: 1)
+      # end
+      users.each do |user|
+        # note: don't pass complex objects like ActiveRecord models, just pass id's as references
+        #       to the object(s) because the enqueue method in resque converts params to json:
+        UserBackgroundMailer.cron_report(user.id, report.id, pdf_max_records, 1).deliver
+      end
     end
   end
+
+  def weekly_report_emailed_as_pdf
+  end
+
+  def monthly_report_emailed_as_pdf
+  end
+
 end

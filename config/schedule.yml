@@ -25,8 +25,16 @@
 # 0 2 * * 0       -- 2am every Sunday     ... weekly report for last week
 # 0 3 1 * *       -- 3am on 1st of month  ... monthly report for last month
 
+process_daily_reports:
+  cron: "0 1 * * *"
+  class: CronTask
+  queue: daily_reports
+  # method to perform in app/workers/cron_task.rb:
+  args: "daily_report_emailed_as_pdf"
+  description: "Daily Report"
+  rails_envs: development, production
+
 process_event_notifications:
-  # cron: "0 0 * * *"
   every: 1m
   class: CronTask
   queue: notifications

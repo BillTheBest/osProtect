@@ -49,7 +49,7 @@
                             <td>
                               <%# note: only allow HTML/PDF display if report is enabled and not an auto-run(cron) report %>
                               <% if report.auto_run_at.present? %>
-                                  <%= report.auto_run_at_to_s%> <em>emailed report</em>
+                                  <%= report.auto_run_at_to_s %> <em>emailed report</em>
                               <% elsif report.enabled && report.auto_run_at.blank? %>
                                   <%= link_to 'HTML', report_listing_events_path(id: report.id, q: report.report_criteria) %>
                                   &nbsp;&nbsp;&nbsp;

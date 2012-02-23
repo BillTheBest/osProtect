@@ -1,5 +1,8 @@
+require "osprotect/date_ranges"
+
 class UserBackgroundMailer < ActionMailer::Base
   include Resque::Mailer
+  include Osprotect::DateRanges
 
   default from: APP_CONFIG[:emails_from]
 
@@ -8,6 +11,33 @@ class UserBackgroundMailer < ActionMailer::Base
     # note: subject can be set in your I18n file at config/locales/en.yml with the following lookup:
     #   en.user_mailer.password_reset.subject
     mail :to => @user.email, :subject => "Password Reset"
+  end
+
+  def cron_report(user_id, report_id, pdf_max_records, daily_weekly_monthly)
+    time_range = 'yesterday'  if daily_weekly_monthly == 1
+    time_range = 'last_week'  if daily_weekly_monthly == 2
+    time_range = 'last_month' if daily_weekly_monthly == 3
+    # set_time_range(time_range)
+    @user = User.find(user_id)
+    @report = Report.find(report_id)
+    @report.report_criteria[:relative_date_range] = time_range
+    # @report.report_criteria[:timestamp_gte] = @start_time.strftime("%Y-%m-%d %H:%M:%S")
+    # @report.report_criteria[:timestamp_lte] = @end_time.strftime("%Y-%m-%d %H:%M:%S")
+    # unless Rails.env.production?
+    #   @report.report_criteria[:timestamp_gte] = '2011-10-26 00:00:00'
+    #   @report.report_criteria[:timestamp_lte] = '2011-10-26 23:59:59'
+    # end
+    @report_type = @report.auto_run_at_to_s
+    event = Event.new
+    @events = event.get_events_based_on_groups_for_user(user_id)
+    @event_search = EventSearch.new(@report.report_criteria)
+    @events = @event_search.filter(@events)
+    @events = @events.limit(pdf_max_records)
+    if @events.count > 0
+      pdf = EventsPdf.new(@events, @report.report_criteria)
+      attachments["#{Time.now.utc.strftime("%Y%m%d%H%M%S%N%Z")}_daily_report.pdf"] = pdf.render
+    end
+    mail :to => @user.email, :subject => "osProtect: #{@report_type} Report"
   end
 
   # used to test notifications:
