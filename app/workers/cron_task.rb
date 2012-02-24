@@ -76,7 +76,6 @@ class CronTask
   end
 
   def daily_report_emailed_as_pdf
-    pdf_max_records = APP_CONFIG[:pdf_max_records]
     Report.where(auto_run_at: 'd', run_status: true).each do |report|
       if Rails.env.production?
         users = User.all
@@ -84,17 +83,35 @@ class CronTask
         users = User.where(id: 1)
       end
       users.each do |user|
-        # note: don't pass complex objects like ActiveRecord models, just pass id's as references
-        #       to the object(s) because the enqueue method in resque converts params to json:
-        UserBackgroundMailer.cron_report(user.id, report.id, pdf_max_records, 1).deliver
+        UserBackgroundMailer.cron_report(user.id, report.id, APP_CONFIG[:pdf_max_records], 1).deliver
       end
     end
   end
 
   def weekly_report_emailed_as_pdf
+    Report.where(auto_run_at: 'w', run_status: true).each do |report|
+      if Rails.env.production?
+        users = User.all
+      else
+        users = User.where(id: 1)
+      end
+      users.each do |user|
+        UserBackgroundMailer.cron_report(user.id, report.id, APP_CONFIG[:pdf_max_records], 2).deliver
+      end
+    end
   end
 
   def monthly_report_emailed_as_pdf
+    Report.where(auto_run_at: 'm', run_status: true).each do |report|
+      if Rails.env.production?
+        users = User.all
+      else
+        users = User.where(id: 1)
+      end
+      users.each do |user|
+        UserBackgroundMailer.cron_report(user.id, report.id, APP_CONFIG[:pdf_max_records], 3).deliver
+      end
+    end
   end
 
 end

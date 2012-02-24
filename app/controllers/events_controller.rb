@@ -29,12 +29,6 @@ class EventsController < ApplicationController
       format.html do
         @event = Event.includes(:sensor, :signature_detail, :iphdr, :tcphdr, :icmphdr, :udphdr, :payload).find(params[:id])
       end
-      # FIXME this isn't working, due to route error:
-      # format.pdf do
-      #   pdf = EventsPdf.new
-      #   send_data pdf.render, filename: "events_report_#{3}", type: "application/pdf", disposition: "inline"
-      #   return
-      # end
     end
   end
 
@@ -73,11 +67,6 @@ class EventsController < ApplicationController
           pdf.destroy
           redirect_to events_url(q: params[:q]), notice: "Background processing is offline, so PDF creation is not possible at this time."
         end
-        # the following code immediately generates a PDF for downloading ... this is too time-consuming:
-        # get_events_based_on_groups_for_current_user
-        # pdf = EventsPdf.new(@events, params[:q])
-        # # send_data pdf.render, filename: "events_report", type: "application/pdf", disposition: "inline"
-        # send_data pdf.render, filename: "events_report", type: "application/pdf"
       end
     end
   end

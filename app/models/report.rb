@@ -52,7 +52,7 @@ class Report < ActiveRecord::Base
     ar = []
     ar << Selection.new({id: 'd', name: 'Daily'})
     ar << Selection.new({id: 'w', name: 'Weekly'})
-    ar << Selection.new({id: 'm', name: 'Monthly'})
+    # ar << Selection.new({id: 'm', name: 'Monthly'})
     ar
   end
 

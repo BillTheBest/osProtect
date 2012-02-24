@@ -16,8 +16,8 @@ class PdfWorker
       pdf_max_records = APP_CONFIG[:pdf_max_records]
       pdf_details = Pdf.find(pdf_id)
       # note: these are the types of pdf's that can be created:
-      #   1 - EventsReport with optional summary(pulse) page ... EventsPdf
-      #   2 - IncidentsReport with description+resolution and their events ... IncidentsPdf
+      #   1 - EventsReport with optional summary(pulse) page
+      #   2 - IncidentsReport with description+resolution and their events
       #   3 - EventsSearch, directly from the events page
       report_name = 'events_report'
       if pdf_details.pdf_type == 1 || pdf_details.pdf_type == 3
@@ -28,7 +28,7 @@ class PdfWorker
         @event_search = EventSearch.new(pdf_details.creation_criteria)
         @events = @event_search.filter(@events)
         @events = @events.limit(pdf_max_records)
-        pdf = EventsPdf.new(@events, pdf_details.creation_criteria)
+        pdf = EventsPdf.new(@events, pdf_details.report, pdf_details.creation_criteria)
       end
       path = "#{Rails.root}/shared/reports/#{user_id}"
       FileUtils.mkdir_p(path) # create path if it doesn't exist already

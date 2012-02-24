@@ -20,6 +20,7 @@ class UserBackgroundMailer < ActionMailer::Base
     time_range = 'last_week'  if daily_weekly_monthly == 2
     time_range = 'last_month' if daily_weekly_monthly == 3
     @report.report_criteria[:relative_date_range] = time_range
+    @report.report_criteria[:relative_date_range] = 'past_year' unless Rails.env.production?
     @report_type = @report.auto_run_at_to_s
     event = Event.new
     @events = event.get_events_based_on_groups_for_user(@user.id)
@@ -27,10 +28,13 @@ class UserBackgroundMailer < ActionMailer::Base
     @events = @event_search.filter(@events)
     @events = @events.limit(pdf_max_records)
     if @events.count > 0
-      pdf = EventsPdf.new(@events, @report.report_criteria)
+      pdf = EventsPdf.new(@user, @report, @events)
       attachments["#{Time.now.utc.strftime("%Y%m%d%H%M%S%N%Z")}_daily_report.pdf"] = pdf.render
+      path = "#{Rails.root}/shared/reports"
+      filename = "#{Time.now.utc.strftime("%Y%m%d%H%M%S%N%Z")}_daily_report.pdf"
+      pdf_file = pdf.render_file("#{path}/#{filename}")
     end
-    mail :to => @user.email, :subject => "osProtect: #{@report_type} Report"
+    mail :to => @user.email, :subject => "osProtect: #{@report_type} Report: #{@report.name} (##{@report.id})"
   end
 
   def batched_email_notifications(notification_id)

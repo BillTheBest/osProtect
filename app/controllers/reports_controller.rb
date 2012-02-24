@@ -137,11 +137,6 @@ class ReportsController < ApplicationController
           pdf.destroy
           redirect_to events_url(q: report.report_criteria), notice: "Background processing is offline, so PDF creation is not possible at this time."
         end
-        # the following code immediately generates a PDF for downloading ... this is too time-consuming:
-        # get_events_based_on_groups_for_current_user
-        # pdf = EventsPdf.new(@events, params[:q])
-        # # send_data pdf.render, filename: "events_report", type: "application/pdf", disposition: "inline"
-        # send_data pdf.render, filename: "events_report", type: "application/pdf"
       end
     end
   end
