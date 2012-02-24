@@ -23,12 +23,18 @@ class PdfsController < ApplicationController
 
   def destroy
     pdf = current_user.pdfs.find(params[:id])
-    file = pdf.path_to_file + '/' + pdf.file_name
+    if pdf.blank?
+      redirect_to pdfs_url
+      return
+    end
+    file = pdf.path_to_file + '/' + pdf.file_name unless pdf.path_to_file.blank? || pdf.file_name.blank?
     pdf.destroy
-    begin
-      FileUtils.rm(file) if File.exist?(file)
-    rescue Errno::ENOENT => e
-      # ignore file-not-found, let everything else pass
+    unless file.blank?
+      begin
+        FileUtils.rm(file) if File.exist?(file)
+      rescue Errno::ENOENT => e
+        # ignore file-not-found, let everything else pass
+      end
     end
     redirect_to pdfs_url
   end

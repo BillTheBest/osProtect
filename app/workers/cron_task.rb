@@ -77,11 +77,7 @@ class CronTask
 
   def daily_report_emailed_as_pdf
     Report.where(auto_run_at: 'd', run_status: true).each do |report|
-      if Rails.env.production?
-        users = User.all
-      else
-        users = User.where(id: 1)
-      end
+      users = User.all
       users.each do |user|
         UserBackgroundMailer.cron_report(user.id, report.id, APP_CONFIG[:pdf_max_records], 1).deliver
       end
@@ -90,28 +86,19 @@ class CronTask
 
   def weekly_report_emailed_as_pdf
     Report.where(auto_run_at: 'w', run_status: true).each do |report|
-      if Rails.env.production?
-        users = User.all
-      else
-        users = User.where(id: 1)
-      end
+      users = User.all
       users.each do |user|
         UserBackgroundMailer.cron_report(user.id, report.id, APP_CONFIG[:pdf_max_records], 2).deliver
       end
     end
   end
 
-  def monthly_report_emailed_as_pdf
-    Report.where(auto_run_at: 'm', run_status: true).each do |report|
-      if Rails.env.production?
-        users = User.all
-      else
-        users = User.where(id: 1)
-      end
-      users.each do |user|
-        UserBackgroundMailer.cron_report(user.id, report.id, APP_CONFIG[:pdf_max_records], 3).deliver
-      end
-    end
-  end
-
+  # def monthly_report_emailed_as_pdf
+  #   Report.where(auto_run_at: 'm', run_status: true).each do |report|
+  #     users = User.all
+  #     users.each do |user|
+  #       UserBackgroundMailer.cron_report(user.id, report.id, APP_CONFIG[:pdf_max_records], 3).deliver
+  #     end
+  #   end
+  # end
 end

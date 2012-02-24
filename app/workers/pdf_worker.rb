@@ -20,16 +20,26 @@ class PdfWorker
       #   2 - IncidentsReport with description+resolution and their events
       #   3 - EventsSearch, directly from the events page
       report_name = 'events_report'
-      if pdf_details.pdf_type == 1 || pdf_details.pdf_type == 3
-        report_name = "events_report_#{pdf_details.report_id}" unless pdf_details.report_id.nil?
-        report_name = "events_search_#{pdf_details.id}" if pdf_details.pdf_type == 3
-        event = Event.new
-        @events = event.get_events_based_on_groups_for_user(user_id)
-        @event_search = EventSearch.new(pdf_details.creation_criteria)
-        @events = @event_search.filter(@events)
-        @events = @events.limit(pdf_max_records)
-        pdf = EventsPdf.new(@events, pdf_details.report, pdf_details.creation_criteria)
+      report_name = "events_report_#{pdf_details.report_id}" unless pdf_details.report_id.nil?
+      report_name = "events_search_#{pdf_details.id}" if pdf_details.pdf_type == 3
+      @user = User.find(user_id)
+      if pdf_details.pdf_type == 1
+        @report = pdf_details.report
+      elsif pdf_details.pdf_type == 3
+        # note: pdf's based on searches from the Events page do not have an associated Report, 
+        #       so let's create a temporary one to use:
+        @report = Report.new
+        @report.report_criteria = pdf_details.creation_criteria # note: EventsPdf only uses @report.report_criteria
+      else
+        return
       end
+      event = Event.new
+      @events = event.get_events_based_on_groups_for_user(user_id)
+      @event_search = EventSearch.new(@report.report_criteria)
+      @events = @event_search.filter(@events)
+      @events = @events.limit(pdf_max_records)
+      pdf = EventsPdf.new(@user, @report, @events)
+      # now save pdf to file:
       path = "#{Rails.root}/shared/reports/#{user_id}"
       FileUtils.mkdir_p(path) # create path if it doesn't exist already
       filename = "#{Time.now.utc.strftime("%Y%m%d%H%M%S%N%Z")}_#{report_name}.pdf"

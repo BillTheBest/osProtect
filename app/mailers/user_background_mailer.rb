@@ -20,7 +20,6 @@ class UserBackgroundMailer < ActionMailer::Base
     time_range = 'last_week'  if daily_weekly_monthly == 2
     time_range = 'last_month' if daily_weekly_monthly == 3
     @report.report_criteria[:relative_date_range] = time_range
-    @report.report_criteria[:relative_date_range] = 'past_year' unless Rails.env.production?
     @report_type = @report.auto_run_at_to_s
     event = Event.new
     @events = event.get_events_based_on_groups_for_user(@user.id)

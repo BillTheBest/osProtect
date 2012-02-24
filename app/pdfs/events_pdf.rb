@@ -238,7 +238,7 @@ class EventsPdf < Prawn::Document
   def set_title_for_every_page
     repeat :all do
       tl = bounds.top_left # this is an array and we want to use the value at [1]:
-      text_box "Events Report", at: [30, tl[1]+20], size: 20, style: :bold, align: :center
+      text_box "Events", at: [30, tl[1]+20], size: 20, style: :bold, align: :center
     end
   end
   
