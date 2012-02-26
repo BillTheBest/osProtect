@@ -50,9 +50,9 @@ class Report < ActiveRecord::Base
 
   def self.auto_run_selections
     ar = []
-    ar << Selection.new({id: 'd', name: 'Daily'})
-    ar << Selection.new({id: 'w', name: 'Weekly'})
-    # ar << Selection.new({id: 'm', name: 'Monthly'})
+    ar << Selection.new({id: 'd', name: 'Daily'})   if APP_CONFIG[:can_daily_report]
+    ar << Selection.new({id: 'w', name: 'Weekly'})  if APP_CONFIG[:can_weekly_report]
+    ar << Selection.new({id: 'w', name: 'Monthly'}) if APP_CONFIG[:can_monthly_report]
     ar
   end
 

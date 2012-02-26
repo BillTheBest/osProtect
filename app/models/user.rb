@@ -1,8 +1,9 @@
 class User < ActiveRecord::Base
   has_many :memberships, dependent: :destroy
   has_many :groups, through: :memberships
-  has_many :notifications
-  has_many :notification_results
+  has_many :incidents
+  has_many :notifications, dependent: :destroy
+  has_many :notification_results, dependent: :destroy
   has_many :reports, dependent: :destroy
   has_many :pdfs, dependent: :destroy
 

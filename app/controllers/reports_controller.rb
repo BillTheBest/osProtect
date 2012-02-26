@@ -7,6 +7,7 @@ require "osprotect/pulse_top_tens"
 class ReportsController < ApplicationController
   before_filter :authenticate_user!
   before_filter :ensure_user_is_setup
+  before_filter :can_do_reports
 
   include Osprotect::RestrictEventsBasedOnUsersAccess
   include Osprotect::DateRanges
@@ -25,7 +26,7 @@ class ReportsController < ApplicationController
       @reports = Report.where('for_all_users = ? OR user_id = ?', true, current_user.id)
       @reports = Report.includes(:groups).where('groups.id IN (?)', current_user.groups) if @reports.blank?
     end
-    @reports = @reports.order("reports.updated_at desc").page(params[:page]).per_page(12)
+    @reports = @reports.order("reports.updated_at desc").page(params[:page]).per_page(APP_CONFIG[:per_page])
   end
 
   def show
@@ -94,7 +95,7 @@ class ReportsController < ApplicationController
     end
     get_events_based_on_groups_for_user(current_user.id) # sets @events
     filter_events_based_on(params[:q]) # sets @event_search
-    @events = @events.page(params[:page]).per_page(12)
+    @events = @events.page(params[:page]).per_page(APP_CONFIG[:per_page])
     set_pulse_for_partial
   end
 
@@ -142,6 +143,12 @@ class ReportsController < ApplicationController
   end
 
   private
+
+  def can_do_reports
+    return if APP_CONFIG[:can_do_reports]
+    flash[:error] = "Access denied: Reports are not available."
+    redirect_to root_url
+  end
 
   def adjust_params
     if ['a', 'm'].include?(params[:report][:accessible_by])

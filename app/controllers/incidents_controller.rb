@@ -3,7 +3,7 @@ class IncidentsController < ApplicationController
   before_filter :ensure_user_is_setup
 
   def index
-    @incidents = Incident.accessible_by(current_ability).order("updated_at desc").page(params[:page]).per_page(12)
+    @incidents = Incident.accessible_by(current_ability).order("updated_at desc").page(params[:page]).per_page(APP_CONFIG[:per_page])
   end
 
   def show
@@ -29,7 +29,7 @@ class IncidentsController < ApplicationController
 
   def edit
     @incident = Incident.accessible_by(current_ability).find(params[:id])
-    @incident_events = @incident.incident_events.page(params[:page]).per_page(12)
+    @incident_events = @incident.incident_events.page(params[:page]).per_page(APP_CONFIG[:per_page])
   end
 
   def update

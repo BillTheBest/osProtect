@@ -4,7 +4,7 @@ class NotificationResultsController < ApplicationController
 
   def index
     @notification = current_user.notifications.find(params[:id])
-    @notification_results = @notification.notification_results.order("updated_at desc").page(params[:page]).per_page(12)
+    @notification_results = @notification.notification_results.order("updated_at desc").page(params[:page]).per_page(APP_CONFIG[:per_page])
   end
 
   def show

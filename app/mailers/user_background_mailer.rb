@@ -13,7 +13,7 @@ class UserBackgroundMailer < ActionMailer::Base
     mail :to => @user.email, :subject => "Password Reset"
   end
 
-  def cron_report(user_id, report_id, pdf_max_records, daily_weekly_monthly)
+  def cron_report(user_id, report_id, max_events_per_pdf, daily_weekly_monthly)
     @user = User.find(user_id)
     @report = Report.find(report_id)
     time_range = 'yesterday'  if daily_weekly_monthly == 1
@@ -25,7 +25,7 @@ class UserBackgroundMailer < ActionMailer::Base
     @events = event.get_events_based_on_groups_for_user(@user.id)
     @event_search = EventSearch.new(@report.report_criteria)
     @events = @event_search.filter(@events)
-    @events = @events.limit(pdf_max_records)
+    @events = @events.limit(max_events_per_pdf)
     if @events.count > 0
       pdf = EventsPdf.new(@user, @report, @events)
       attachments["#{Time.now.utc.strftime("%Y%m%d%H%M%S%N%Z")}_daily_report.pdf"] = pdf.render

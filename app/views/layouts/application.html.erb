@@ -32,8 +32,11 @@
           &nbsp;&nbsp;
           &nbsp;|&nbsp; Ruby: <%=RUBY_VERSION%>
           &nbsp;|&nbsp; Rails: <%=Rails::VERSION::STRING%>
-          <% if APP_CONFIG[:pdf_max_records] %>
-              &nbsp;|&nbsp; PDF's are limited to <%= number_with_delimiter(APP_CONFIG[:pdf_max_records]) %> records
+          <% if APP_CONFIG[:max_events_per_pdf] %>
+              &nbsp;|&nbsp; <%= number_with_delimiter(APP_CONFIG[:max_events_per_pdf]) %> records max per PDF
+          <% end %>
+          <% if APP_CONFIG[:per_page] %>
+              &nbsp;|&nbsp; <%= number_with_delimiter(APP_CONFIG[:per_page]) %> items per page
           <% end %>
           &nbsp;&nbsp;
       <% end %>

@@ -3,7 +3,7 @@ class NotificationsController < ApplicationController
   before_filter :ensure_user_is_setup
 
   def index
-    @notifications = current_user.notifications.order("updated_at desc").page(params[:page]).per_page(12)
+    @notifications = current_user.notifications.order("updated_at desc").page(params[:page]).per_page(APP_CONFIG[:per_page])
   end
 
   def show

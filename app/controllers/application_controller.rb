@@ -6,31 +6,15 @@ class ApplicationController < ActionController::Base
     redirect_to root_url
   end
 
-  protected
-
-  # def present_page_of(collection, options = {})
-  #   presenter = page_presenter_class.new(self, page_of(collection))
-  #   respond_with presenter, options
-  # end
-  # 
-  # def page_of(collection)
-  #   collection.paginate(:page => params[:page], :per_page => 12)
-  # end
-  # 
-  # def page_presenter_class
-  #   (self.class.name.gsub!("Controller", "").singularize + "PagePresenter").constantize
-  # end
-  # 
-  # def presenter_class
-  #   (self.class.name.gsub!("Controller", "").singularize + "Presenter").constantize
-  # end
-
-
   private
 
   def menu_tabs
-    return ['events', 'pulse', 'incidents', 'notifications', 'reports', 'pdfs', 'sensors', 'groups', 'users', 'resque_server'] if can? :admin, User
-    ['events', 'pulse', 'incidents', 'notifications', 'reports', 'pdfs', 'sensors']
+    tabs = ['events', 'pulse', 'incidents', 'sensors']
+    tabs += ['notifications'] if APP_CONFIG[:can_do_notifications]
+    tabs += ['reports', 'pdfs'] if APP_CONFIG[:can_do_reports]
+    tabs += ['groups', 'users'] if can?(:admin, User)
+    tabs += ['resque_server'] if can?(:admin, User) && (APP_CONFIG[:can_do_notifications] || APP_CONFIG[:can_do_reports])
+    tabs
   end
   helper_method :menu_tabs
 

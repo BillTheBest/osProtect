@@ -14,7 +14,9 @@ class EventsController < ApplicationController
   include Osprotect::RestrictEventsBasedOnUsersAccess
 
   def index
-    get_events_based_on_groups_for_user(current_user.id)
+    # get_events_based_on_groups_for_user(current_user.id)
+    # letting CanCan fetch records based on the current_user's abilities is cleaner (see: models/ability.rb file):
+    @events = Event.includes(:sensor, :signature_detail, :iphdr, :tcphdr, :udphdr).accessible_by(current_ability).order("timestamp desc").page(params[:page]).per_page(APP_CONFIG[:per_page])
     filter_events_based_on(params[:q])
     if params.present?
       if params[:commit] == 'Reset'

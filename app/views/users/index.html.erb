@@ -34,7 +34,7 @@
                             <% if user.id == current_user.id || user.username.strip.downcase == 'admin' %>
                               <td>&nbsp;</td>
                             <% else %>
-                              <td><%= link_to 'delete', user, confirm: 'Are you sure?', method: :delete %></td>
+                              <td><%= link_to 'delete', user, confirm: "\n*** WARNING ***\n\nThis will also delete all Notifications, Reports, and PDF's created by this user.\n\nThis action may take a while to complete, please be patient ... thank you.\n\nAre you sure?\n\n", method: :delete %></td>
                             <% end %>
                           </tr>
                       <% end %>

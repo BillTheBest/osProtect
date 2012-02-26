@@ -13,7 +13,7 @@ class PdfWorker
   def self.perform(user_id, pdf_id)
     log("starting...", @queue_name)
     time = Benchmark.ms do
-      pdf_max_records = APP_CONFIG[:pdf_max_records]
+      max_events_per_pdf = APP_CONFIG[:max_events_per_pdf]
       pdf_details = Pdf.find(pdf_id)
       # note: these are the types of pdf's that can be created:
       #   1 - EventsReport with optional summary(pulse) page
@@ -37,7 +37,7 @@ class PdfWorker
       @events = event.get_events_based_on_groups_for_user(user_id)
       @event_search = EventSearch.new(@report.report_criteria)
       @events = @event_search.filter(@events)
-      @events = @events.limit(pdf_max_records)
+      @events = @events.limit(max_events_per_pdf)
       pdf = EventsPdf.new(@user, @report, @events)
       # now save pdf to file:
       path = "#{Rails.root}/shared/reports/#{user_id}"

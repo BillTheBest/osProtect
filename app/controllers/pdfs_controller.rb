@@ -3,7 +3,7 @@ class PdfsController < ApplicationController
   before_filter :ensure_user_is_setup
 
   def index
-    @pdfs = current_user.pdfs.order('created_at DESC').page(params[:page]).per_page(12)
+    @pdfs = current_user.pdfs.order('created_at DESC').page(params[:page]).per_page(APP_CONFIG[:per_page])
   end
 
   def show

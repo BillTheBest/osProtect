@@ -1,17 +1,60 @@
+# this is loaded by: config/initializers/load_app_config.rb
+#
+# usage: APP_CONFIG[:show_versions_and_limits]
+#
+# notes:
+#   The per_page (i.e. pagination) setting affects all online listings.
+#
+#   Notifications and Reports require Redis and Resque scheduler/workers to be up and running.
+#
+#   Weekly and monthly reports:
+#     - are too time/resource consuming
+#     - they are really just a repeat of the Daily work, but at 7/30 times the daily amount
+#     - except for the summary/pulse portion they are just a copies of the daily's
+#   so they are initially disabled (set to false).
+#   You may change these if you have the resources to handle the workload involved.
+
 development:
   version: 1.0.0
   show_versions_and_limits: true
-  pdf_max_records: 100
   emails_from: do.not.reply@localhost
+  per_page: 12
+  # -- Notifications config:
+  can_do_notifications: true
+  notifications_max_events_that_can_copied_to_incidents: 50
+  # -- Reports/PDFs config:
+  max_events_per_pdf: 50
+  can_do_reports: true
+  can_daily_report: true
+  can_weekly_report: false
+  can_monthly_report: false
 
 test:
   version: 1.0.0
   show_versions_and_limits: true
-  pdf_max_records: 100
   emails_from: do.not.reply@localhost
+  per_page: 12
+  # -- Notifications config:
+  can_do_notifications: true
+  notifications_max_events_that_can_copied_to_incidents: 50
+  # -- Reports/PDFs config:
+  max_events_per_pdf: 50
+  can_do_reports: true
+  can_daily_report: true
+  can_weekly_report: false
+  can_monthly_report: false
 
 production:
   version: 1.0.0
   show_versions_and_limits: true
-  pdf_max_records: 2000
   emails_from: do.not.reply@osprotect.appsudo.com
+  per_page: 12
+  # -- Notifications config:
+  can_do_notifications: true
+  notifications_max_events_that_can_copied_to_incidents: 500
+  # -- Reports/PDFs config:
+  max_events_per_pdf: 2000
+  can_do_reports: true
+  can_daily_report: true
+  can_weekly_report: false
+  can_monthly_report: false

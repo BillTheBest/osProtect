@@ -1,11 +1,15 @@
 class Group < ActiveRecord::Base
-  has_many :incidents, dependent: :destroy
   has_many :memberships, dependent: :destroy
   has_many :users, through: :memberships
   has_many :group_sensors, dependent: :destroy
   has_many :sensors, through: :group_sensors
-  has_many :notifications
   has_many :report_groups, dependent: :destroy
+  # incidents actually belong to a user, so don't 'dependent: :destroy'
+  # ... this user may be reassigned, plus admin's can see any incidents:
+  has_many :incidents
+  # notifications actually belong to a user, so don't 'dependent: :destroy'
+  # ... this user may be reassigned, plus admin's can see any notifications:
+  has_many :notifications
 
   attr_accessible :name, :user_ids, :user_tokens, :sensor_ids
   attr_reader :user_tokens
