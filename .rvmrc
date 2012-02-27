@@ -2,8 +2,12 @@
 
 # put this in /etc/rvmrc is better:
 # export rvm_trust_rvmrcs_flag=1
-ruby_string="ruby-1.9.3-p0"
-gemset_name="ruby-1.9.3-osProtect"
+# appsudo.com:
+# ruby_string="ruby-1.9.3-p0"
+# gemset_name="ruby-1.9.3-osProtect"
+# clone at: 38.123.140.62:
+ruby_string="ruby 1.9.3p125"
+gemset_name="osprotect"
 
 if rvm list strings | grep -q "${ruby_string}" ; then
   # load or create the specified environment:

@@ -1,3 +1,10 @@
+# ... copy/backup a mysql db:
+# > ssh ????_@_???.com
+# > mysqldump -u railsapp -p osprotect > osprotect.sql
+# > cd somewhere_local
+# > scp ???_@_???.com:/apps/osprotect/current/osprotect.sql .
+# > mysql -u rails -prails osprotect_dev < osprotect.sql
+
 development:
   adapter: mysql2
   encoding: utf8

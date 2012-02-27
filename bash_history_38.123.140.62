@@ -3,7 +3,12 @@ ruby -v
 apt-get update
 apt-get upgrade
 apt-get dist-upgrade
-apt-get install gcc g++ build-essential libssl-dev libreadline5-dev zlib1g-dev linux-headers-generic libsqlite3-dev sqlite3 git-core python-software-properties
+apt-get install gcc g++ build-essential libssl-dev libreadline5-dev zlib1g-dev linux-headers-generic 
+libsqlite3-dev sqlite3 git-core python-software-properties
+# cls: rvm recommended for ruby:
+#   /usr/bin/apt-get install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g 
+#   zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf 
+#   libc6-dev ncurses-dev automake libtool bison subversion
 mkdir /TEMP
 cd /TEMP/
 wget ftp://ftp.ruby-lang.org//pub/ruby/1.9/ruby-1.9.2-p290.tar.gz
