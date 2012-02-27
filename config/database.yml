@@ -29,12 +29,13 @@ production:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: osprotect
   pool: 5
   # appsudo.com:
+  # database: osprotect
   # username: railsapp
   # password: r1o2r3dec20
   # for clone at 38.123.140.62:
+  database: snort
   username: snort
   password: cl0nesys01
   socket: /var/run/mysqld/mysqld.sock
