@@ -31,6 +31,10 @@ production:
   reconnect: false
   database: osprotect
   pool: 5
-  username: railsapp
-  password: r1o2r3dec20
+  # appsudo.com:
+  # username: railsapp
+  # password: r1o2r3dec20
+  # for clone at 38.123.140.62:
+  username: snort
+  password: cl0nesys01
   socket: /var/run/mysqld/mysqld.sock
