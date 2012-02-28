@@ -79,6 +79,7 @@ class CronTask
     return unless APP_CONFIG[:can_daily_report]
     Report.where(auto_run_at: 'd', run_status: true).each do |report|
       users = User.all
+      # cls: users = User.where(id: 6)
       users.each do |user|
         UserBackgroundMailer.cron_report(user.id, report.id, APP_CONFIG[:max_events_per_pdf], 1).deliver
       end

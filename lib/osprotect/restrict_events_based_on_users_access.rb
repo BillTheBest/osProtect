@@ -16,7 +16,7 @@ module Osprotect
       # handle any filter/search criteria, if provided:
       @event_search = EventSearch.new(criteria)
       if params.present?
-        # if any errors just return and the filter form will display them:
+        # if any errors just return and the search/filter form will display them:
         return if @event_search.errors.size > 0
         # otherwise let's apply the filter/search criteria to the events relation:
         @events = @event_search.filter @events

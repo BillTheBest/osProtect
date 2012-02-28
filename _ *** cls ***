@@ -429,6 +429,22 @@ Running 'wkhtmltopdf-proxy' should do the same, which is what PDFKit uses.
 ... is it worth all of this madness ?
 _____________________________________________________________________________________________________________________
 
+Fri, Feb 24, 2012 at 11:35 PM:
+
+1) How hard would it be to make the Notifications, 
+    not only generate an email, but also create an incident automatically (with the same criteria, as email events)
+
+2) How hard would it be to make it osprotect to create an incident report 
+    (a report, with all the incidents). 
+    Similar functionality as the current reports (to be able to pick monthly, weekly, daily, etc., 
+    pending suspicious, resolved)
+
+3) The Run Automatically feature in the reports is missing the monthly option
+    ... solve Weekly/Monthly report pdf generation issue(slowness) by concatenating Daily reports using:
+    > apt-get install pdftk
+    ... concat pdf's using pdftk:
+    > pdftk summary.pdf daily1.pdf and_so_on.pdf cat output weekly/monthly.pdf
+    ... much faster to create a weekly/monthly summary then concat summary plus daily's
 
 
 

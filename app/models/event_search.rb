@@ -7,7 +7,7 @@ class EventSearch
 
   include Osprotect::DateRanges
 
-  attr_accessor :searchable
+  attr_accessor :searchable, :start_time, :end_time
 
   attribute_method_suffix  "="  # attr_writers
   # attribute_method_suffix  ""   # attr_readers
@@ -51,6 +51,7 @@ class EventSearch
   end
 
   def filter(events)
+    set_time_range(relative_date_range) # sets: @start_time and @end_time
     return events unless @searchable
     events = events.where("signature.sig_priority = ?", sig_priority) unless sig_priority.blank?
     events = events.where("signature.sig_id = ?", sig_id) unless sig_id.blank?
@@ -59,11 +60,12 @@ class EventSearch
     events = events.where("iphdr.ip_dst = ?", Iphdr.to_numeric(destination_address)) unless destination_address.blank?
     events = events.where("(udphdr.udp_dport = ? OR tcphdr.tcp_dport = ?)", destination_port.to_i, destination_port.to_i) unless destination_port.blank?
     events = events.where(sid: sensor_id) unless sensor_id.blank?
-    set_time_range(relative_date_range)
     if @start_time.nil? || @end_time.nil?
+      @start_time = timestamp_gte.to_datetime.utc.beginning_of_day unless timestamp_gte.blank?
+      @end_time = timestamp_lte.to_datetime.utc.end_of_day unless timestamp_lte.blank?
       # try custom/fixed date range:
-      events = events.where("timestamp >= ?", timestamp_gte.to_datetime.beginning_of_day) unless timestamp_gte.blank?
-      events = events.where("timestamp <= ?", timestamp_lte.to_datetime.end_of_day) unless timestamp_lte.blank?
+      events = events.where("timestamp >= ?", @start_time) unless timestamp_gte.blank?
+      events = events.where("timestamp <= ?", @end_time) unless timestamp_lte.blank?
     else
       events = events.where('timestamp between ? and ?', @start_time, @end_time)
     end

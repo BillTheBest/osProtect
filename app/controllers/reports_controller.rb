@@ -133,10 +133,11 @@ class ReportsController < ApplicationController
           queued = false
         end
         if queued
-          redirect_to events_url(q: report.report_criteria), notice: "Your PDF document is being prepared, and in a few moments it will be available for download on the PDFs page."
+          # redirect_to events_url(q: report.report_criteria), notice: "Your PDF document is being prepared, and in a few moments it will be available for download on the PDFs page."
+          redirect_to reports_url, notice: "Your PDF document is being prepared, and in a few moments it will be available for download on the PDFs page."
         else
           pdf.destroy
-          redirect_to events_url(q: report.report_criteria), notice: "Background processing is offline, so PDF creation is not possible at this time."
+          redirect_to reports_url, notice: "Background processing is offline, so PDF creation is not possible at this time."
         end
       end
     end

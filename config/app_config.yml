@@ -47,8 +47,7 @@ test:
 production:
   version: 1.0.0
   show_versions_and_limits: true
-  # emails_from: do.not.reply@osprotect.appsudo.com
-  emails_from: do.not.reply@CLONWLRUBY2.clone-systems.com
+  emails_from: do.not.reply@osprotect.com
   per_page: 12
   # -- Notifications config:
   can_do_notifications: true

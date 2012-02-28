@@ -6,19 +6,37 @@ class EventsPdf < Prawn::Document
   include Osprotect::DateRanges
   include Osprotect::PulseTopTens
 
-  def initialize(user, report, events)
+  def initialize(user, report, report_title, max_exceeded, max_events_per_pdf, events_count, events)
     super(top_margin: 30, left_margin: 5, right_margin: 5, font: "Helvetica", page_size: "A4", page_layout: :portrait)
     self.font_size = 8
     @gchart_size = '900x300'
     @user = user
     @report = report
+    @report_title = report_title
+    @max_exceeded = max_exceeded
+    @max_events_per_pdf = max_events_per_pdf
+    @events_count = events_count
     @events = events
     set_title_for_every_page
     move_down 20
-    text "Event Selection Criteria", size: 15, style: :bold, spacing: 4, align: :center
+    text "Selection Criteria", size: 15, style: :bold, spacing: 4, align: :center
     stroke_horizontal_line bounds.left, bounds.right
     move_down 30
     indent(200) { put_criteria_into_table }
+    if @max_exceeded
+      move_down 30
+      stroke_horizontal_line bounds.left, bounds.right
+      move_down 10
+      indent(150) do
+        text "There were #{events_count} matching Events.", size: 10, style: :bold, spacing: 4, align: :left
+        move_down 10
+        text "This exceeds the maximum of #{@max_events_per_pdf} per PDF.", size: 10, style: :bold, spacing: 4, align: :left
+        move_down 10
+        text "Only #{@max_events_per_pdf} will be shown in this PDF.", size: 10, style: :bold, spacing: 4, align: :left
+      end
+      move_down 10
+      stroke_horizontal_line bounds.left, bounds.right
+    end
     create_summary if report.include_summary
     start_new_page
     put_events_into_table
@@ -29,7 +47,7 @@ class EventsPdf < Prawn::Document
   def create_summary
     take_pulse(@user, @report.report_criteria[:relative_date_range])
     stroke_color "8d8d8d" # grey
-    # FIXME the following is not very DRY ... refactor soon!
+    # FIXME the following is not very DRY ... refactor ... soon!
     start_new_page
     move_down 20
     text "Top Attackers", size: 15, style: :bold, spacing: 4, align: :center
@@ -230,18 +248,17 @@ class EventsPdf < Prawn::Document
       self.cell_style = {overflow: :shrink_to_fit, min_font_size: 8, border_width: 1, borders: [:left, :right, :bottom], border_color: "F0F0F0"}
     end
   end
-  
+
   def set_table_header_row
     [ ["priority", "signature", "source", "destination", "sensor", "timestamp"] ]
   end
-  
+
   def set_title_for_every_page
     repeat :all do
-      tl = bounds.top_left # this is an array and we want to use the value at [1]:
-      text_box "Events", at: [30, tl[1]+20], size: 20, style: :bold, align: :center
+      text_box @report_title, at: [5, (bounds.top + 20)], size: 10, style: :bold, align: :center
     end
   end
-  
+
   def set_footer_for_every_page
     page_footer = "#{Time.now.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z")}     page <page> of <total>"
     page_options = {:at => [bounds.right - 400, 0],
