@@ -446,8 +446,31 @@ Fri, Feb 24, 2012 at 11:35 PM:
     > pdftk summary.pdf daily1.pdf and_so_on.pdf cat output weekly/monthly.pdf
     ... much faster to create a weekly/monthly summary then concat summary plus daily's
 _____________________________________________________________________________________________________________________
-*** only change to deploy to clone is config/environments/production.rb
+
+... note that the url will be localhost:5000 (not 3000)
+redis-server /usr/local/etc/redis.conf
+cls; foreman start -c web=3,worker=3,scheduler=1
+cls; foreman start -c web=1,worker=1,scheduler=1
+
+... deploy via giddyup (heroku-like):
+git push deploy master:master
+gup   (osprotect.appsudo.com)
+ssh cleesmith@appsudo.com
+sshlinode
+
+git push deployclone master:master
+gclone   (38.123.140.62)
+ssh cleesmith@38.123.140.62
+sshclone
+
 _____________________________________________________________________________________________________________________
-38.123.140.62
+* * * * * * * * * * * * only change needed for different deployments * * * * * * * * * * * * * * *
+- config/environments/production.rb :
+  config.action_mailer.default_url_options = { :host => "osprotect.appsudo.com" }
+  ... or ...
+  config.action_mailer.default_url_options = { :host => "38.123.140.62" }
+_____________________________________________________________________________________________________________________
+
+
 
 

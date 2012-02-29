@@ -39,44 +39,43 @@
                     <label>&nbsp;</label>
                     <em>note: you may enter an alternate email for notifications</em>
                   </li>
+                  <%#= render partial: 'criteria' %>
                   <li>
-                    <label>Match Events</label>
-                     criteria:&nbsp;&nbsp;&nbsp;<em>(all criteria are optional, and in that case any event would be a match)</em>
+                    <label>Event Selection Criteria</label>
                   </li>
-                  <fieldset class="inputs" style="margin-left:240px">
+                  <fieldset class="inputs" style="margin-top:-12px; margin-left:240px">
                     <ol>
                       <li class="minimum_matches">
                         <label>Minimum matches</label>
-                        <%= f.select(:minimum_matches, options_for_select([["Any", 0], ["1 or more matching events", 1], ["3 or more matching events", 3], ["5 or more matching events", 5], ["7 or more matching events", 7], ["10 or more matching events", 10]], selected: @notification.notify_criteria.minimum_matches)) %>
+                        <%= collection_select('q', :minimum_matches, Notification.minimum_matches_selections, :id, :name, selected: @event_search.minimum_matches) %>
                       </li>
-                      <li class="check_boxes priority required">
-                        <label>Priorities</label>
-                        <%= hidden_field_tag "notification[priority_ids][]", nil %>
-                        <span>&nbsp;</span>
-                        <fieldset style="margin-top:-15px">
-                          <ol>
-                            <% @notification.priorities.each do |priority| %>
-                              <li>
-                                <% if @notification.notify_criteria.blank? %>
-                                  <%= check_box_tag "notification[priority_ids][]", priority.id %>
-                                <% else %>
-                                  <%= check_box_tag "notification[priority_ids][]", priority.id, @notification.notify_criteria.priorities.include?(priority.name) %>
-                                <% end %>
-                                <%= priority.name %>
-                              </li>
-                            <% end %>
-                          </ol>
-                        </fieldset>
+                      <li class="priority">
+                        <label>Priority</label>
+                        <%= collection_select('q', :sig_priority, SignatureDetail.priorities(current_user), :sig_priority, :sig_priority, include_blank: true, selected: @event_search.sig_priority) %>
                       </li>
-                      <li class="attacker_ips">
-                        <label>Attacker IP <small>(source)</small></label>
-                        <% @notification.attacker_ips = @notification.notify_criteria.attacker_ips %>
-                        <%= f.text_field :attacker_ips %>
+                      <li class="signature">
+                        <label>Signature</label>
+                        <%= collection_select('q', :sig_id, SignatureDetail.selections(current_user), :id, :sig_name, include_blank: true, selected: @event_search.sig_id) %>
                       </li>
-                      <li class="target_ips">
-                        <label>Target IP <small>(destination)</small></label>
-                        <% @notification.target_ips = @notification.notify_criteria.target_ips %>
-                        <%= f.text_field :target_ips %>
+                      <li class="source_address">
+                        <label>Source IP Address</label>
+                        <%= text_field_tag 'q[source_address]', @event_search.source_address, size: "30" %>
+                      </li>
+                      <li class="source_port">
+                        <label>Source Port</label>
+                        <%= text_field_tag 'q[source_port]', @event_search.source_port, size: "30" %>
+                      </li>
+                      <li class="destination_address">
+                        <label>Destination IP Address</label>
+                        <%= text_field_tag 'q[destination_address]', @event_search.destination_address, size: "30" %>
+                      </li>
+                      <li class="destination_port">
+                        <label>Destination Port</label>
+                        <%= text_field_tag 'q[destination_port]', @event_search.destination_port, size: "30" %>
+                      </li>
+                      <li class="sensor">
+                        <label>Sensor</label>
+                        <%= collection_select('q', :sensor_id, Sensor.selections(current_user), :id, :hostname, include_blank: true, selected: @event_search.sensor_id) %>
                       </li>
                     </ol>
                   </fieldset>

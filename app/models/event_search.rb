@@ -10,13 +10,12 @@ class EventSearch
   attr_accessor :searchable, :start_time, :end_time
 
   attribute_method_suffix  "="  # attr_writers
-  # attribute_method_suffix  ""   # attr_readers
 
   define_attribute_methods [:sig_priority, :sig_id,
                             :source_address, :source_port,
                             :destination_address, :destination_port,
                             :sensor_id, :timestamp_gte, :timestamp_lte,
-                            :relative_date_range
+                            :relative_date_range, :minimum_matches
                            ]
 
   # ActiveModel expects attributes to be stored in @attributes as a hash (see: set_attributes)
@@ -26,6 +25,8 @@ class EventSearch
     set_attributes
     @searchable = params.blank? ? false : true
     return unless @searchable
+    # only used by Notifications and needs to be an Integer:
+    self.minimum_matches = params[:minimum_matches].to_i || 0
     self.sig_priority = params[:sig_priority]
     self.sig_id = params[:sig_id]
     self.source_address = params[:source_address]
@@ -85,6 +86,7 @@ class EventSearch
 
   def set_attributes
     @attributes = Hash.new
+    @attributes[:minimum_matches] = 0
     @attributes[:sig_priority] = ''
     @attributes[:sig_id] = ''
     @attributes[:source_address] = ''

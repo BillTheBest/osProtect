@@ -1,10 +1,7 @@
 class NotificationResult < ActiveRecord::Base
   belongs_to :notification
 
-  # this captures the actual criteria used to create this result, which may
-  # not be the same as the notify_criteria currently set in the Notification
-  # as users may alter/edit a notification:
-  serialize :notify_criteria_for_this_result, NotificationCriteria
+  serialize :notify_criteria_for_this_result, ActiveSupport::HashWithIndifferentAccess
 
-  serialize :result_ids
+  serialize :result_ids, Array
 end

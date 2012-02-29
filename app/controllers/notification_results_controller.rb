@@ -11,7 +11,10 @@ class NotificationResultsController < ApplicationController
     # show matching events for this notification result:
     @notification_result = current_user.notification_results.find(params[:id])
     @notification = Notification.find(@notification_result.notification.id)
-    @events = @notification_result.result_ids.map { |id| Event.find(id) }
+    # @events = @notification_result.result_ids.map { |id| Event.find(id) }
+    sids = @notification_result.result_ids.map{|r| r[0]}
+    cids = @notification_result.result_ids.map{|r| r[1]}
+    @events = Event.where(sid: sids, cid: cids).page(params[:page]).per_page(APP_CONFIG[:per_page])
   end
 
   def new

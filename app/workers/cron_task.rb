@@ -35,42 +35,53 @@ class CronTask
   end
 
   def event_notifications
-    # FIXME this needs some TLC as I have not spent any time on refactoring or optimizing!
+    # FIXME this needs some TLC as I have not spent any time on refactoring nor optimizing!
+    #
+    # assumptions:
+    #   1. there is less than 1 minute to process everything
+    #   2. there are only a few hundred events/alerts per day per sensor (well tuned)
+    #   3. there is a way to mass insert events into an incident
+    #
     now_time = Time.now.utc
     one_minute_ago_time = 1.minute.ago
-    if Rails.env.production?
-      events = Event.includes(:signature_detail, :iphdr).select('event.sid, event.cid, event.signature, event.timestamp, signature.sig_priority, iphdr.ip_src, iphdr.ip_dst').where("timestamp >= ? AND timestamp <= ?", one_minute_ago_time, now_time)
-    else
-      # for testing admin:
-      events = Event.includes(:signature_detail, :iphdr).select('event.sid, event.cid, event.signature, event.timestamp, signature.sig_priority, iphdr.ip_src, iphdr.ip_dst').where("timestamp >= ? AND timestamp <= ?", '2011-10-26 15:11:00', '2011-10-26 15:12:00')
-      # for testing spud(non-admin):
-      # events = Event.includes(:signature_detail, :iphdr).select('event.sid, event.cid, event.signature, event.timestamp, signature.sig_priority, iphdr.ip_src, iphdr.ip_dst').where("timestamp >= ? AND timestamp <= ?", '2011-11-04 00:00:00', '2011-11-08 00:02:00')
-    end
+    temp_event = Event.new
     Notification.all.each do |notification|
       next if notification.disabled
-      criteria = notification.notify_criteria # this was serialized as NotificationCriteria object
+      criteria = notification.notify_criteria
       matching_keys = []
-      if notification.user.role? :admin
-        users_sensors = nil # admin's see everything
+      sensors = nil # admin's can see all sensors
+      sensors = notification.user.sensors unless notification.user.role? :admin
+      if Rails.env.production?
+        @events = temp_event.get_events_based_on_groups_for_user(notification.user.id)
+        @events = @events.where("timestamp >= ? AND timestamp <= ?", one_minute_ago_time, now_time)
       else
-        users_sensors = notification.user.sensors
+        @events = Event.includes(:sensor, :signature_detail, :iphdr, :tcphdr, :udphdr).where("timestamp >= ? AND timestamp <= ?", '2011-10-26 15:09:00', '2011-10-26 15:12:00')
+        # @events = Event.includes(:sensor, :signature_detail, :iphdr, :tcphdr, :udphdr).where("timestamp >= ? AND timestamp <= ?", '2011-11-04 00:00:00', '2011-11-08 00:02:00')
       end
-      events.each do |event|
-        next unless users_sensors.nil? || users_sensors.include?(event.sid) # sensors are an implied criteria based on user's role
-        matching_keys << event.key_as_array if criteria.matches?(event)
+      @event_search = EventSearch.new(criteria)
+      @events = @event_search.filter(@events) # sets: @start_time and @end_time
+      next if @events.count < 1
+      @events.each do |event|
+        next unless sensors.nil? || sensors.include?(event.sid)
+        matching_keys << event.key_as_array
       end
       matching_keys.uniq!
-      next unless criteria.minimum_matches.zero? || (matching_keys.size >= criteria.minimum_matches)
+      next unless @event_search.minimum_matches.zero? || (matching_keys.size >= @event_search.minimum_matches)
       if matching_keys.size > 0
-        nr = NotificationResult.new
-        nr.notification_id = notification.id
-        nr.user_id = notification.user.id
-        nr.notify_criteria_for_this_result = criteria
-        nr.total_matches = matching_keys.size
-        nr.events_timestamped_from = one_minute_ago_time
-        nr.events_timestamped_to = now_time
-        nr.result_ids = matching_keys
-        nr.save!
+        ActiveRecord::Base.transaction do
+          nr = NotificationResult.new
+          nr.notification_id = notification.id
+          nr.user_id = notification.user.id
+          nr.notify_criteria_for_this_result = criteria
+          nr.total_matches = matching_keys.size
+          nr.events_timestamped_from = one_minute_ago_time
+          nr.events_timestamped_to = now_time
+          nr.result_ids = matching_keys
+          nr.save!
+          incident_name = "Events for Notification ##{notification.id}"
+          incident_description = "Matching Events during #{one_minute_ago_time} - #{now_time}."
+          add_events_to_incident(incident_name, incident_description, notification.user, @events)
+        end
       end
     end
   end
@@ -105,4 +116,18 @@ class CronTask
       end
     end
   end
+
+  private
+
+  def add_events_to_incident(name, description, user, events)
+    return nil if events.blank? || user.blank?
+    incident = Incident.create(user_id: user.id, group_id: user.groups.first.id, incident_name: name, incident_description: description)
+    events.each do |event|
+      incident_events_attributes = IncidentEvent.set_attributes(event)
+      incident.incident_events.build(incident_events_attributes)
+    end
+    incident.save(validate: false)
+    incident || nil
+  end
+
 end

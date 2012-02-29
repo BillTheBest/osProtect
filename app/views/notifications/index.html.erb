@@ -22,7 +22,7 @@
                   <tr>
                     <th>ID</th>
                     <th>Results</th>
-                    <th>Match Events criteria</th>
+                    <th>Event Selection Criteria</th>
                     <th>Status</th>
                     <th></th>
                   </tr>
@@ -43,17 +43,23 @@
                               <%# definitely need a presenter here to handle the display of criteria %>
                               <% unless notification.notify_criteria.blank? %>
                                   <span style="font-size:0.9em">
-                                    <em>min: </em>
-                                    <strong><%= notification.notify_criteria.minimum_matches <= 0 ? 'any' : notification.notify_criteria.minimum_matches %></strong>
-                                    &nbsp;&nbsp;
-                                    <em>priorities: </em>
-                                    <strong><%= notification.notify_criteria.priorities.size <= 0 ? 'any' : "#{notification.notify_criteria.priorities.join(', ')}" %></strong>
-                                    &nbsp;&nbsp;
-                                    <em>attacker IP: </em>
-                                    <strong><%= notification.notify_criteria.attacker_ips.blank? ? 'any' : notification.notify_criteria.attacker_ips %></strong>
-                                    &nbsp;&nbsp;
-                                    <em>target IP: </em>
-                                    <strong><%= notification.notify_criteria.target_ips.blank? ? 'any' : notification.notify_criteria.target_ips %></strong>
+                                    <ul>
+                                      <% notification.notify_criteria.each do |key,value|
+                                          next if value.blank?
+                                          key = 'priority' if key == 'sig_priority'
+                                          value = 'any' if key == 'minimum_matches' && value == '0'
+                                          if key == 'sensor_id'
+                                            key = 'sensor'
+                                            value = Sensor.find(value.to_i).hostname
+                                          end
+                                          if key == 'sig_id'
+                                            key = 'signature'
+                                            value = SignatureDetail.find(value.to_i).sig_name
+                                          end
+                                        %>
+                                        <li><em><%=key%>:</em> <strong><%=value%></strong></li>
+                                      <% end %>
+                                    </ul>
                                   </span>
                               <% end %>
                             </td>

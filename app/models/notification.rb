@@ -3,49 +3,18 @@ class Notification < ActiveRecord::Base
   belongs_to :group
   has_many :notification_results, dependent: :destroy
 
-  # serializing the NotificationCriteria object in/out of the notify_criteria column
-  # allows us to easily alter/expand the criteria used for matching events:
-  serialize :notify_criteria, NotificationCriteria
+  serialize :notify_criteria, ActiveSupport::HashWithIndifferentAccess
 
   attr_accessible :user_id, :email, :run_status, :notify_criteria, :notify_criteria_as_string
 
-  # virtual attributes ... these allow us to create/update the NotificationCriteria
-  #                        object in the notify_criteria column:
-  attr_accessible :priority_ids, :minimum_matches, :attacker_ips, :target_ips
-  attr_reader :priority_ids, :minimum_matches, :attacker_ips, :target_ips
-  # validates :priority_ids, presence: {message: "at least one must be selected"}
+  before_validation :set_notify_criteria_as_string
+
   validates :notify_criteria_as_string, uniqueness: {scope: :user_id, message: "you already have a Notification with the same criteria!"}
-  validate :attacker_ips_ok
-  validate :target_ips_ok
-
-  after_validation :set_notify_criteria_as_string
-
-  def priority_ids=(ids)
-    ids = ids.compact.reject(&:blank?) # remove nil's and blank strings from ids array
-    @priority_ids = ids
-    self.notify_criteria.priorities = @priority_ids
-    set_notify_criteria_as_string
-  end
-
-  def minimum_matches=(min_count)
-    return if min_count.blank?
-    min_count = min_count.to_i if Integer(min_count) rescue return
-    @minimum_matches = min_count
-    self.notify_criteria.minimum_matches = @minimum_matches
-    set_notify_criteria_as_string
-  end
-
-  def attacker_ips=(ips)
-    @attacker_ips = ips
-    self.notify_criteria.attacker_ips = @attacker_ips
-    set_notify_criteria_as_string
-  end
-
-  def target_ips=(ips)
-    @target_ips = ips
-    self.notify_criteria.target_ips = @target_ips
-    set_notify_criteria_as_string
-  end
+  validate :minimum_matches_ok
+  validate :source_address_ok
+  validate :source_port_ok
+  validate :destination_address_ok
+  validate :destination_port_ok
 
   def disabled
     self.run_status == false
@@ -68,25 +37,40 @@ class Notification < ActiveRecord::Base
     end
   end
 
-  def priorities
-    priorites = []
-    priorites << Selection.new({id:1, name:'1'})
-    priorites << Selection.new({id:2, name:'2'})
-    priorites << Selection.new({id:3, name:'3'})
-    priorites
+  def self.minimum_matches_selections
+    mm = []
+    mm << Selection.new({id:  '0', name: 'Any'})
+    mm << Selection.new({id:  '1', name: '1 or more matching events'})
+    mm << Selection.new({id:  '3', name: '3 or more matching events'})
+    mm << Selection.new({id:  '5', name: '5 or more matching events'})
+    mm << Selection.new({id:  '7', name: '7 or more matching events'})
+    mm << Selection.new({id: '10', name: '10 or more matching events'})
+    mm
   end
 
   private
 
   def set_notify_criteria_as_string
-    self.notify_criteria_as_string = self.notify_criteria.to_s
+    self.notify_criteria_as_string =  "user_id=#{self.user.id}," + self.notify_criteria.to_s
   end
 
-  def attacker_ips_ok
-    self.errors[:attacker_ips] << "is invalid" unless Iphdr.is_valid?(self.attacker_ips)
+  def minimum_matches_ok
+    self.errors[:minimum_matches] << "must be a number" unless Iphdr.numeric?(self.notify_criteria[:minimum_matches])
   end
 
-  def target_ips_ok
-    self.errors[:target_ips] << "is invalid" unless Iphdr.is_valid?(self.target_ips)
+  def source_address_ok
+    self.errors[:source_address] << "is invalid" unless Iphdr.is_valid?(self.notify_criteria[:source_address])
+  end
+
+  def source_port_ok
+    self.errors[:source_port] << "must be a number" unless Iphdr.numeric?(self.notify_criteria[:source_port])
+  end
+
+  def destination_address_ok
+    self.errors[:destination_address] << "is invalid" unless Iphdr.is_valid?(self.notify_criteria[:destination_address])
+  end
+
+  def destination_port_ok
+    self.errors[:destination_port] << "must be a number" unless Iphdr.numeric?(self.notify_criteria[:destination_port])
   end
 end

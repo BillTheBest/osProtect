@@ -13,7 +13,6 @@
         <% unless @events.blank? %>
           <div class="paginated_collection">
             <%= form_tag events_path, method: :post, :remote => :true, class: "event_select_form" do %>
-              <%# if presenter.page_of_events.count > 0 %>
               <% if @events.size > 0 %>
                   <div class="buttons" id="add-selected-events">
                     <%= submit_tag 'add selected Events to', id: 'submit-selected-events' %>
@@ -23,11 +22,10 @@
                     <%= image_tag('loading-bars.gif') %>
                   </div>
               <% end %>
-              <div class="pagination_information">&nbsp;<%#= page_entries_info presenter.page_of_events %></div>
+              <div class="pagination_information">&nbsp;<%= page_entries_info @events %></div>
               <div class="paginated_collection_contents">
                 <div class="index_content">
                   <div class="index_as_table">
-                    <%# if presenter.page_of_events %>
                     <% if @events.size > 0 %>
                         <table border="0" cellspacing="0" cellpadding="0" id="events" class="index_table">
                           <thead>
@@ -44,7 +42,6 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <%# presenter.page_of_events.each_with_index do |event, x| %>
                             <% @events.each_with_index do |event, x| %>
                                 <tr class="<%= cycle('even', 'odd') %>">
                                   <td><%= check_box_tag "event[#{x}]", event.key, false, :id => "check_box_#{event.key_with_underscore}", :class => 'select-events' %></td>
@@ -72,7 +69,7 @@
                 <%# the following opens a new tab in the browser: %>
                 <%#= button_to 'create PDF', events_pdf_url(q: params[:q], format: :pdf), method: "post", form: {"target" => "_blank"} %>
               </div>
-              <%#= will_paginate presenter.page_of_events %>
+              <%= will_paginate @events %>
             </div>
           </div> <!-- paginated_collection -->
         <% else %>
@@ -93,24 +90,30 @@
               <li style="padding-left:20px"><strong><%= @notification_result.events_timestamped_from %></strong></li>
               <li style="padding-left:50px">to:</li>
               <li style="padding-left:20px"><strong><%= @notification_result.events_timestamped_to %></strong></li>
-              <!-- <li>&nbsp;</li> -->
               <li>- match criteria:</strong></li>
               <li style="padding-left:20px">
-                <span style="font-size:0.9em">
-                  <em>minimum: </em>
-                  <strong><%= @notification_result.notify_criteria_for_this_result.minimum_matches <= 0 ? 'any' : @notification_result.notify_criteria_for_this_result.minimum_matches %></strong>
-                  <br />
-                  <em>priorities: </em>
-                  <strong><%= @notification_result.notify_criteria_for_this_result.priorities.size <= 0 ? 'any' : "#{@notification_result.notify_criteria_for_this_result.priorities.join(', ')}" %></strong>
-                  <br />
-                  <em>attacker IP: </em>
-                  <strong><%= @notification_result.notify_criteria_for_this_result.attacker_ips.blank? ? 'any' :  @notification_result.notify_criteria_for_this_result.attacker_ips %></strong>
-                  <br />
-                  <em>target IP: </em>
-                  <strong><%= @notification_result.notify_criteria_for_this_result.target_ips.blank? ? 'any' : @notification_result.notify_criteria_for_this_result.target_ips %></strong>
-                </span>
+                <% unless @notification_result.notify_criteria_for_this_result.blank? %>
+                    <span style="font-size:0.9em">
+                      <ul>
+                        <% @notification_result.notify_criteria_for_this_result.each do |key,value|
+                            next if value.blank?
+                            key = 'priority' if key == 'sig_priority'
+                            value = 'any' if key == 'minimum_matches' && value == '0'
+                            if key == 'sensor_id'
+                              key = 'sensor'
+                              value = Sensor.find(value.to_i).hostname
+                            end
+                            if key == 'sig_id'
+                              key = 'signature'
+                              value = SignatureDetail.find(value.to_i).sig_name
+                            end
+                          %>
+                          <li><em><%=key%>:</em> <strong><%=value%></strong></li>
+                        <% end %>
+                      </ul>
+                    </span>
+                <% end %>
               </li>
-              <!-- <li>&nbsp;</li> -->
               <li>- recorded: <%= @notification_result.created_at %></li>
             </ul>
         </div> <!-- panel_contents -->

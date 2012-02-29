@@ -13,7 +13,7 @@ en:
           sensor_ids: "Sensors: "
         notification:
           priority_ids: "Priority: "
-          notify_criteria_as_string: "Match Events: "
+          notify_criteria_as_string: "Event Selection Criteria: "
           attacker_ips: "Attacker IP: "
           target_ips: "Target IP: "
         report:
