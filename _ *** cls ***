@@ -445,7 +445,9 @@ Fri, Feb 24, 2012 at 11:35 PM:
     ... concat pdf's using pdftk:
     > pdftk summary.pdf daily1.pdf and_so_on.pdf cat output weekly/monthly.pdf
     ... much faster to create a weekly/monthly summary then concat summary plus daily's
-
-
+_____________________________________________________________________________________________________________________
+*** only change to deploy to clone is config/environments/production.rb
+_____________________________________________________________________________________________________________________
+38.123.140.62
 
 
