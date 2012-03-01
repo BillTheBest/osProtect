@@ -61,8 +61,8 @@ class CronTask
       @event_search = EventSearch.new(criteria)
       @events = @event_search.filter(@events) # sets: @start_time and @end_time
       next if @events.count < 1 # no events matched for this notification so go to the next one
-      if @events.count > max_events_that_can_be_copied_to_incidents_for_each_notification
-        @events = @events.limit(max_events_that_can_be_copied_to_incidents_for_each_notification)
+      if @events.count > APP_CONFIG[:max_events_that_can_be_copied_to_incidents_for_each_notification]
+        @events = @events.limit(APP_CONFIG[:max_events_that_can_be_copied_to_incidents_for_each_notification])
       end
       @events.each do |event|
         next unless sensors.nil? || sensors.include?(event.sid)
