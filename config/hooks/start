@@ -27,7 +27,7 @@ bundle install --deployment --without assets development test
 # bundle exec rake db:migrate
 
 # optional if you precompile locally before deployment:
-bundle exec rake assets:precompile
+# bundle exec rake assets:precompile
 
 # "start'em up da shield", i.e. start the app server using the Upstart service created via Foreman/Procfile:
 sudo service osprotect start
