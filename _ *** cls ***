@@ -465,10 +465,16 @@ sshclone
 
 _____________________________________________________________________________________________________________________
 * * * * * * * * * * * * only change needed for different deployments * * * * * * * * * * * * * * *
-- config/environments/production.rb :
-  config.action_mailer.default_url_options = { :host => "osprotect.appsudo.com" }
-  ... or ...
-  config.action_mailer.default_url_options = { :host => "38.123.140.62" }
+1. config/app_config.yml :
+    production:
+      host: osprotect.appsudo.com
+      ... or ...
+      host: 38.123.140.62
+
+2. config/environments/production.rb :
+    config.action_mailer.default_url_options = { :host => "osprotect.appsudo.com" }
+    ... or ...
+    config.action_mailer.default_url_options = { :host => "38.123.140.62" }
 _____________________________________________________________________________________________________________________
 
 
