@@ -2,10 +2,10 @@
 <html>
 <head>
   <meta charset="UTF-8" />
-  <title>osProtect: <%= @report_type %> Report: <%= @report.name %> (#<%= @report.id %>)</title>
+  <title>osProtect: <%= @report_title %></title>
 </head>
 <body>
-  <h2><%= @report_type %> Report: <%= @report.name %> (#<%= @report.id %>) for <%= @user.username %>:</h2>
+  <h2><%= @report_title %> for <%= @user.username %>:</h2>
   <blockquote>
     <p>
       <strong><%= pluralize(@events.count, 'event') %></strong> were found matching the report criteria.

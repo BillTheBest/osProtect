@@ -61,8 +61,8 @@ class CronTask
       @event_search = EventSearch.new(criteria)
       @events = @event_search.filter(@events) # sets: @start_time and @end_time
       next if @events.count < 1 # no events matched for this notification so go to the next one
-      if @events.count > max_events_that_can_copied_to_incidents_for_each_notification
-        @events = @events.limit(max_events_that_can_copied_to_incidents_for_each_notification)
+      if @events.count > max_events_that_can_be_copied_to_incidents_for_each_notification
+        @events = @events.limit(max_events_that_can_be_copied_to_incidents_for_each_notification)
       end
       @events.each do |event|
         next unless sensors.nil? || sensors.include?(event.sid)
@@ -93,9 +93,10 @@ class CronTask
     return unless APP_CONFIG[:can_daily_report]
     Report.where(auto_run_at: 'd', run_status: true).each do |report|
       users = User.all
-      # cls: users = User.where(id: 6)
+      # cls: users = User.where(id: 1)
       users.each do |user|
-        UserBackgroundMailer.cron_report(user.id, report.id, APP_CONFIG[:max_events_per_pdf], 1).deliver
+        UserBackgroundMailer.events_cron_report(user.id, report.id).deliver if report.report_type == 1
+        # UserBackgroundMailer.incidents_cron_report(user.id, report.id).deliver if report.report_type == 2
       end
     end
   end
@@ -105,7 +106,7 @@ class CronTask
     Report.where(auto_run_at: 'w', run_status: true).each do |report|
       users = User.all
       users.each do |user|
-        UserBackgroundMailer.cron_report(user.id, report.id, APP_CONFIG[:max_events_per_pdf], 2).deliver
+        UserBackgroundMailer.events_cron_report(user.id, report.id).deliver if report.report_type == 1
       end
     end
   end
@@ -115,7 +116,7 @@ class CronTask
     Report.where(auto_run_at: 'm', run_status: true).each do |report|
       users = User.all
       users.each do |user|
-        UserBackgroundMailer.cron_report(user.id, report.id, APP_CONFIG[:max_events_per_pdf], 3).deliver
+        UserBackgroundMailer.events_cron_report(user.id, report.id).deliver if report.report_type == 1
       end
     end
   end

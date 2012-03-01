@@ -15,6 +15,7 @@
 #   You may change these if you have the resources to handle the workload involved.
 
 development:
+  web_server: dev_whatever
   host: localhost
   version: 1.0.0
   show_versions_and_limits: true
@@ -22,7 +23,7 @@ development:
   per_page: 12
   # -- Notifications config:
   can_do_notifications: true
-  max_events_that_can_copied_to_incidents_for_each_notification: 50
+  max_events_that_can_be_copied_to_incidents_for_each_notification: 5
   # -- Reports/PDFs config:
   max_events_per_pdf: 50
   can_do_reports: true
@@ -31,6 +32,7 @@ development:
   can_monthly_report: false
 
 test:
+  web_server: dev_whatever
   host: localhost
   version: 1.0.0
   show_versions_and_limits: true
@@ -38,7 +40,7 @@ test:
   per_page: 12
   # -- Notifications config:
   can_do_notifications: true
-  notifications_max_events_that_can_copied_to_incidents: 50
+  max_events_that_can_be_copied_to_incidents_for_each_notification: 50
   # -- Reports/PDFs config:
   max_events_per_pdf: 50
   can_do_reports: true
@@ -47,15 +49,16 @@ test:
   can_monthly_report: false
 
 production:
-  # host: osprotect.appsudo.com
-  host: 38.123.140.62
+  web_server: nginx
+  host: osprotect.appsudo.com
+  # host: 38.123.140.62
   version: 1.0.0
   show_versions_and_limits: true
   emails_from: do.not.reply@osprotect.com
   per_page: 12
   # -- Notifications config:
   can_do_notifications: true
-  notifications_max_events_that_can_copied_to_incidents: 500
+  max_events_that_can_be_copied_to_incidents_for_each_notification: 500
   # -- Reports/PDFs config:
   max_events_per_pdf: 2000
   can_do_reports: true

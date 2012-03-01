@@ -38,7 +38,7 @@
                             </td>
                             <td>
                               <% if report.is_auto_run? %>
-                                  <em>auto-run reports will email you a PDF</em>
+                                  <em>auto-run reports are emailed, and available on the PDFs page</em>
                               <%# only current_user's pdfs count for this report: %>
                               <% elsif report.users_pdf_count_for_this_report(current_user.id) > 0 %>
                                   <%= link_to "#{report.users_pdf_count_for_this_report(current_user.id)}", pdfs_path(id: report.id) %>

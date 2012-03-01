@@ -10,35 +10,47 @@ class UserBackgroundMailer < ActionMailer::Base
 
   def password_reset(user_id)
     @user = User.find(user_id)
-    # note: subject can be set in your I18n file at config/locales/en.yml with the following lookup:
-    #   en.user_mailer.password_reset.subject
     mail :to => @user.email, :subject => "Password Reset"
   end
 
-  def cron_report(user_id, report_id, max_events_per_pdf, daily_weekly_monthly)
+  def events_cron_report(user_id, report_id)
     @user = User.find(user_id)
     @report = Report.find(report_id)
-    time_range = 'yesterday'  if daily_weekly_monthly == 1
-    time_range = 'last_week'  if daily_weekly_monthly == 2
-    time_range = 'last_month' if daily_weekly_monthly == 3
+    time_range = 'yesterday'  if @report.auto_run_at == 'd'
+    time_range = 'last_week'  if @report.auto_run_at == 'w'
+    time_range = 'last_month' if @report.auto_run_at == 'm'
     @report.report_criteria[:relative_date_range] = time_range
     # cls: @report.report_criteria[:relative_date_range] = 'past_year'
-    @report_type = @report.auto_run_at_to_s
     get_events_based_on_groups_for_user(@user.id) # sets @events
     @event_search = EventSearch.new(@report.report_criteria)
     @events = @event_search.filter(@events) # sets: @start_time and @end_time
-    report_title = set_report_title(daily_weekly_monthly, 'Events Report for', @event_search.start_time, @event_search.end_time)
+    @report_title = set_report_title(@report.auto_run_at, 'Events Report for', @event_search.start_time, @event_search.end_time)
     events_count = @events.count
-    max_exceeded = (events_count > max_events_per_pdf) ? true : false
-    @events = @events.limit(max_events_per_pdf)
+    max_exceeded = (events_count > APP_CONFIG[:max_events_per_pdf]) ? true : false
+    @events = @events.limit(APP_CONFIG[:max_events_per_pdf])
     if events_count > 0
-      pdf = EventsPdf.new(@user, @report, report_title, max_exceeded, max_events_per_pdf, events_count, @events)
-      attachments["#{Time.now.utc.strftime("%Y%m%d%H%M%S%N%Z")}_daily_report.pdf"] = pdf.render
-      path = "#{Rails.root}/shared/reports"
-      filename = "#{Time.now.utc.strftime("%Y%m%d%H%M%S%N%Z")}_daily_report.pdf"
-      pdf_file = pdf.render_file("#{path}/#{filename}")
+      pdf_doc = EventsPdf.new(@user, @report, @report_title, max_exceeded, APP_CONFIG[:max_events_per_pdf], events_count, @events)
+      # now save pdf to a file and create a Pdf table entry:
+      path = "#{Rails.root}/shared/reports/#{@user.id}/#{@report.auto_run_at}"
+      FileUtils.mkdir_p(path) # create path if it doesn't exist
+      filename = "#{Time.now.utc.strftime("%Y%m%d%H%M%S%N%Z")}_#{set_name(@report.auto_run_at)}_report.pdf"
+      path_and_filename = "#{path}/#{filename}"
+      pdf_file = pdf_doc.render_file(path_and_filename)
+      if pdf_file.is_a? File
+        pdf = Pdf.new
+        pdf.user_id = @user.id
+        pdf.report_id = @report.id
+        pdf.pdf_type = 2 # events
+        pdf.creation_criteria = @report.report_criteria
+        pdf.path_to_file = path
+        pdf.file_name = filename
+        pdf.save!
+      end
+      # note: having Prawn render again is slower than just reading the file from disk:
+      # attachments[filename] = pdf_doc.render
+      attachments[filename] = File.read(path_and_filename)
     end
-    mail :to => @user.email, :subject => "osProtect: #{report_title}"
+    mail :to => @user.email, :subject => "osProtect: #{@report_title}"
   end
 
   def batched_email_notifications(notification_id)
@@ -64,11 +76,16 @@ class UserBackgroundMailer < ActionMailer::Base
 
   private
 
-  def set_report_title(dwm, type, start_time, end_time)
+  def set_name(auto_run_at)
     name = ''
-    name = 'Daily'   if dwm == 1
-    name = 'Weekly'  if dwm == 2
-    name = 'Monthly' if dwm == 3
+    name = 'Daily'   if auto_run_at == 'd'
+    name = 'Weekly'  if auto_run_at == 'w'
+    name = 'Monthly' if auto_run_at == 'm'
+    name
+  end
+
+  def set_report_title(auto_run_at, type, start_time, end_time)
+    name = set_name(auto_run_at)
     name + ' ' + type + ' ' + start_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") + ' - ' + end_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z")
   end
 end
