@@ -83,8 +83,7 @@
         <h3 style="margin-top:-2px">&larr; results for Notification: <%= "#{@notification.id}" %></h3>
         <div class="panel_contents">
             <ul style="list-style-type:none">
-              <li>- events shown: <strong><%= number_with_delimiter @events.size %></strong></li>
-              <li>- events matched: <strong><%= number_with_delimiter @events.size %></strong></li>
+              <li>- events matched: <strong><%= number_with_delimiter @notification_result.total_matches %></strong></li>
               <li>- email sent: <strong><%= @notification_result.email_sent ? "yes" : "no" %></strong></li>
               <li>- results are from:</li>
               <li style="padding-left:20px"><strong><%= @notification_result.events_timestamped_from %></strong></li>
