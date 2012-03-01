@@ -71,15 +71,16 @@ class UserBackgroundMailer < ActionMailer::Base
     time_range = 'last_month' if @report.auto_run_at == 'm'
     @report.report_criteria[:relative_date_range] = time_range
     if @user.role? :admin
-      @incidents = Incident.includes(:incident_events).order("incidents.created_at DESC")
+      @incidents = Incident.joins(:incident_events).order("incidents.created_at DESC")
     else
-      @incidents = Incident.where("sid IN (?)", @user.sensors).includes(:incident_events).order("incidents.created_at DESC")
+      @incidents = Incident.where("sid IN (?)", @user.sensors).joins(:incident_events).order("incidents.created_at DESC")
     end
     @incident_event_search = IncidentEventSearch.new(@report.report_criteria)
     @incidents = @incident_event_search.filter(@incidents) # sets: @start_time and @end_time
+puts "\n@incidents=#{@incidents.inspect}\n"
     @report_title = set_report_title(@report.auto_run_at, 'Incidents Report for', @incident_event_search.start_time, @incident_event_search.end_time)
     incidents_count = @incidents.count
-puts "\nincidents_count=#{incidents_count.inspect}\n"
+puts "\nreport_id=#{report_id}\nincidents_count=#{incidents_count.inspect}\n"
     max_exceeded = (incidents_count > APP_CONFIG[:max_incidents_per_pdf]) ? true : false
     @incidents = @incidents.limit(APP_CONFIG[:max_incidents_per_pdf])
     if incidents_count > 0

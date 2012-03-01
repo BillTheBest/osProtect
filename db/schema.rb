@@ -40,8 +40,8 @@ ActiveRecord::Schema.define(:version => 20120221205257) do
   create_table "group_sensors", :force => true do |t|
     t.integer  "group_id"
     t.integer  "sensor_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "group_sensors", ["group_id"], :name => "index_group_sensors_on_group_id"
@@ -49,8 +49,8 @@ ActiveRecord::Schema.define(:version => 20120221205257) do
 
   create_table "groups", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "icmphdr", :id => false, :force => true do |t|
@@ -67,8 +67,8 @@ ActiveRecord::Schema.define(:version => 20120221205257) do
 
   create_table "incident_events", :force => true do |t|
     t.integer  "incident_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
     t.datetime "timestamp"
     t.integer  "sid"
     t.integer  "cid"
@@ -94,9 +94,9 @@ ActiveRecord::Schema.define(:version => 20120221205257) do
     t.integer  "sig_gid"
     t.string   "sig_class_name"
     t.text     "ref_tags_and_system_names"
-    t.integer  "ip_src"
+    t.integer  "ip_src",                    :null => false
     t.string   "ip_source"
-    t.integer  "ip_dst"
+    t.integer  "ip_dst",                    :null => false
     t.string   "ip_destination"
     t.integer  "ip_ver"
     t.integer  "ip_hlen"
@@ -137,8 +137,8 @@ ActiveRecord::Schema.define(:version => 20120221205257) do
     t.string   "status",               :default => "pending"
     t.text     "incident_description"
     t.text     "incident_resolution"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
   end
 
   create_table "iphdr", :id => false, :force => true do |t|
@@ -166,8 +166,8 @@ ActiveRecord::Schema.define(:version => 20120221205257) do
     t.integer  "group_id"
     t.string   "role",       :default => "user"
     t.integer  "roles_mask"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
   end
 
   add_index "memberships", ["group_id"], :name => "index_memberships_on_group_id"
@@ -268,8 +268,8 @@ ActiveRecord::Schema.define(:version => 20120221205257) do
   create_table "sensor_names", :force => true do |t|
     t.integer  "sensor_id"
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "sensor_names", ["sensor_id"], :name => "index_sensor_names_on_sensor_id"
@@ -337,8 +337,8 @@ ActiveRecord::Schema.define(:version => 20120221205257) do
     t.string   "auth_token"
     t.string   "password_reset_token"
     t.datetime "password_reset_sent_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
   end
 
 end

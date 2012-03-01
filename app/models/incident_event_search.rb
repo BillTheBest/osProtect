@@ -50,27 +50,29 @@ class IncidentEventSearch
     set_attributes
   end
 
-  def filter(incident_events)
+  def filter(incidents)
     set_time_range(relative_date_range) # sets: @start_time and @end_time
     return incident_events unless @searchable
-    incident_events = incident_events.where("incident_events.sig_priority = ?", sig_priority) unless sig_priority.blank?
-    incident_events = incident_events.where("incident_events.sig_id = ?", sig_id) unless sig_id.blank?
-    incident_events = incident_events.where("incident_events.ip_src = ?", Iphdr.to_numeric(source_address)) unless source_address.blank?
-    incident_events = incident_events.where("(incident_events.udp_sport = ? OR incident_events.tcp_sport = ?)", source_port.to_i, source_port.to_i) unless source_port.blank?
-    incident_events = incident_events.where("incident_events.ip_dst = ?", Iphdr.to_numeric(destination_address)) unless destination_address.blank?
-    incident_events = incident_events.where("(incident_events.udp_dport = ? OR incident_events.tcp_dport = ?)", destination_port.to_i, destination_port.to_i) unless destination_port.blank?
-    incident_events = incident_events.where("incident_events.sid = ?", sensor_id) unless sensor_id.blank?
-    if @start_time.nil? || @end_time.nil?
-      @start_time = timestamp_gte.to_datetime.utc.beginning_of_day unless timestamp_gte.blank?
-      @end_time = timestamp_lte.to_datetime.utc.end_of_day unless timestamp_lte.blank?
-      # try custom/fixed date range:
-      incident_events = incident_events.where("incident_events.timestamp >= ?", @start_time) unless timestamp_gte.blank?
-      incident_events = incident_events.where("incident_events.timestamp <= ?", @end_time) unless timestamp_lte.blank?
-    else
-      incident_events = incident_events.where('incident_events.timestamp between ? and ?', @start_time, @end_time)
-    end
-    # puts "\n incident_events=#{incident_events.to_sql}\n"
-    incident_events
+    incidents = incidents.where('incidents.updated_at between ? and ?', @start_time, @end_time)
+    incidents = incidents.where("incidents.status = ?", incident_status) unless incident_status.blank?
+    incidents = incidents.where("incident_events.sig_priority = ?", sig_priority) unless sig_priority.blank?
+    incidents = incidents.where("incident_events.sig_id = ?", sig_id) unless sig_id.blank?
+    incidents = incidents.where("incident_events.ip_src = ?", Iphdr.to_numeric(source_address)) unless source_address.blank?
+    incidents = incidents.where("(incident_events.udp_sport = ? OR incident_events.tcp_sport = ?)", source_port.to_i, source_port.to_i) unless source_port.blank?
+    incidents = incidents.where("incident_events.ip_dst = ?", Iphdr.to_numeric(destination_address)) unless destination_address.blank?
+    incidents = incidents.where("(incident_events.udp_dport = ? OR incident_events.tcp_dport = ?)", destination_port.to_i, destination_port.to_i) unless destination_port.blank?
+    incidents = incidents.where("incident_events.sid = ?", sensor_id) unless sensor_id.blank?
+    # if @start_time.nil? || @end_time.nil?
+    #   @start_time = timestamp_gte.to_datetime.utc.beginning_of_day unless timestamp_gte.blank?
+    #   @end_time = timestamp_lte.to_datetime.utc.end_of_day unless timestamp_lte.blank?
+    #   # try custom/fixed date range:
+    #   incidents = incident_events.where("incident_events.timestamp >= ?", @start_time) unless timestamp_gte.blank?
+    #   incidents = incident_events.where("incident_events.timestamp <= ?", @end_time) unless timestamp_lte.blank?
+    # else
+    #   incidents = incident_events.where('incident_events.timestamp between ? and ?', @start_time, @end_time)
+    # end
+puts "\nout filter ... incidents=#{incidents.to_sql}\n"
+    incidents
   end
 
   private

@@ -93,9 +93,9 @@ class IncidentEvent < ActiveRecord::Migration
       t.text      :ref_tags_and_system_names
 
       # iphdr:
-      t.integer   :ip_src
+      t.column    :ip_src, 'INT UNSIGNED NOT NULL'
       t.string    :ip_source
-      t.integer   :ip_dst
+      t.column    :ip_dst, 'INT UNSIGNED NOT NULL'
       t.string    :ip_destination
       t.integer   :ip_ver
       t.integer   :ip_hlen
