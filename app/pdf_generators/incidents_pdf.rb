@@ -39,6 +39,7 @@ class IncidentsPdf < Prawn::Document
     end
     # create_summary if report.include_summary
     @incidents.each do |incident|
+puts "\nincident=#{incident.inspect}\n"
       start_new_page
       move_down 20
       text "Name: #{incident.incident_name}", size: 15, style: :bold, spacing: 4, align: :left
