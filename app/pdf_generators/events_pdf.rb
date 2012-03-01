@@ -103,22 +103,24 @@ class EventsPdf < Prawn::Document
       @events_by_signature = @events_by_signature.order('event_cnt DESC')
       chart_data = @events_by_signature.map { |ebs| ebs.event_cnt }
       chart_labels = @events_by_signature.map { |ebs| ebs.sig_name }
-      image gchart_image("", chart_labels, chart_data), scale: 0.75
+      # cls: signature names have bizarre characters in them which is bad for gcharts, so don't do:
+      # image gchart_image("", chart_labels, chart_data), scale: 0.75
       move_down 20
       indent(200) { create_events_by_signature_table }
     end
-    start_new_page
-    move_down 20
-    text "Most Active Times", size: 15, style: :bold, spacing: 4, align: :center
-    stroke_horizontal_line bounds.left, bounds.right
-    move_down 30
-    text "15 minute intervals with more than 10 events", size: 10, spacing: 4, align: :center
-    move_down 10
-    if @hot_times.blank?
-      text "none", size: 10, style: :bold, spacing: 4, align: :center
-    else
-      indent(200) { create_most_active_times_table }
-    end
+    # note: the sql used to find the most active times is too slow, so this is disabled:
+    # start_new_page
+    # move_down 20
+    # text "Most Active Times", size: 15, style: :bold, spacing: 4, align: :center
+    # stroke_horizontal_line bounds.left, bounds.right
+    # move_down 30
+    # text "15 minute intervals with more than 10 events", size: 10, spacing: 4, align: :center
+    # move_down 10
+    # if @hot_times.blank?
+    #   text "none", size: 10, style: :bold, spacing: 4, align: :center
+    # else
+    #   indent(200) { create_most_active_times_table }
+    # end
   end
 
   def gchart_image(chart_title, chart_labels, chart_data)
@@ -128,23 +130,24 @@ class EventsPdf < Prawn::Document
     img = open(img)
   end
 
-  def create_most_active_times_table
-    atable =  [ ["count", "Most Active Times (UTC)"] ] + 
-      @hot_times.map do |hot_time|
-        s = hot_time.minute
-        e = hot_time.minute + 15.minutes
-        [hot_time.cnt, s.strftime("%l:%M") + ' - ' + e.strftime("%l:%M %P")]
-      end
-    table atable do
-      self.header = true
-      row(0).background_color = "6A7176"
-      row(0).text_color = "FFFFFF"
-      row(0).font_style = :bold
-      self.row_colors = ["F0F0F0", "FFFFFF"]
-      self.cell_style = {overflow: :shrink_to_fit, min_font_size: 8, border_width: 1, borders: [:left, :right, :bottom], border_color: "F0F0F0"}
-      self.columns(0).align = :right
-    end
-  end
+  # note: the sql used to find the most active times is too slow, so this is disabled:
+  # def create_most_active_times_table
+  #   atable =  [ ["count", "Most Active Times (UTC)"] ] + 
+  #     @hot_times.map do |hot_time|
+  #       s = hot_time.minute
+  #       e = hot_time.minute + 15.minutes
+  #       [hot_time.cnt, s.strftime("%l:%M") + ' - ' + e.strftime("%l:%M %P")]
+  #     end
+  #   table atable do
+  #     self.header = true
+  #     row(0).background_color = "6A7176"
+  #     row(0).text_color = "FFFFFF"
+  #     row(0).font_style = :bold
+  #     self.row_colors = ["F0F0F0", "FFFFFF"]
+  #     self.cell_style = {overflow: :shrink_to_fit, min_font_size: 8, border_width: 1, borders: [:left, :right, :bottom], border_color: "F0F0F0"}
+  #     self.columns(0).align = :right
+  #   end
+  # end
 
   def create_attackers_table
     atable =  [ ["count", "Top Attackers"] ] + @attackers.map { |aip| [aip.ipcnt, aip.ip_source.to_s] }

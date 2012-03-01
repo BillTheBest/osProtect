@@ -5,7 +5,7 @@
 # notes:
 #   The per_page (i.e. pagination) setting affects all online listings.
 #
-#   Notifications and Reports require Redis and Resque scheduler/workers to be up and running.
+#   Notifications and Reports require Redis and Resque Scheduler and workers to be up and running.
 #
 #   Weekly and monthly reports:
 #     - are too time/resource consuming
@@ -15,13 +15,14 @@
 #   You may change these if you have the resources to handle the workload involved.
 
 development:
+  host: localhost
   version: 1.0.0
   show_versions_and_limits: true
   emails_from: do.not.reply@localhost
   per_page: 12
   # -- Notifications config:
   can_do_notifications: true
-  notifications_max_events_that_can_copied_to_incidents: 50
+  max_events_that_can_copied_to_incidents_for_each_notification: 50
   # -- Reports/PDFs config:
   max_events_per_pdf: 50
   can_do_reports: true
@@ -30,6 +31,7 @@ development:
   can_monthly_report: false
 
 test:
+  host: localhost
   version: 1.0.0
   show_versions_and_limits: true
   emails_from: do.not.reply@localhost
@@ -45,6 +47,8 @@ test:
   can_monthly_report: false
 
 production:
+  host: osprotect.appsudo.com
+  # host: 38.123.140.62
   version: 1.0.0
   show_versions_and_limits: true
   emails_from: do.not.reply@osprotect.com

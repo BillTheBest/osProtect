@@ -10,8 +10,13 @@
   <%= yield %>
   <div id="footer">
     <p>
-      2012 &nbsp;&nbsp;osprotect.appsudo.com 0.3.0
-      &nbsp;version: <%= APP_CONFIG[:version] %>
+      2012 
+      <% if APP_CONFIG[:show_versions_and_limits] %>
+          &nbsp;&nbsp;<%= APP_CONFIG[:host] %>
+          &nbsp;
+          version: <%= APP_CONFIG[:version] %>
+          &nbsp;&nbsp;
+      <% end %>
       &nbsp;&nbsp;<%= Time.now.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") %>
     </p>
   </div>

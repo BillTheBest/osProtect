@@ -25,12 +25,12 @@
 
   <div id="footer">
     <p>
-      2012 &nbsp;&nbsp;osprotect.appsudo.com
+      2012 
       <% if APP_CONFIG[:show_versions_and_limits] %>
+          &nbsp;&nbsp;<%= APP_CONFIG[:host] %>
           &nbsp;
           version: <%= APP_CONFIG[:version] %>
-          &nbsp;&nbsp;
-          &nbsp;|&nbsp; Ruby: <%=RUBY_VERSION%>
+          &nbsp;&nbsp; Ruby: <%=RUBY_VERSION%>
           &nbsp;|&nbsp; Rails: <%=Rails::VERSION::STRING%>
           <% if APP_CONFIG[:max_events_per_pdf] %>
               &nbsp;|&nbsp; <%= number_with_delimiter(APP_CONFIG[:max_events_per_pdf]) %> records max per PDF

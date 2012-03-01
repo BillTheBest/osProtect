@@ -142,10 +142,11 @@
     end
     %>
     <div class="pulse_chart_data_wrapper">
-      <div class="pulse_chart" style="float:left">
-        <%= image_tag(Gchart.pie_3d(data: data, labels: labels, size: chart_size, title: "", theme: :thirty7signals)) %>
-      </div>
-      <div class="pulse_data" style="float:right">
+      <%# note: strange characters in the signature names causes problems for gcharts %>
+      <!-- <div class="pulse_chart" style="float:left">
+        <%#= image_tag(Gchart.pie_3d(data: data, labels: labels, size: chart_size, title: "", theme: :thirty7signals)) %>
+      </div> -->
+      <div class="pulse_data">
         <table border="0" cellspacing="0" cellpadding="0">
           <thead>
             <tr>
@@ -167,10 +168,11 @@
 <% end %>
 <hr style="clear: both; margin-bottom:30px; height:5px" />
 
-<h3 style="clear: both; text-align:center; font-size:15px">Most Active Times</h3>
-<% if @hot_times.blank? %>
+<%# note: the sql used to find the most active times is too slow, so this is disabled: %>
+<!-- <h3 style="clear: both; text-align:center; font-size:15px">Most Active Times</h3>
+<%# if @hot_times.blank? %>
     <h3>none</h3>
-<% else 
+<%# else 
     total = 0
     data = []
     labels = []
@@ -184,18 +186,6 @@
       "#{s.strftime("%l:%M")}-#{e.strftime("%l:%M %P")}"
     end
     %>
-    <%#
-    // note: the image_tag will be a broken image if the user's browser doesn't have internet access, so we 
-    //       use the following jquery code to fix that:
-    $(window).bind('load', function() {
-      $('img').each(function() {
-        if((typeof this.naturalWidth != "undefined" && this.naturalWidth == 0 ) || this.readyState == 'uninitialized' ) {
-          $(this).attr('src', 'missing.jpg');
-        }
-      });
-    })
-    %>
-    <%#= image_tag(Gchart.pie_3d(data: data, labels: labels, size: chart_size, title: "", theme: :thirty7signals)) %>
     <table border="0" cellspacing="0" cellpadding="0">
       <thead>
         <tr>
@@ -205,9 +195,9 @@
       </thead>
       <tbody>
         <tr><td></td><td style="text-align:left"><small><em>15 minute intervals with more than 10 events</em></small></td></tr>
-        <% @hot_times.each do |hot_time| %>
-            <tr class="<%= cycle('even', 'odd') %>">
-              <%
+        <%# @hot_times.each do |hot_time| %>
+            <tr class="<%#= cycle('even', 'odd') %>">
+              <%#
                 s = hot_time.minute
                 e = hot_time.minute + 15.minutes
                 case hot_time.cnt
@@ -216,11 +206,11 @@
                   else; c = "red"; w = "bold"
                 end                                
               %>
-              <td width="10%" align="right" style="color:<%=c%>; font-weight:<%=w%>"><%= number_with_delimiter(hot_time.cnt) %></td>
-              <td width="50%" style="color:<%=c%>; font-weight:<%=w%>"><%= s.strftime("%l:%M") %> - <%= e.strftime("%l:%M %P") %> </td>
+              <td width="10%" align="right" style="color:<%#=c%>; font-weight:<%#=w%>"><%#= number_with_delimiter(hot_time.cnt) %></td>
+              <td width="50%" style="color:<%#=c%>; font-weight:<%#=w%>"><%#= s.strftime("%l:%M") %> - <%#= e.strftime("%l:%M %P") %> </td>
             </tr>
-        <% end %>
+        <%# end %>
       </tbody>
     </table>
-<% end %>
-<hr style="clear: both; margin-bottom:30px; height:5px" />
+<%# end %>
+<hr style="clear: both; margin-bottom:30px; height:5px" /> -->
