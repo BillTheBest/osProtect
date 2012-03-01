@@ -51,20 +51,20 @@ process_daily_reports:
 #   description: "Monthly Report"
 #   rails_envs: development, production
 
-# process_event_notifications:
-#   every: 1m
-#   class: CronTask
-#   queue: notifications
-#   # method to perform in app/workers/cron_task.rb:
-#   args: "event_notifications"
-#   description: "Notifications"
-#   rails_envs: development, production
-# 
-# email_notifications:
-#   every: 5m
-#   class: CronTask
-#   queue: notifications
-#   # method to perform in app/workers/cron_task.rb:
-#   args: "batched_email_notifications"
-#   description: "Email Event Notifications"
-#   rails_envs: development, production
+process_event_notifications:
+  every: 1m
+  class: CronTask
+  queue: notifications
+  # method to perform in app/workers/cron_task.rb:
+  args: "event_notifications"
+  description: "Notifications"
+  rails_envs: development, production
+
+email_notifications:
+  every: 5m
+  class: CronTask
+  queue: notifications
+  # method to perform in app/workers/cron_task.rb:
+  args: "batched_email_notifications"
+  description: "Email Event Notifications"
+  rails_envs: development, production
