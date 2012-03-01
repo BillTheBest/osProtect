@@ -52,8 +52,8 @@ test:
 
 production:
   web_server: nginx
-  # host: osprotect.appsudo.com
-  host: 38.123.140.62
+  host: osprotect.appsudo.com
+  # host: 38.123.140.62
   version: 1.0.0
   show_versions_and_limits: true
   emails_from: do.not.reply@osprotect.com

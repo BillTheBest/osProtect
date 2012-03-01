@@ -38,4 +38,18 @@ class IncidentEvent < ActiveRecord::Base
     a.merge!(event.payload.attributes) unless event.payload.nil?
     a
   end
+
+  def source_ip_port
+    sip = self.ip_source
+    sip += ' : ' + self.tcp_sport.to_s unless tcp_sport.blank?
+    sip += ' : ' + self.udp_sport.to_s unless udp_sport.blank?
+    sip
+  end
+
+  def destination_ip_port
+    dip = self.ip_destination
+    dip += ' : ' + self.tcp_dport.to_s unless tcp_dport.blank?
+    dip += ' : ' + self.udp_dport.to_s unless udp_dport.blank?
+    dip
+  end
 end

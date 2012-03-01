@@ -89,7 +89,6 @@ class Event < ActiveRecord::Base
     dip
   end
 
-
   private
 
   def no_tcphdr?

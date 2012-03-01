@@ -465,13 +465,14 @@ sshclone
 
 _____________________________________________________________________________________________________________________
 * * * * * * * * * * * * only change needed for different deployments * * * * * * * * * * * * * * *
-1. config/app_config.yml :
+
+1. RAILS_ENV=production bundle exec rake assets:precompile
+2. config/app_config.yml :
     production:
       host: osprotect.appsudo.com
       ... or ...
       host: 38.123.140.62
-
-2. config/environments/production.rb :
+3. config/environments/production.rb :
     config.action_mailer.default_url_options = { :host => "osprotect.appsudo.com" }
     ... or ...
     config.action_mailer.default_url_options = { :host => "38.123.140.62" }

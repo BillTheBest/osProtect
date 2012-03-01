@@ -252,9 +252,12 @@ class IncidentsPdf < Prawn::Document
   end
 
   def put_events_into_table(events)
-    events_table =  set_table_header_row + 
+    events_table =  set_table_header_row +
                     events.map do |event|
-                      [event.sig_priority, event.signature, event.ip_source, event.ip_destination, event.hostname, event.timestamp.to_s]
+                      [event.sig_priority, SignatureDetail.find(event.signature).sig_name,
+                       event.source_ip_port, event.destination_ip_port,
+                       event.hostname, event.timestamp.to_s
+                      ]
                     end
     table events_table do
       self.header = true

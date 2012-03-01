@@ -30,26 +30,25 @@ process_daily_reports:
   description: "Daily Report"
   rails_envs: development, production
 
-# process_weekly_reports:
-#   #     "0 2 * * 0" == 2am every Sunday ... weekly report for last week
-#   cron: "0 2 * * 0"
-#   class: CronTask
-#   queue: weekly_reports
-#   # method to perform in app/workers/cron_task.rb:
-#   args: "weekly_report_emailed_as_pdf"
-#   description: "Weekly Report"
-#   rails_envs: development, production
+process_weekly_reports:
+  #     "0 2 * * 0" == 2am every Sunday ... weekly report for last week
+  cron: "0 2 * * 0"
+  class: CronTask
+  queue: weekly_reports
+  # method to perform in app/workers/cron_task.rb:
+  args: "weekly_report_emailed_as_pdf"
+  description: "Weekly Report"
+  rails_envs: development, production
 
-# cls: monthly is disabled until slow pdf generation is resolved:
-# process_monthly_reports:
-#   #     "0 3 1 * *" == 3am on 1st of month ... monthly report for last month:
-#   cron: "0 3 1 * *"
-#   class: CronTask
-#   queue: monthly_reports
-#   # method to perform in app/workers/cron_task.rb:
-#   args: "monthly_report_emailed_as_pdf"
-#   description: "Monthly Report"
-#   rails_envs: development, production
+process_monthly_reports:
+  #     "0 3 1 * *" == 3am on 1st of month ... monthly report for last month:
+  cron: "0 3 1 * *"
+  class: CronTask
+  queue: monthly_reports
+  # method to perform in app/workers/cron_task.rb:
+  args: "monthly_report_emailed_as_pdf"
+  description: "Monthly Report"
+  rails_envs: development, production
 
 process_event_notifications:
   every: 1m
