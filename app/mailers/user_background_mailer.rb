@@ -79,6 +79,7 @@ class UserBackgroundMailer < ActionMailer::Base
     @incidents = @incident_event_search.filter(@incidents) # sets: @start_time and @end_time
     @report_title = set_report_title(@report.auto_run_at, 'Incidents Report for', @incident_event_search.start_time, @incident_event_search.end_time)
     incidents_count = @incidents.count
+puts "\nincidents_count=#{incidents_count.inspect}\n"
     max_exceeded = (incidents_count > APP_CONFIG[:max_incidents_per_pdf]) ? true : false
     @incidents = @incidents.limit(APP_CONFIG[:max_incidents_per_pdf])
     if incidents_count > 0

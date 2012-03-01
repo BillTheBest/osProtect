@@ -95,6 +95,7 @@ class CronTask
       users = User.all
 users = User.where(id: 1)
       users.each do |user|
+puts "\nusers=#{users.inspect}\nreport=#{report.inspect}\n"
         # UserBackgroundMailer.events_cron_report(user.id, report.id).deliver if report.report_type == 1
         UserBackgroundMailer.incidents_cron_report(user.id, report.id).deliver if report.report_type == 2
       end
