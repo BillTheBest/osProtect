@@ -1,7 +1,5 @@
 class CronTask
 
-  class AbortNothingToMailException < Exception; end
-
   class << self
     def perform(method)
       with_logging method do
@@ -38,12 +36,10 @@ class CronTask
 
   def event_notifications
     # FIXME this needs some TLC as I have not spent any time on refactoring nor optimizing!
-    #
     # assumptions:
     #   1. there is less than 1 minute to process everything
     #   2. there are only a few hundred events/alerts per day per sensor (well tuned)
     #   3. there is a way to mass insert events into an incident
-    #
     now_time = Time.now.utc
     one_minute_ago_time = 1.minute.ago
     temp_event = Event.new
@@ -95,9 +91,9 @@ class CronTask
     return unless APP_CONFIG[:can_daily_report]
     Report.where(auto_run_at: 'd', run_status: true).each do |report|
       users = User.all
-users = User.where(id: 1)
+      # users = User.where(id: 1)
       users.each do |user|
-        # UserBackgroundMailer.events_cron_report(user.id, report.id).deliver if report.report_type == 1
+        UserBackgroundMailer.events_cron_report(user.id, report.id).deliver if report.report_type == 1
         UserBackgroundMailer.incidents_cron_report(user.id, report.id).deliver if report.report_type == 2
       end
     end
@@ -109,6 +105,7 @@ users = User.where(id: 1)
       users = User.all
       users.each do |user|
         UserBackgroundMailer.events_cron_report(user.id, report.id).deliver if report.report_type == 1
+        UserBackgroundMailer.incidents_cron_report(user.id, report.id).deliver if report.report_type == 2
       end
     end
   end
@@ -119,6 +116,7 @@ users = User.where(id: 1)
       users = User.all
       users.each do |user|
         UserBackgroundMailer.events_cron_report(user.id, report.id).deliver if report.report_type == 1
+        UserBackgroundMailer.incidents_cron_report(user.id, report.id).deliver if report.report_type == 2
       end
     end
   end

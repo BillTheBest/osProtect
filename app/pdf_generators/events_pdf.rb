@@ -47,7 +47,6 @@ class EventsPdf < Prawn::Document
   def create_summary
     take_pulse(@user, @report.report_criteria[:relative_date_range])
     stroke_color "8d8d8d" # grey
-    # FIXME the following is not very DRY ... refactor ... soon!
     start_new_page
     move_down 20
     text "Top Attackers", size: 15, style: :bold, spacing: 4, align: :center
@@ -233,7 +232,6 @@ class EventsPdf < Prawn::Document
   end
 
   def put_events_into_table
-    # FIXME I'm guessing the @events.map is causing this to be very slow ... is there another way ?
     events_table =  set_table_header_row + 
                     @events.map do |event|
                       [event.priority, event.signature, event.source_ip_port, event.destination_ip_port, event.sensor_name, event.timestamp.to_s]

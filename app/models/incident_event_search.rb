@@ -71,7 +71,6 @@ class IncidentEventSearch
     # else
     #   incidents = incident_events.where('incident_events.timestamp between ? and ?', @start_time, @end_time)
     # end
-puts "\nout filter ... incidents=#{incidents.to_sql}\n"
     incidents
   end
 

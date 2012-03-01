@@ -21,10 +21,6 @@ module Osprotect
         @events_by_signature = SignatureDetail.select("#{SignatureDetail.table_name}.sig_id, #{SignatureDetail.table_name}.sig_name, COUNT(#{SignatureDetail.table_name}.sig_name) as event_cnt").group(:sig_id, :sig_name).joins(:events)
         @events_by_signature = @events_by_signature.where('timestamp between ? and ?', @start_time, @end_time).limit(10)
         @events_count = @events_by_signature.length
-        # @incidents = Incident.order('updated_at desc').limit(5)
-        # @pending_incidents = Incident.where(status: 'pending').count
-        # @suspicious_incidents = Incident.where(status: 'suspicious').count
-        # @resolved_incidents = Incident.where(status: 'resolved').count
       else
         # get user's Sensors based on group memberships:
         sensors_for_user = user.sensors
@@ -47,12 +43,6 @@ module Osprotect
           @events_by_signature = SignatureDetail.select("#{SignatureDetail.table_name}.sig_id, #{SignatureDetail.table_name}.sig_name, COUNT(#{SignatureDetail.table_name}.sig_name) as event_cnt").group(:sig_id, :sig_name).joins(:events).where("event.sid IN (?)", sensors_for_user)
           @events_by_signature = @events_by_signature.where('timestamp between ? and ?', @start_time, @end_time).limit(10)
           @events_count = @events_by_signature.length
-          # limit stats returned to the Sensors for this user's groups/memberships:
-          # groups_for_user = user.groups
-          # @incidents = Incident.where("incidents.group_id IN (?)", groups_for_user).order('updated_at desc').limit(5)
-          # @pending_incidents = Incident.where(status: 'pending').count
-          # @suspicious_incidents = Incident.where(status: 'suspicious').count
-          # @resolved_incidents = Incident.where(status: 'resolved').count
         end
       end
     end
