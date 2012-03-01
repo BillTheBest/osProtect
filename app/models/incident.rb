@@ -19,4 +19,21 @@ class Incident < ActiveRecord::Base
     return 'warn' if self.status.downcase == 'suspicious'
     'error'
   end
+
+  class Selection
+    attr_accessor :id, :name
+    def initialize(attributes = {})
+      attributes.each do |name, value|
+        send("#{name}=", value)
+      end unless attributes.nil?
+    end
+  end
+
+  def self.status_selections
+    ss = []
+    ss << Selection.new({id: 'pending', name: 'pending'})
+    ss << Selection.new({id: 'suspicious', name: 'suspicious'})
+    ss << Selection.new({id: 'resolved', name: 'resolved'})
+    ss
+  end
 end

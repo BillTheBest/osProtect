@@ -93,10 +93,10 @@ class CronTask
     return unless APP_CONFIG[:can_daily_report]
     Report.where(auto_run_at: 'd', run_status: true).each do |report|
       users = User.all
-      # cls: users = User.where(id: 1)
+users = User.where(id: 1)
       users.each do |user|
-        UserBackgroundMailer.events_cron_report(user.id, report.id).deliver if report.report_type == 1
-        # UserBackgroundMailer.incidents_cron_report(user.id, report.id).deliver if report.report_type == 2
+        # UserBackgroundMailer.events_cron_report(user.id, report.id).deliver if report.report_type == 1
+        UserBackgroundMailer.incidents_cron_report(user.id, report.id).deliver if report.report_type == 2
       end
     end
   end

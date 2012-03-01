@@ -35,7 +35,8 @@ class ReportsController < ApplicationController
 
   def new
     @report = Report.new
-    @event_search = EventSearch.new(nil)
+    @report.report_type = 2 if params[:commit] == 'create Incidents Report' # incidents
+    @event_search = @report.report_type == 2 ? IncidentEventSearch.new(nil) : EventSearch.new(nil)
   end
 
   def create
@@ -45,14 +46,14 @@ class ReportsController < ApplicationController
     if @report.save
       redirect_to @report, notice: 'Report was successfully created.'
     else
-      @event_search = EventSearch.new(params[:q])
+      @event_search = @report.report_type == 2 ? IncidentEventSearch.new(params[:q]) : EventSearch.new(params[:q])
       render action: "new"
     end
   end
 
   def edit
     @report = current_user.reports.find(params[:id])
-    @event_search = EventSearch.new(@report.report_criteria)
+    @event_search = @report.report_type == 2 ? IncidentEventSearch.new(@report.report_criteria) : EventSearch.new(@report.report_criteria)
   end
 
   def update
@@ -62,7 +63,7 @@ class ReportsController < ApplicationController
     if @report.update_attributes(params[:report])
       redirect_to @report, notice: 'Report was successfully updated.'
     else
-      @event_search = EventSearch.new(params[:q])
+      @event_search = @report.report_type == 2 ? IncidentEventSearch.new(params[:q]) : EventSearch.new(params[:q])
       render action: "edit"
     end
   end

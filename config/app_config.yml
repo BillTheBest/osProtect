@@ -25,6 +25,7 @@ development:
   can_do_notifications: true
   max_events_that_can_be_copied_to_incidents_for_each_notification: 5
   # -- Reports/PDFs config:
+  max_incidents_per_pdf: 50
   max_events_per_pdf: 50
   can_do_reports: true
   can_daily_report: true
@@ -42,6 +43,7 @@ test:
   can_do_notifications: true
   max_events_that_can_be_copied_to_incidents_for_each_notification: 50
   # -- Reports/PDFs config:
+  max_incidents_per_pdf: 50
   max_events_per_pdf: 50
   can_do_reports: true
   can_daily_report: true
@@ -50,8 +52,8 @@ test:
 
 production:
   web_server: nginx
-  # host: osprotect.appsudo.com
-  host: 38.123.140.62
+  host: osprotect.appsudo.com
+  # host: 38.123.140.62
   version: 1.0.0
   show_versions_and_limits: true
   emails_from: do.not.reply@osprotect.com
@@ -60,6 +62,7 @@ production:
   can_do_notifications: true
   max_events_that_can_be_copied_to_incidents_for_each_notification: 500
   # -- Reports/PDFs config:
+  max_incidents_per_pdf: 2000
   max_events_per_pdf: 2000
   can_do_reports: true
   can_daily_report: true

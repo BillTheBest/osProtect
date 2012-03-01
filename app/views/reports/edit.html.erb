@@ -1,1 +1,5 @@
-<%= render 'form' %>
+<% if params[:commit] == 'create Incidents Report' || @report.report_type == 2 %>
+  <%= render 'incidents_form' %>
+<% else %>
+  <%= render 'events_form' %>
+<% end %>
