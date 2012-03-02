@@ -9,7 +9,7 @@
               <table border="0" cellspacing="0" cellpadding="0" id="events" class="index_table">
                 <thead>
                   <tr>
-                    <th class="sortable" colspan="6" style="text-align:center">Events for this Incident</th>
+                    <th class="sortable" colspan="7" style="text-align:center">Events for this Incident</th>
                   </tr>
                   <tr>
                     <th class="sortable">priority</th>
@@ -18,6 +18,7 @@
                     <th class="sortable">destination</th>
                     <th class="sortable">sensor</th>
                     <th class="sortable">timestamp</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -29,6 +30,7 @@
                         <td><%= ie.ip_destination %></td>
                         <td><%= ie.hostname %></td>
                         <td><%= ie.timestamp %></td>
+                        <td><%= link_to 'delete', ie, confirm: 'Are you sure?', method: :delete %></td>
                       </tr>
                   <% end %>
                 </tbody>

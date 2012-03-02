@@ -22,6 +22,7 @@ OsProtectRor320::Application.routes.draw do
   get "user_setup_required" => "dashboard#user_setup_required", :as => "user_setup_required"
 
   resources :incidents
+  resources :incident_events, :only => [:destroy]
 
   resources :users
 

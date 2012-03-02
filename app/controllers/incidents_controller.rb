@@ -8,7 +8,6 @@ class IncidentsController < ApplicationController
 
   def show
     redirect_to incidents_url
-    # @incident = Incident.find(params[:id])
   end
 
   def new
@@ -17,6 +16,7 @@ class IncidentsController < ApplicationController
 
   def create
     @incident = Incident.new(params[:incident])
+    @incident.user_id = current_user.id
     # FIXME any group that current_user is a member of will do, but if current_user's
     #       groups/members are changed this could lead to zombie incidents:
     @incident.group_id = current_user.groups.first.id
