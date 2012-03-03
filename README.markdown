@@ -93,6 +93,10 @@ redis-cli ping
 1. git clone git://github.com/clonesec/osProtect.git
 2. cd osProtect
 3. edit config/app_config.yml and change ...
-4. bundle install ... to install all the necessary ruby gems
-5. rake db:migrate ... to add tables in addition to the Snort schema
-6. rails server ... then visit http://localhost:3000/ in a web browser
+4. the Snort (or other IDS with the same schema) database must be installed
+5. edit config/database.yml and change ...
+6. bundle install ... to install all the necessary ruby gems
+7. bundle exec rake db:migrate ... to add tables in addition to the Snort schema
+8. bundle exec rake db:seed ... creates the initial admin user
+9. edit config/resque.yml and change if you are not using the defaults
+10. rails server ... then visit http://localhost:3000/ in a web browser

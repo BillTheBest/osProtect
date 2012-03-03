@@ -1,9 +1,5 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-
 # create at least one admin user:
-u = User.create!(username: 'admin', email: 'cleesmith2006@gmail.com', password: 'mollydog', password_confirmation: 'mollydog')
-User.create!(username: 'spud', email: 'spud@spud.com', password: 'spudder', password_confirmation: 'spudder')
+u = User.create!(username: 'admin', email: 'change_me@gmail.com', password: 'whatever', password_confirmation: 'whatever')
 # create admins group and a default membership for admin user:
 g = Group.create!(name: 'admins', user_ids: u.id)
 # see the 'after_save' callback in the Group model for how this user is assigned the admin role
