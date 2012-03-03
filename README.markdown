@@ -83,7 +83,7 @@ or
 redis-cli ping
 ```
 
-## Rails app
+## Install the Rails app
 
 1. git clone git://github.com/clonesec/osProtect.git
 2. cd osProtect
