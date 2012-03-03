@@ -1,6 +1,6 @@
 # osProtect
 
-osProtect is a ruby on rails application for detecting and analyzing security threats. 
+osProtect is a ruby on rails application offering an interface for intrusion detection/prevention systems such as Snort.
 
 ## Installation Overview
 
