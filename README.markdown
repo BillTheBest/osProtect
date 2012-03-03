@@ -11,7 +11,7 @@ osProtect is a ruby on rails application for detecting and analyzing security th
 5. rake db:migrate ... to create a users table to be used by Devise for sign in/out/timeout of user sessions
 6. rails server ... then visit http://localhost:3000/ in a web browser
 
-### Emails
+## Emails
 
 To send emails install Postfix Mail Server:
 
