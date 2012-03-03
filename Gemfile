@@ -41,10 +41,12 @@ gem 'whenever', :require => false
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
 
+gem 'thin'
+gem 'foreman'
+gem 'unicorn'
+
 group :development do
   gem 'letter_opener'
-  gem 'thin'
-  gem 'foreman'
 end
 
 gem "rspec-rails", :group => [:development, :test]
@@ -57,6 +59,4 @@ group :test do
 end
 
 group :production do
-  gem 'thin'
-  gem 'foreman'
 end

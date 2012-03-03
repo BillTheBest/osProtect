@@ -23,13 +23,6 @@ cd $RELEASE
 # "lower our shields", i.e. stop the app server using Upstart service created via Foreman/Procfile:
 sudo service osprotect stop
 
-# keep PDF files created between app releases:
-mkdir -p shared
-ln -s "${ROOT}/shared/reports" "shared/reports"
-# ... or use giddyup's builtin share for symlinking:
-# . /usr/local/lib/giddyup/functions.sh
-# share shared/reports
-
 # ln -s "${ROOT}/shared/bundled_gems" "vendor/bundle"
 # bundle install --deployment --without assets development test
 

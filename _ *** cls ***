@@ -451,6 +451,7 @@ ________________________________________________________________________________
 redis-server /usr/local/etc/redis.conf
 cls; foreman start -c web=3,worker=3,scheduler=1
 cls; foreman start -c web=1,worker=1,scheduler=1
+cls; be foreman start -f Procfile_with_unicorn
 
 ... deploy via giddyup (heroku-like):
 git push deploy master:master
@@ -467,6 +468,7 @@ ________________________________________________________________________________
 * * * * * * * * * * * * only change needed for different deployments * * * * * * * * * * * * * * *
 
 1. RAILS_ENV=production bundle exec rake assets:precompile
+    ... only works if in config/database.yml production is the same as development ?
 2. config/app_config.yml :
     production:
       host: osprotect.appsudo.com
@@ -477,6 +479,9 @@ ________________________________________________________________________________
     ... or ...
     config.action_mailer.default_url_options = { :host => "38.123.140.62" }
 _____________________________________________________________________________________________________________________
+
+Apache + Unicorn:
+https://github.com/teambox/teambox/wiki/Installing-on-Ubuntu-using-Apache-and-Unicorn
 
 
 

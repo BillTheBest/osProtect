@@ -18,6 +18,13 @@ rvm gemset name >> ${ROOT}/hook.log
 mkdir -p tmp/
 touch tmp/restart.txt
 
+# keep PDF files created between app releases:
+mkdir -p shared
+ln -s "${ROOT}/shared/reports" "shared/reports"
+# ... or use giddyup's builtin share for symlinking:
+# . /usr/local/lib/giddyup/functions.sh
+# share shared/reports
+
 # create symlink to shared vendor/bundle so we don't repeat gem installs when not needed:
 ln -s "${ROOT}/shared/bundled_gems" "vendor/bundle"
 # bundle install to shared vendor/bundle ignoring assets+development+test groups:

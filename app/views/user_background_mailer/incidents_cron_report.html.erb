@@ -8,9 +8,9 @@
   <h2><%= @report_title %> for <%= @user.username %>:</h2>
   <blockquote>
     <p>
-      <strong><%= pluralize(@incidents.count, 'incident') %></strong> were found matching the report criteria.
+      <strong><%= pluralize(@incidents_count, 'incident') %></strong> were found matching the report criteria.
     </p>
-    <% if @incidents.count > 0 %>
+    <% if @incidents_count > 0 %>
         <p>View the attached PDF for details.</p>
     <% end %>
   </blockquote>

@@ -78,11 +78,11 @@ class UserBackgroundMailer < ActionMailer::Base
     @incident_event_search = IncidentEventSearch.new(@report.report_criteria)
     @incidents = @incident_event_search.filter(@incidents) # sets: @start_time and @end_time
     @report_title = set_report_title(@report.auto_run_at, 'Incidents Report for', @incident_event_search.start_time, @incident_event_search.end_time)
-    incidents_count = @incidents.count
-    max_exceeded = (incidents_count > APP_CONFIG[:max_incidents_per_pdf]) ? true : false
+    @incidents_count = @incidents.count
+    max_exceeded = (@incidents_count > APP_CONFIG[:max_incidents_per_pdf]) ? true : false
     @incidents = @incidents.limit(APP_CONFIG[:max_incidents_per_pdf])
-    if incidents_count > 0
-      pdf_doc = IncidentsPdf.new(@user, @report, @report_title, max_exceeded, APP_CONFIG[:max_incidents_per_pdf], incidents_count, @incidents)
+    if @incidents_count > 0
+      pdf_doc = IncidentsPdf.new(@user, @report, @report_title, max_exceeded, APP_CONFIG[:max_incidents_per_pdf], @incidents_count, @incidents)
       # now save pdf to a file and create a Pdf table entry:
       path = "#{Rails.root}/shared/reports/#{@user.id}/#{@report.auto_run_at}"
       FileUtils.mkdir_p(path) # create path if it doesn't exist
