@@ -15,7 +15,7 @@ osProtect is a ruby on rails application for detecting and analyzing security th
 
 To send emails install Postfix Mail Server:
 
-```ruby
+```bash
 sudo aptitude install telnet postfix
 ```
 
