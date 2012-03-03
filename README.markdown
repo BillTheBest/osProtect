@@ -12,7 +12,9 @@ osProtect is a ruby on rails application for detecting and analyzing security th
 6. rails server ... then visit http://localhost:3000/ in a web browser
 
 To send emails install Postfix Mail Server:
+
 > sudo aptitude install telnet postfix
+
 ... choose "Internet Site", leave system mail name at default
 
 To test that Postfix and Sendmail are working do:
