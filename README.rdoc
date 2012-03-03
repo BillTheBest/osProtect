@@ -39,8 +39,8 @@ If you use Upstart then do this:
 The above will start Redis when the server is rebooted, and restarts it if it is killed or dies.
 _________________________________________________________________________________________________________
 To test Redis you can manually start it by doing (for Upstart):
-> sudo service redis-server start (also, stop or restart)
+  > sudo service redis-server start (also, stop or restart)
 To test that it works:
-> redis-cli info
-  - or -
-> redis-cli ping
+  > redis-cli info
+- or -
+  > redis-cli ping
