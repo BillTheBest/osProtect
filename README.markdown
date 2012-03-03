@@ -5,13 +5,12 @@ To send emails install Postfix Mail Server:
 ... choose "Internet Site", leave system mail name at default
 
 To test that Postfix and Sendmail are working do:
-```bash
+```ruby
 /usr/sbin/sendmail your_email_account@something.com
 FROM: me
 SUBJECT: hi
 this is only a test
 . <press Enter twice>
-
 ```
 
 Install Redis
