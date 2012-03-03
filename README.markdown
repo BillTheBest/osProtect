@@ -33,7 +33,7 @@ this is only a test
 
 Check your inbox for the email.
 
-### Redis
+## Redis
 
 Redis is used by the gems **Resque** and **Resque Scheduler** for background jobs, and is only
 needed if you desire to do **background emailing**, **Notifications**, **Reports/PDFs** which are 
