@@ -5,8 +5,8 @@ This is a Ruby on Rails application that offers a modern interface for intrusion
 ## Installation Overview
 
 1. install Postfix to handle emails
-2. install Redis which is used by Resque for background jobs
-3. install the rails application
+2. install Redis to assist Resque with background processing
+3. install the Ruby on Rails application
 
 ## Emails
 
