@@ -44,15 +44,15 @@ cd ~/src (you may need to > mkdir ~/src)
 wget http://redis.googlecode.com/files/redis-2.4.6.tar.gz
 tar xzf redis-2.4.6.tar.gz
 cd redis-2.4.6
-```
 
-You may wish to do the following as root or preferably as sudo.
-    make
-    make install
-    mkdir /etc/redis
-    mkdir /var/redis
-    cp redis.conf /etc/redis/
-    nano /etc/redis/redis.conf
+do the following as root or preferably as sudo.
+make
+make install
+mkdir /etc/redis
+mkdir /var/redis
+cp redis.conf /etc/redis/
+nano /etc/redis/redis.conf
+```
 
 If you use Upstart then do this:
     mkdir /var/log/redis
