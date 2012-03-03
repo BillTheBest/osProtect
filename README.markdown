@@ -45,7 +45,7 @@ wget http://redis.googlecode.com/files/redis-2.4.6.tar.gz
 tar xzf redis-2.4.6.tar.gz
 cd redis-2.4.6
 
-do the following as root or preferably as sudo.
+do the following as root or preferably as sudo:
 make
 make install
 mkdir /etc/redis
