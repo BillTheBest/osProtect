@@ -31,15 +31,20 @@ this is only a test
 . <press Enter twice>
 ```
 
+Check your inbox for the email.
 
-Install Redis
-Redis is used by the gems Resque and Resque Scheduler for background jobs, and is only
-needed if you desire to do background emailing, Notifications, Reports/PDFs which are 
+### Redis
+
+Redis is used by the gems **Resque** and **Resque Scheduler** for background jobs, and is only
+needed if you desire to do **background emailing**, **Notifications**, **Reports/PDFs** which are 
 all optional features in osProtect.
-    cd ~/src (you may need to > mkdir ~/src)
-    wget http://redis.googlecode.com/files/redis-2.4.6.tar.gz
-    tar xzf redis-2.4.6.tar.gz
-    cd redis-2.4.6
+
+```
+cd ~/src (you may need to > mkdir ~/src)
+wget http://redis.googlecode.com/files/redis-2.4.6.tar.gz
+tar xzf redis-2.4.6.tar.gz
+cd redis-2.4.6
+```
 
 You may wish to do the following as root or preferably as sudo.
     make
