@@ -17,14 +17,16 @@ To send emails install Postfix Mail Server:
 sudo aptitude install telnet postfix
 ```
 
-... choose "Internet Site", leave system mail name at default
+Choose "Internet Site" and leave system mail name at default.
 
-To test that Postfix and Sendmail are working do:
+To ensure Postfix and Sendmail are working do:
+
     /usr/sbin/sendmail your_email_account@something.com
     FROM: me
     SUBJECT: hi
     this is only a test
     . <press Enter twice>
+
 
 Install Redis
 Redis is used by the gems Resque and Resque Scheduler for background jobs, and is only
