@@ -2,7 +2,7 @@
 
 osProtect is a ruby on rails application for detecting and analyzing security threats. 
 
-## Getting Started
+## Installation Overview
 
 1. install Postfix to handle emails
 2. install Redis which is used by Resque for background jobs
