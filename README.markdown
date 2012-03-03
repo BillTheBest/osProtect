@@ -15,7 +15,7 @@ osProtect is a ruby on rails application for detecting and analyzing security th
 
 To send emails install Postfix Mail Server:
 
-```bash
+```
 sudo aptitude install telnet postfix
 ```
 
@@ -23,11 +23,13 @@ Choose "Internet Site" and leave system mail name at default.
 
 To ensure Postfix and Sendmail are working do:
 
-    /usr/sbin/sendmail your_email_account@something.com
-    FROM: me
-    SUBJECT: hi
-    this is only a test
-    . <press Enter twice>
+```
+/usr/sbin/sendmail your_email_account@something.com
+FROM: me
+SUBJECT: hi
+this is only a test
+. <press Enter twice>
+```
 
 
 Install Redis
