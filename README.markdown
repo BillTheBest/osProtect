@@ -1,6 +1,6 @@
 # osProtect
 
-This is a Ruby on Rails application that offers a modern interface for intrusion detection/prevention systems such as Snort.
+This is a Ruby on Rails application that offers a modern interface for network security IDS/IPS management and reporting.
 
 ## Installation Overview
 
