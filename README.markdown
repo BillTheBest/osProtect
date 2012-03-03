@@ -44,23 +44,32 @@ cd ~/src (you may need to > mkdir ~/src)
 wget http://redis.googlecode.com/files/redis-2.4.6.tar.gz
 tar xzf redis-2.4.6.tar.gz
 cd redis-2.4.6
- ... do the following as root or preferably as sudo:
-make
-make install
+sudo make
+sudo make install
 mkdir /etc/redis
 mkdir /var/redis
 cp redis.conf /etc/redis/
 nano /etc/redis/redis.conf
 ```
 
-If you use Upstart then do this:
-    mkdir /var/log/redis
-    nano /etc/init/redis-server.conf ... and enter the following (not indented) and save:
-    description "redis server"
-    start on runlevel [2345]
-    stop on shutdown
-    exec /usr/local/bin/redis-server /etc/redis/redis.conf
-    respawn
+If you use Upstart (highly recommended) then do this:
+
+```
+mkdir /var/log/redis
+nano /etc/init/redis-server.conf
+```
+Then enter the following:
+
+```
+description "redis server"
+start on runlevel [2345]
+stop on shutdown
+exec /usr/local/bin/redis-server /etc/redis/redis.conf
+respawn
+```
+
+and save.
+
 The above will start Redis when the server is rebooted, and restarts it if it is killed or dies.
 
 To test Redis you can manually start it by doing (for Upstart):
