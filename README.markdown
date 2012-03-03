@@ -70,11 +70,18 @@ respawn
 
 and save.
 
-The above will start Redis when the server is rebooted, and restarts it if it is killed or dies.
+The above will start Redis when the server is rebooted, and restarts redis if it should be killed or dies.
 
 To test Redis you can manually start it by doing (for Upstart):
-    sudo service redis-server start (also, stop or restart)
-To test that it works:
-    redis-cli info
-- or -
-    redis-cli ping
+
+```
+sudo service redis-server start (also, stop or restart)
+```
+
+To ensure it works do:
+
+```
+redis-cli info
+or
+redis-cli ping
+```
