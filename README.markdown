@@ -95,7 +95,7 @@ redis-cli ping
 3. edit config/app_config.yml and change ...
 4. the Snort (or other IDS with the same schema) database must be installed
 5. edit config/database.yml and change ...
-6. bundle install ... to install all the necessary ruby gems
+6. bundle install
 7. bundle exec rake db:migrate ... to add tables in addition to the Snort schema
 8. bundle exec rake db:seed ... creates the initial admin user
 9. edit config/resque.yml and change if you are not using the defaults
