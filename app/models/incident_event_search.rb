@@ -52,7 +52,7 @@ class IncidentEventSearch
 
   def filter(incidents)
     set_time_range(relative_date_range) # sets: @start_time and @end_time
-    return incident_events unless @searchable
+    return incidents unless @searchable
     incidents = incidents.where('incidents.updated_at between ? and ?', @start_time, @end_time)
     incidents = incidents.where("incidents.status = ?", incident_status) unless incident_status.blank?
     incidents = incidents.where("incident_events.sig_priority = ?", sig_priority) unless sig_priority.blank?
@@ -66,10 +66,10 @@ class IncidentEventSearch
     #   @start_time = timestamp_gte.to_datetime.utc.beginning_of_day unless timestamp_gte.blank?
     #   @end_time = timestamp_lte.to_datetime.utc.end_of_day unless timestamp_lte.blank?
     #   # try custom/fixed date range:
-    #   incidents = incident_events.where("incident_events.timestamp >= ?", @start_time) unless timestamp_gte.blank?
-    #   incidents = incident_events.where("incident_events.timestamp <= ?", @end_time) unless timestamp_lte.blank?
+    #   incidents = incidents.where("incident_events.timestamp >= ?", @start_time) unless timestamp_gte.blank?
+    #   incidents = incidents.where("incident_events.timestamp <= ?", @end_time) unless timestamp_lte.blank?
     # else
-    #   incidents = incident_events.where('incident_events.timestamp between ? and ?', @start_time, @end_time)
+    #   incidents = incidents.where('incident_events.timestamp between ? and ?', @start_time, @end_time)
     # end
     incidents
   end

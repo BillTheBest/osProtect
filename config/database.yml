@@ -26,3 +26,15 @@ test:
   socket: /tmp/mysql.sock
 
 production:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  pool: 5
+  database: snort
+  # CLONWLRUBY2.clone-systems.com at 38.123.140.62:
+  # username: snort
+  # password: cl0nesys01
+  # cls ... changed the above to:
+  username: railsapp
+  password: r1o2r3dec20
+  socket: /var/run/mysqld/mysqld.sock

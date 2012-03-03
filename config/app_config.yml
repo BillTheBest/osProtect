@@ -53,6 +53,7 @@ test:
 production:
   web_server: nginx
   host: osprotect.appsudo.com
+  # web_server: apache
   # host: 38.123.140.62
   version: 1.0.0
   show_versions_and_limits: true
