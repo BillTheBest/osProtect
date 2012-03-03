@@ -5,10 +5,10 @@ This is a Ruby on Rails application that offers a modern interface for network s
 ## Installation Overview
 
 1. prerequisites include:
-* Ruby 1.9.3
-* Rails 3.2.1
-* Snort
-* Barnyard2
+  * Ruby 1.9.3
+  * Rails 3.2.1
+  * Snort
+  * Barnyard2
 2. install Postfix to handle emails
 3. install Redis to assist Resque with background processing
 4. install the Ruby on Rails application
