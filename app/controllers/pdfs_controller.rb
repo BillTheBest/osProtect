@@ -20,7 +20,7 @@ class PdfsController < ApplicationController
            content_disposition: "attachment; filename=\"#{pdf.file_name}\"")
     else
       # 'send_file()' puts the burden of downloading a file on rails, which will block while doing so:
-      send_file("#{Rails.root}/shared/reports#{path}/" + pdf.file_name)
+      send_file("#{Rails.root}/shared/reports/#{path}/" + pdf.file_name)
       # send_file("/Users/cleesmith/Sites/osProtect_ror320/shared/reports/#{path}/" + pdf.file_name)
     end
   end
