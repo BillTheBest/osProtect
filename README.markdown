@@ -13,6 +13,11 @@ This is a Ruby on Rails application that offers a modern interface for network s
 3. Install **Redis** which is used by **Resque** and **Resque Scheduler** for background processing
 4. Install this Rails application
 
+## Snort and Barnyard2
+
+Please consult the [Snort docs](http://www.snort.org/docs "snort install") and [Barnyard2 site](http://www.securixlive.com/barnyard2/download.php "barnyard2 install") for the latest installation instructions.
+
+
 ## Emails
 
 To send emails install Postfix Mail Server:
