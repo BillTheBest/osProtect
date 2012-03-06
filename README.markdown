@@ -26,7 +26,7 @@ Please consult the [Snort docs](http://www.snort.org/docs "snort install") and [
 
 ## Emails
 
-To send emails install Postfix Mail Server:
+To send emails install **Postfix** Mail Server (or you may use another mailing solution such as SMTP):
 
 ```
 sudo aptitude install telnet postfix
