@@ -14,14 +14,24 @@ This is a Ruby on Rails application that offers a modern interface for network s
 4. Install this Rails application
 
 
+## Snort and Barnyard2
+
+Please consult the [Snort docs](http://www.snort.org/docs "snort install") and [Barnyard2 site](http://www.securixlive.com/barnyard2/download.php "barnyard2 install") for the latest installation instructions.
+
+
 ## Ruby 1.9.3 +
 
 Please consult the [Ruby site](http://www.ruby-lang.org/en/downloads/ "ruby install") for the latest installation instructions.
 
 
-## Snort and Barnyard2
+## Rails 3.2.2 +
 
-Please consult the [Snort docs](http://www.snort.org/docs "snort install") and [Barnyard2 site](http://www.securixlive.com/barnyard2/download.php "barnyard2 install") for the latest installation instructions.
+See step **6.** under **Install this Rails application** later on this page.
+
+
+## MySQL Ver 14.14 Distrib 5.1.41 +
+
+Please consult the [MySQL site](http://dev.mysql.com/downloads/ "mysql install") for the latest installation instructions.
 
 
 ## Emails
