@@ -5,13 +5,13 @@ This is a Ruby on Rails application that offers a modern interface for network s
 ## Installation Overview
 
 1. Prerequisites:
-  * Snort and Barnyard2 (or another IDS that supports the default Snort database schema)
-  * Ruby 1.9.3
-  * Rails 3.2.2
-  * MySQL Ver 14.14 Distrib 5.1.41
-2. Install Postfix to handle emails
-3. Install Redis which is used by Resque and Resque Scheduler for background processing
-4. Install this Ruby on Rails application
+  * **Snort** and **Barnyard2** (or another IDS that supports the default Snort database schema)
+  * Ruby 1.9.3 +
+  * Rails 3.2.2 +
+  * MySQL Ver 14.14 Distrib 5.1.41 +
+2. Install **Postfix** to handle **emails**
+3. Install **Redis** which is used by **Resque** and **Resque Scheduler** for background processing
+4. Install this Rails application
 
 ## Emails
 
@@ -88,7 +88,7 @@ or
 redis-cli ping
 ```
 
-## Install the Rails app
+## Install this Rails application
 
 1. git clone git://github.com/clonesec/osProtect.git
 2. cd **osProtect**
