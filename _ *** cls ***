@@ -451,6 +451,7 @@ ________________________________________________________________________________
 redis-server /usr/local/etc/redis.conf
 cls; foreman start -c web=3,worker=3,scheduler=1
 cls; foreman start -c web=1,worker=1,scheduler=1
+
 cls; be foreman start -f Procfile_with_unicorn
 
 ... deploy via giddyup (heroku-like):
