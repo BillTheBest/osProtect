@@ -4,7 +4,7 @@ This is a Ruby on Rails application that offers a modern interface for network s
 
 ## Installation Overview
 
-1. Prerequisites include:
+1. Prerequisites:
   * Snort and Barnyard2 (or another IDS that supports the default Snort database schema)
   * Ruby 1.9.3
   * Rails 3.2.2
@@ -95,9 +95,9 @@ redis-cli ping
 3. edit config/app_config.yml and change ...
 4. the Snort (or other IDS with the same schema) database must be installed, and you may also want to create another user in 
 MySQL for this rails app to use to access the snort database
-5. edit config/database.yml and change ...
+5. edit config/database.yml and change to match your installation of Snort/MySQL
 6. bundle install
 7. bundle exec rake db:migrate ... to add tables in addition to the Snort schema
-8. bundle exec rake db:seed ... creates the initial admin user
-9. edit config/resque.yml and change if you are not using the defaults
+8. bundle exec rake db:seed ... which creates the initial admin user
+9. edit config/resque.yml ... change if you are not using the default IP/Port
 10. as a quick test do: rails server ... then visit http://localhost:3000/ in a web browser
