@@ -5,13 +5,13 @@ This is a Ruby on Rails application that offers a modern interface for network s
 ## Installation Overview
 
 1. Prerequisites include:
-  * Ruby 1.9.3
-  * Rails 3.2.1
-  * MySQL
   * Snort and Barnyard2 (or another IDS that supports the default Snort database schema)
+  * Ruby 1.9.3
+  * Rails 3.2.2
+  * MySQL Ver 14.14 Distrib 5.1.41
 2. Install Postfix to handle emails
-3. Install Redis to assist Resque with background processing
-4. Install the Ruby on Rails application
+3. Install Redis which is used by Resque and Resque Scheduler for background processing
+4. Install this Ruby on Rails application
 
 ## Emails
 
@@ -21,7 +21,7 @@ To send emails install Postfix Mail Server:
 sudo aptitude install telnet postfix
 ```
 
-Choose "Internet Site" and leave system mail name at default.
+Choose "Internet Site" and leave the **system mail name** at default.
 
 To ensure Postfix and Sendmail are working do:
 
@@ -37,7 +37,7 @@ Check your inbox for the email.
 
 ## Redis
 
-Redis is used by the gems **Resque** and **Resque Scheduler** for background jobs, and is only
+Redis is used by the gems **Resque** and **Resque Scheduler** for background processing, and is only
 needed if you desire to do **background emailing**, **Notifications**, **Reports/PDFs** which are 
 all optional features in osProtect.
 
@@ -54,7 +54,7 @@ cp redis.conf /etc/redis/
 nano /etc/redis/redis.conf
 ```
 
-If you use Upstart (highly recommended) then do this:
+To set up Redis as an Upstart service (the System-V init replacement, but highly recommended) then do this:
 
 ```
 mkdir /var/log/redis
@@ -93,10 +93,11 @@ redis-cli ping
 1. git clone git://github.com/clonesec/osProtect.git
 2. cd osProtect
 3. edit config/app_config.yml and change ...
-4. the Snort (or other IDS with the same schema) database must be installed
+4. the Snort (or other IDS with the same schema) database must be installed, and you may also want to create another user in 
+MySQL for this rails app to use to access the snort database
 5. edit config/database.yml and change ...
 6. bundle install
 7. bundle exec rake db:migrate ... to add tables in addition to the Snort schema
 8. bundle exec rake db:seed ... creates the initial admin user
 9. edit config/resque.yml and change if you are not using the defaults
-10. rails server ... then visit http://localhost:3000/ in a web browser
+10. as a quick test do: rails server ... then visit http://localhost:3000/ in a web browser
