@@ -97,7 +97,7 @@ redis-cli ping
 MySQL for this rails app to use to access the snort database
 5. edit **config/database.yml** and change to match your installation of Snort/MySQL
 6. **bundle install**
-7. **bundle exec rake db:migrate** ... to add tables in addition to the Snort schema, and note that the Snort tables are not altered by this app
+7. **bundle exec rake db:migrate** ... which add tables in addition to the Snort schema, and note that the Snort tables are not altered by this app
 8. **bundle exec rake db:seed** ... which creates the initial admin user
 9. edit **config/resque.yml** ... change if you are not using the default IP/Port
 10. as a quick test do: **rails server** ... then visit http://localhost:3000/ in a web browser
