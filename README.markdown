@@ -91,13 +91,13 @@ redis-cli ping
 ## Install the Rails app
 
 1. git clone git://github.com/clonesec/osProtect.git
-2. cd osProtect
-3. edit config/app_config.yml and change as appropriate for your installation (the defaults are sensible)
+2. cd **osProtect**
+3. edit **config/app_config.yml** and change as appropriate for your installation (the defaults are sensible)
 4. the Snort (or other IDS with the same schema) database must be installed, and you may also want to create another user in 
 MySQL for this rails app to use to access the snort database
-5. edit config/database.yml and change to match your installation of Snort/MySQL
+5. edit **config/database.yml** and change to match your installation of Snort/MySQL
 6. bundle install
 7. bundle exec rake db:migrate ... to add tables in addition to the Snort schema
 8. bundle exec rake db:seed ... which creates the initial admin user
-9. edit config/resque.yml ... change if you are not using the default IP/Port
-10. as a quick test do: rails server ... then visit http://localhost:3000/ in a web browser
+9. edit **config/resque.yml** ... change if you are not using the default IP/Port
+10. as a quick test do: **rails server** ... then visit http://localhost:3000/ in a web browser
