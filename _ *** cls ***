@@ -465,6 +465,8 @@ gclone   (38.123.140.62)
 ssh cleesmith@38.123.140.62
 sshclone
 
+git push's:
+gup, gclone, github
 _____________________________________________________________________________________________________________________
 * * * * * * * * * * * * only change needed for different deployments * * * * * * * * * * * * * * *
 
