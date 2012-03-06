@@ -10,6 +10,11 @@
   <div id="osprotect_content" class="with_sidebar">
     <div id="main_content_wrapper">
       <div id="main_content">
+<!-- <%#= "#{@rule_files.size} rule files found:" %><br />
+<%# @rule_files.each do |rf| %>
+  <pre><%#= File.read(f) %></pre>
+  <%#=rf.path%> ... <b><%#=rf.filename%></b><br />
+<%# end %> -->
         <% no_events = false %>
         <% unless @events.blank? %>
           <div class="paginated_collection">

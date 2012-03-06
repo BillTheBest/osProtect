@@ -1,0 +1,35 @@
+# Copyright 2001-2005 Sourcefire, Inc. All Rights Reserved
+#
+# This file may contain proprietary rules that were created, tested and
+# certified by Sourcefire, Inc. (the "VRT Certified Rules") as well as
+# rules that were created by Sourcefire and other third parties and
+# distributed under the GNU General Public License (the "GPL Rules").  The
+# VRT Certified Rules contained in this file are the property of
+# Sourcefire, Inc. Copyright 2005 Sourcefire, Inc. All Rights Reserved.
+# The GPL Rules created by Sourcefire, Inc. are the property of
+# Sourcefire, Inc. Copyright 2002-2005 Sourcefire, Inc. All Rights
+# Reserved.  All other GPL Rules are owned and copyrighted by their
+# respective owners (please see www.snort.org/contributors for a list of
+# owners and their respective copyrights).  In order to determine what
+# rules are VRT Certified Rules or GPL Rules, please refer to the VRT
+# Certified Rules License Agreement.
+#
+#
+# $Id: bad-traffic.rules,v 1.84.2.1 2011-12-16 16:45:40 vrtbuild Exp $
+#------------------
+# BAD TRAFFIC RULES
+#------------------
+# These signatures are representitive of traffic that should never be seen on
+# any network.  None of these signatures include datagram content checking
+# and are extremely quick signatures
+#
+
+# linux happens.  Blah
+alert ip $EXTERNAL_NET any -> $HOME_NET any (msg:"BAD-TRAFFIC Oracle Solaris DHCP Client Arbitrary Code Execution attempt"; ip_proto:17; dsize:4; content:"|00 44 00 43|"; depth:4; reference:bugtraq,14687; reference:cve,2005-2870; classtype:attempted-admin; sid:17662; rev:6;)
+# alert tcp $HOME_NET any -> $HOME_NET 42 (msg:"BAD-TRAFFIC Microsoft WINS service oversize payload exploit attempt"; flow:to_server,established,no_stream; dsize:>1400; reference:cve,2011-1248; reference:url,technet.microsoft.com/en-us/security/bulletin/MS11-035; classtype:attempted-admin; sid:18950; rev:2;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 22 (msg:"BAD-TRAFFIC SSH brute force login attempt"; flow:to_server,established; content:"SSH-"; depth:4; detection_filter:track by_src, count 5, seconds 60; classtype:misc-activity; sid:19559; rev:1;)
+alert udp $EXTERNAL_NET any -> $HOME_NET [1027:1050] (msg:"BAD-TRAFFIC Microsoft Windows WINS internal communications on network exploit attempt"; flow:to_server; dsize:24; content:"|00 00 00|"; depth:3; offset:1; byte_test:1,<,2,0; detection_filter:track by_src,count 10, seconds 2; reference:cve,2011-1984; reference:url,technet.microsoft.com/en-us/security/bulletin/MS11-070; classtype:attempted-user; sid:20120; rev:3;)
+alert udp $HOME_NET any -> 224.0.0.0/4 5355 (msg:"BAD-TRAFFIC Microsoft Windows LLMNR invalid reverse name lookup stack corruption attempt "; content:"|00 01 00 00 00 00|"; depth:6; offset:4; content:"|01 2E|"; within:2; distance:2; byte_test:2,!&,0xF8,2; metadata:policy security-ips drop; reference:cve,2011-0657; reference:url,technet.microsoft.com/en-us/security/bulletin/MS11-030; classtype:attempted-admin; sid:18655; rev:4;)
+alert udp $EXTERNAL_NET any -> $HOME_NET 53 (msg:"BAD-TRAFFIC Microsoft Windows wpad dynamic update request "; flow:to_server; content:"|06|isatap"; byte_test:1, &, 8, 2; byte_test:1, &, 32, 2; metadata:policy balanced-ips drop, policy connectivity-ips drop, policy security-ips drop, service dns; reference:cve,2009-0093; reference:url,technet.microsoft.com/en-us/security/bulletin/MS09-008; classtype:attempted-admin; sid:17731; rev:4;)
+alert udp $EXTERNAL_NET any -> $HOME_NET 53 (msg:"BAD-TRAFFIC Microsoft Windows wpad dynamic update request "; flow:to_server; content:"|04|wpad"; byte_test:1, &, 8, 2; byte_test:1, &, 32, 2; metadata:policy balanced-ips drop, policy connectivity-ips drop, policy security-ips drop, service dns; reference:cve,2009-0093; reference:url,technet.microsoft.com/en-us/security/bulletin/MS09-008; classtype:attempted-admin; sid:15386; rev:4;)
+alert icmp $HOME_NET any -> 224.0.0.1 any (msg:"BAD-TRAFFIC Microsoft Windows remote kernel tcp/ip icmp vulnerability exploit attempt"; itype:9; byte_test:1,>,150,0; reference:cve,2007-0066; reference:url,technet.microsoft.com/en-us/security/bulletin/MS08-001; classtype:attempted-admin; sid:13288; rev:8;)

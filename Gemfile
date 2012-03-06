@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.1'
+gem 'rails', '3.2.2'
 
 gem 'mysql2'
 
@@ -34,6 +34,10 @@ gem 'resque-scheduler'
 gem 'resque_mailer'
 
 gem 'googlecharts'
+
+# gem 'snortor'
+# gem 'snortor', path: '~/Sites/snortor'
+gem 'snortor', git: 'git://github.com/cleesmith/snortor.git'
 
 # to easily create cron jobs:
 gem 'whenever', :require => false

@@ -12,6 +12,7 @@ class EventsController < ApplicationController
   respond_to :pdf, only: [:index, :create_pdf]
 
   include Osprotect::RestrictEventsBasedOnUsersAccess
+  # include SnortRuleFileLoader
 
   def index
     # get_events_based_on_groups_for_user(current_user.id)
@@ -24,6 +25,20 @@ class EventsController < ApplicationController
         redirect_to events_path
       end
     end
+# path = "#{Rails.root}/doc/snort/rules"
+    # @snort_rules = Dir.glob("#{Rails.root}/doc/snort/rules/**/*")
+    # @snort_rules = Dir.glob("#{Rails.root}/doc/snort/rules/icmp.rules")
+    # @snort_rules = Dir.glob("#{Rails.root}/doc/snort/rules/attack-responses.rules")
+#     Snortor.import_rules(@snort_rules[0])
+# puts "\n#{Snortor.rules.to_yaml}\n"
+# puts "\n#{Snortor.rules.size}\n"
+# rule_files = SnortRuleFileLoader::get_rule_files_from_dir(path)
+# @rule_files = SnortRuleFileLoader.new
+# @rule_files.get_rule_files_from_dir(path) do |path_to_file, filename|
+#   rule_file = SnortRuleFile.new(path_to_file, filename)
+#   @rule_files << rule_file
+# end
+# puts "\n@rule_files(#{@rule_files.size})=#{@rule_files.inspect}\n\n"
   end
 
   def show
