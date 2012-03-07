@@ -38,25 +38,8 @@ Please consult the [MySQL site](http://dev.mysql.com/downloads/ "mysql install")
 
 ## Emails
 
-To allow this rails app to send emails install the **Postfix** Mail Server (or you may use another mailing solution such as SMTP):
+See these instructions [to allow this rails app to send emails](osProtect/wiki/allowing-a-rails-app-to-send-emails "allowing a rails app to send emails")
 
-```
-sudo aptitude install telnet postfix
-```
-
-Choose "Internet Site" and leave the **system mail name** at default.
-
-To ensure Postfix and Sendmail are working do:
-
-```
-/usr/sbin/sendmail your_email_account@something.com
-FROM: me
-SUBJECT: hi
-this is only a test
-. <press Enter twice>
-```
-
-Check your inbox for the email.
 
 ## Redis
 
