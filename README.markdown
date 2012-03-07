@@ -118,6 +118,11 @@ redis-cli ping
 3. edit **config/app_config.yml** and change as appropriate for your installation (the defaults are sensible)
 4. the Snort (or other IDS with the same schema) database must be installed, and you may also want to create another user in 
 MySQL for this rails app to use to access the snort database
+
+```
+echo "grant create, insert, select, delete, update on snort.* to snort@localhost identified by 'somepasswordhere'" | mysql -u root -p
+```
+
 5. edit **config/database.yml** and change to match your installation of Snort/MySQL
 6. **bundle install**
 7. **bundle exec rake db:migrate** ... which add tables in addition to the Snort schema, and note that the Snort tables are not altered by this app
