@@ -38,7 +38,7 @@ Please consult the [MySQL site](http://dev.mysql.com/downloads/ "mysql install")
 
 ## Emails
 
-To send emails install **Postfix** Mail Server (or you may use another mailing solution such as SMTP):
+To allow this rails app to send emails install the **Postfix** Mail Server (or you may use another mailing solution such as SMTP):
 
 ```
 sudo aptitude install telnet postfix
