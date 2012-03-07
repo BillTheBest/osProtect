@@ -113,7 +113,7 @@ redis-cli ping
 
 ## Install this Rails application
 
-1. git clone git://github.com/clonesec/osProtect.git
+1. **git clone git://github.com/clonesec/osProtect.git**
 2. cd **osProtect**
 3. edit **config/app_config.yml** and change as appropriate for your installation (the defaults are sensible)
 4. the Snort (or other IDS with the same schema) database must be installed, and you may also want to create another user in 
