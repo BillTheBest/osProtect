@@ -60,7 +60,7 @@ Also, see the instructions [to set up Redis as an Upstart service](osProtect/wik
 4. the Snort (or other IDS with the same schema) database must be installed, and you may also want to create another user in 
 MySQL for this rails app to use to access the snort database ... [details here](osProtect/wiki/create-rails-app-user-for-snort-database "create rails app user in mysql")
 5. edit **config/database.yml** and change to match your installation of Snort/MySQL
-6. **bundle install**
+6. **bundle install** ... this is where the **rails gems** and other gems are installed
 7. **bundle exec rake db:migrate** ... which add tables in addition to the Snort schema, and note that the Snort tables are not altered by this app
 8. **bundle exec rake db:seed** ... which creates the initial admin user
 9. edit **config/resque.yml** ... change if you are not using the default IP/Port
