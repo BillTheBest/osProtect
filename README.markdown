@@ -79,7 +79,7 @@ nano /etc/redis/redis.conf
 
 Be sure to check the [Redis site](http://redis.io/download "redis install") for the latest installation instructions.
 
-[To set up Redis as an Upstart service](osProtect/wiki/set-up-Redis-as-an-Upstart-service "set up redis as an upstart service")
+Instructions [to set up Redis as an Upstart service](osProtect/wiki/setting-up-Redis-as-an-Upstart-service "setting up redis as an upstart service").
 
 ## Install this Rails application
 
