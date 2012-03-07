@@ -44,7 +44,7 @@ See these instructions [to allow this rails app to send emails](osProtect/wiki/a
 
 ## Redis
 
-Redis is used by the gems **Resque** and **Resque Scheduler** for background processing, and is only
+Redis is used by the gems **Resque**, **Resque Scheduler**, and **Resque Mailer** for background processing, and is only
 needed if you desire to do **background emailing**, **Notifications**, **Reports/PDFs** which are 
 all optional features in **osProtect**.
 
