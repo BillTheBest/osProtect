@@ -23,7 +23,7 @@ Please consult the [Snort docs](http://www.snort.org/docs "snort install") and [
 
 Please consult the [Ruby site](http://www.ruby-lang.org/en/downloads/ "ruby install") for the latest installation instructions.
 
-As mentioned on the Ruby site, installing **RVM** is an excellent way to manage different versions of Ruby as well as creating **gemsets** for each application.
+As mentioned on the Ruby site, installing **RVM** is an excellent way to manage different versions of Ruby as well as creating **gemsets** for each application ... highly recommended.
 
 
 ## Rails 3.2.2 +
