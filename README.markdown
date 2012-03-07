@@ -79,39 +79,7 @@ nano /etc/redis/redis.conf
 
 Be sure to check the [Redis site](http://redis.io/download "redis install") for the latest installation instructions.
 
-To set up Redis as an Upstart service (the System-V init replacement, but highly recommended) do this:
-
-```
-mkdir /var/log/redis
-nano /etc/init/redis-server.conf
-```
-Then enter the following:
-
-```
-description "redis server"
-start on runlevel [2345]
-stop on shutdown
-exec /usr/local/bin/redis-server /etc/redis/redis.conf
-respawn
-```
-
-and save.
-
-The above will automatically start Redis when the server is rebooted, and restarts redis if it should be killed or dies.
-
-To test Redis you can manually start it by doing (for Upstart):
-
-```
-sudo service redis-server start (or stop or restart)
-```
-
-To ensure it works do:
-
-```
-redis-cli info
-or
-redis-cli ping
-```
+[To set up Redis as an Upstart service](osProtect/wiki/set-up-Redis-as-an-Upstart-service "set up redis as an upstart service")
 
 ## Install this Rails application
 
