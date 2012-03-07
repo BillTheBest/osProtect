@@ -3,7 +3,19 @@ ruby -v
 apt-get update
 apt-get upgrade
 apt-get dist-upgrade
-apt-get install gcc g++ build-essential libssl-dev libreadline5-dev zlib1g-dev linux-headers-generic libsqlite3-dev sqlite3 git-core python-software-properties
+
+apt-get install gcc g++ build-essential libssl-dev libreadline5-dev zlib1g-dev linux-headers-generic 
+libsqlite3-dev sqlite3 git-core python-software-properties
+
+aptitude install build-essential bison openssl libreadline6 libreadline6-dev curl git-core 
+zlib1g zlib1g-dev libssl-dev libyaml-dev libxml2-dev libxslt-dev autoconf libexpat1 ssl-cert 
+libcurl4-openssl-dev libaprutil1-dev libapr1-dev 
+mysql mysql-server 
+apache2 apache2.2-common apache2-mpm-prefork apache2-utils apache2-prefork-dev
+
+sudo apt-get install nmap nbtscan apache2 php5 php5-mysql php5-gd libpcap0.8-dev libpcre3-dev g++ bison flex 
+libpcap-ruby mysql-server libmysqlclient16-dev
+
 mkdir /TEMP
 cd /TEMP/
 wget ftp://ftp.ruby-lang.org//pub/ruby/1.9/ruby-1.9.2-p290.tar.gz
@@ -151,7 +163,10 @@ apt-get dist-upgrade
 exit
 sudo apt-get update
 sudo apt-get upgrade
-sudo apt-get install nmap nbtscan apache2 php5 php5-mysql php5-gd libpcap0.8-dev libpcre3-dev g++ bison flex libpcap-ruby mysql-server libmysqlclient16-dev
+
+sudo apt-get install nmap nbtscan apache2 php5 php5-mysql php5-gd libpcap0.8-dev libpcre3-dev g++ bison flex 
+libpcap-ruby mysql-server libmysqlclient16-dev
+
 sudo apt-get install phpmyadmin
 cd /TEMP/
 ls
