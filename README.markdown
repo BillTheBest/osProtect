@@ -66,7 +66,7 @@ all optional features in **osProtect**.
 
 Be sure to check the [Redis site](http://redis.io/download "redis install") for the latest installation instructions, but [these instructions](osProtect/wiki/installing-Redis "installing redis") are typical for installing Redis.
 
-Instructions [to set up Redis as an Upstart service](osProtect/wiki/setting-up-Redis-as-an-Upstart-service "setting up redis as an upstart service").
+Also, see the instructions [to set up Redis as an Upstart service](osProtect/wiki/setting-up-Redis-as-an-Upstart-service "setting up redis as an upstart service").
 
 ## Install this Rails application
 
