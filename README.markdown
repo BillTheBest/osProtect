@@ -124,6 +124,7 @@ mysql -u root -p
 create user 'railsapp'@'%' IDENTIFIED BY 'somepasswordhere';
 grant all on snort.* to 'railsapp' identified by 'somepasswordhere';
 flush privileges;
+exit
 ```
 
 5. edit **config/database.yml** and change to match your installation of Snort/MySQL
