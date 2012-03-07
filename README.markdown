@@ -62,7 +62,7 @@ Check your inbox for the email.
 
 Redis is used by the gems **Resque** and **Resque Scheduler** for background processing, and is only
 needed if you desire to do **background emailing**, **Notifications**, **Reports/PDFs** which are 
-all optional features in osProtect.
+all optional features in **osProtect**.
 
 ```
 cd ~/src (you may need to > mkdir ~/src)
