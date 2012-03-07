@@ -120,7 +120,10 @@ redis-cli ping
 MySQL for this rails app to use to access the snort database
 
 ```
-echo "grant create, insert, select, delete, update on snort.* to snort@localhost identified by 'somepasswordhere'" | mysql -u root -p
+mysql -u root -p
+create user 'railsapp'@'%' IDENTIFIED BY 'somepasswordhere';
+grant all on snort.* to 'railsapp' identified by 'somepasswordhere';
+flush privileges;
 ```
 
 5. edit **config/database.yml** and change to match your installation of Snort/MySQL
