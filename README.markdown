@@ -79,7 +79,7 @@ nano /etc/redis/redis.conf
 
 Be sure to check the [Redis site](http://redis.io/download "redis install") for the latest installation instructions.
 
-To set up Redis as an Upstart service (the System-V init replacement, but highly recommended) then do this:
+To set up Redis as an Upstart service (the System-V init replacement, but highly recommended) do this:
 
 ```
 mkdir /var/log/redis
