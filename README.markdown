@@ -64,20 +64,7 @@ Redis is used by the gems **Resque** and **Resque Scheduler** for background pro
 needed if you desire to do **background emailing**, **Notifications**, **Reports/PDFs** which are 
 all optional features in **osProtect**.
 
-```
-cd ~/src (you may need to > mkdir ~/src)
-wget http://redis.googlecode.com/files/redis-2.4.6.tar.gz
-tar xzf redis-2.4.6.tar.gz
-cd redis-2.4.6
-sudo make
-sudo make install
-mkdir /etc/redis
-mkdir /var/redis
-cp redis.conf /etc/redis/
-nano /etc/redis/redis.conf
-```
-
-Be sure to check the [Redis site](http://redis.io/download "redis install") for the latest installation instructions.
+Be sure to check the [Redis site](http://redis.io/download "redis install") for the latest installation instructions, but [these instructions](osProtect/wiki/installing-Redis "installing redis") are typical for installing Redis.
 
 Instructions [to set up Redis as an Upstart service](osProtect/wiki/setting-up-Redis-as-an-Upstart-service "setting up redis as an upstart service").
 
