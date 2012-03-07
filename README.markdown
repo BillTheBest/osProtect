@@ -9,7 +9,7 @@ This is a Ruby on Rails application that offers a modern interface for network s
   * **Ruby** 1.9.3 +
   * **Rails** 3.2.2 + (actually this is not a prerequisite, as the rails gems are installed when you do bundle install later)
   * **MySQL** Ver 14.14 Distrib 5.1.41 +
-  * A web and/or application server, such as **Apache/Passenger**, **Nginx/Thin**, or **Nginx/Unicorn**
+  * A web and/or application server, such as **Apache/Passenger**, **Nginx/Thin**, or **Nginx/Unicorn**, and so on
 2. Configure the server so **emails** may be sent from the rails app, and installing **Postfix** is suggested
 3. Install **Redis** which is used by **Resque** and **Resque Scheduler** for background processing
 4. Install this Rails application
