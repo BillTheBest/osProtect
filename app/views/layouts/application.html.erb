@@ -11,7 +11,34 @@
 <div id="wrapper">
   <div id="header">
     <h1 id="site_title">osProtect</h1>
-    <ul class="tabbed_navigation" id="tabs"><%= main_menu %></ul>
+    <ul class="tabbed_navigation" id="tabs">
+      <%#= main_menu %>
+      <%
+      menu_tabs.each do |page|
+        highlight_current = ""
+        if page == params[:controller].downcase
+          highlight_current = "current"
+        elsif page == 'pulse' && params[:controller].downcase == 'dashboard'
+          highlight_current = "current"
+        end
+        if page == 'resque_server' %>
+          <li id="<%="#{page}"%>" class="<%="#{highlight_current}"%>">
+            <%= link_to 'Background jobs', resque_server_path, target: "_blank" %>
+          </li>
+        <%
+        elsif page == 'pdfs' %>
+        <li id="<%="#{page}"%>" class="<%="#{highlight_current}"%>">
+            <%= link_to 'PDFs', pdfs_path %>
+          </li>
+        <%
+        else %>
+        <li id="<%="#{page}"%>" class="<%="#{highlight_current}"%>">
+            <%= link_to page.camelcase, send("#{page}_path") %>
+          </li>
+        <%
+        end
+      end %>
+    </ul>
     <p id="utility_nav">
       <span class="current_user">
         <%= current_user.role?(:admin) ? "admin user: " : "user: " %><%=current_user.username%>

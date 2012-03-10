@@ -13,7 +13,8 @@ class ApplicationController < ActionController::Base
     tabs += ['notifications'] if APP_CONFIG[:can_do_notifications]
     tabs += ['reports', 'pdfs'] if APP_CONFIG[:can_do_reports]
     tabs += ['groups', 'users'] if can?(:admin, User)
-    tabs += ['resque_server'] if can?(:admin, User) && (APP_CONFIG[:can_do_notifications] || APP_CONFIG[:can_do_reports])
+    # tabs += ['resque_server'] if can?(:admin, User) && (APP_CONFIG[:can_do_notifications] || APP_CONFIG[:can_do_reports])
+    tabs += ['resque_server'] if current_user.username == 'admin'
     tabs
   end
   helper_method :menu_tabs

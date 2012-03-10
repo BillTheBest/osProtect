@@ -1,202 +1,3 @@
-IncidentEvent:
-t.integer   :incident_id
-t.integer   :sid
-t.integer   :cid
-t.integer   :signature
-t.integer   :vseq
-t.integer   :detail
-t.integer   :encoding
-t.integer   :last_cid
-t.integer   :detail_type
-t.integer   :encoding_type
-t.integer   :sig_id
-t.integer   :sig_class_id
-t.integer   :sig_priority
-t.integer   :sig_rev
-t.integer   :sig_sid
-t.integer   :sig_gid
-t.integer   :ip_src
-t.integer   :ip_dst
-t.integer   :ip_ver
-t.integer   :ip_hlen
-t.integer   :ip_tos
-t.integer   :ip_len
-t.integer   :ip_id
-t.integer   :ip_flags
-t.integer   :ip_off
-t.integer   :ip_ttl
-t.integer   :ip_proto
-t.integer   :ip_csum
-t.integer   :icmp_type
-t.integer   :icmp_code
-t.integer   :icmp_csum
-t.integer   :icmp_id
-t.integer   :icmp_seq
-t.integer   :tcp_sport
-t.integer   :tcp_dport
-t.integer   :tcp_seq
-t.integer   :tcp_ack
-t.integer   :tcp_off
-t.integer   :tcp_res
-t.integer   :tcp_flags
-t.integer   :tcp_win
-t.integer   :tcp_csum
-t.integer   :tcp_urp
-t.integer   :udp_sport
-t.integer   :udp_dport
-t.integer   :udp_len
-t.integer   :udp_csum
-47 * 4 = 188
-t.datetime  :timestamp
-t.datetime  :timestamp
-t.datetime  :timestamp
-t.datetime  :ctime
-4 * 8 = 32
-t.text      :hostname
-t.text      :interface
-t.text      :filter
-t.text      :detail_text
-t.text      :encoding_text
-t.text      :sig_name
-6 * 8 = 48
-188 + 32 + 48 = 268
-65,535 - 268 = 65,267
-t.string    :sig_class_name
-
-> be rails g scaffold Incident group_id:integer, user_id:integer, incident_name:string, incident_description:text, incident_resolution:text
-
-create_table "incident_events" do |t|
-  # event:
-  t.integer  "sid",                    :null => false
-  t.integer  "cid",       :limit => 8, :null => false
-  t.integer  "signature",              :null => false
-  t.datetime "timestamp",              :null => false
-  # iphdr:
-  t.integer "ip_src",   :limit => 8, :null => false
-  t.integer "ip_dst",   :limit => 8, :null => false
-  t.integer "ip_ver",   :limit => 2
-  t.integer "ip_hlen",  :limit => 2
-  t.integer "ip_tos",   :limit => 2
-  t.integer "ip_len"
-  t.integer "ip_id"
-  t.integer "ip_flags", :limit => 2
-  t.integer "ip_off"
-  t.integer "ip_ttl",   :limit => 2
-  t.integer "ip_proto", :limit => 2, :null => false
-  t.integer "ip_csum"
-  # icmphdr:
-  t.integer "icmp_type", :limit => 2, :null => false
-  t.integer "icmp_code", :limit => 2, :null => false
-  t.integer "icmp_csum"
-  t.integer "icmp_id"
-  t.integer "icmp_seq"
-  # tcphdr:
-  t.integer "tcp_sport",              :null => false
-  t.integer "tcp_dport",              :null => false
-  t.integer "tcp_seq",   :limit => 8
-  t.integer "tcp_ack",   :limit => 8
-  t.integer "tcp_off",   :limit => 2
-  t.integer "tcp_res",   :limit => 2
-  t.integer "tcp_flags", :limit => 2, :null => false
-  t.integer "tcp_win"
-  t.integer "tcp_csum"
-  t.integer "tcp_urp"
-  #udphdr:
-  t.integer "udp_sport",              :null => false
-  t.integer "udp_dport",              :null => false
-  t.integer "udp_len"
-  t.integer "udp_csum"
-  # signature:
-  t.text    "sig_name",                  :null => false
-  t.integer "sig_class_id", :limit => 8
-  t.integer "sig_priority", :limit => 8
-  t.integer "sig_rev",      :limit => 8
-  t.integer "sig_sid",      :limit => 8
-  t.integer "sig_gid",      :limit => 8
-
-  # schema:
-  t.integer  "vseq",  :null => false
-  t.datetime "ctime", :null => false
-
-  t.timestamps
-end
-add_index "incident_events", ["signature"],    :name => "signature_idx"
-add_index "incident_events", ["timestamp"],    :name => "timestamp_idx"
-add_index "incident_events", ["ip_dst"],       :name => "ip_dst_idx"
-add_index "incident_events", ["ip_src"],       :name => "ip_src_idx"
-add_index "incident_events", ["icmp_type"],    :name => "icmp_type_idx"
-add_index "incident_events", ["tcp_sport"],    :name => "tcp_sport_idx"
-add_index "incident_events", ["tcp_dport"],    :name => "tcp_dport_idx"
-add_index "incident_events", ["tcp_flags"],    :name => "tcp_flags_idx"
-add_index "incident_events", ["udp_sport"],    :name => "udp_sport_idx"
-add_index "incident_events", ["udp_dport"],    :name => "udp_dport_idx"
-add_index "incident_events", ["sig_class_id"], :name => "sig_class_idx"
-add_index "incident_events", ["sig_name"],     :name => "sig_name_idx"
-
-
-create_table "sig_class", :primary_key => "sig_class_id", :force => true do |t|
-  t.text "sig_class_name", :null => false
-end
-add_index "sig_class", ["sig_class_name"], :name => "sig_class_name_idx"
-
-create_table "sig_reference", :id => false, :force => true do |t|
-  t.integer "sig_id",  :null => false
-  t.integer "ref_seq", :null => false
-  t.integer "ref_id",  :null => false
-end
-
-____________________________________________________________________
-# these tables may have large text columns, but don't seem to:
-
-create_table "sensor" do |t|
-  t.integer "incident_id",            :null => false
-  t.integer "sid",                    :null => false
-  t.text    "hostname"
-  t.text    "interface"
-  t.text    "filter"
-  t.integer "detail",    :limit => 2
-  t.integer "encoding",  :limit => 2
-  t.integer "last_cid",  :limit => 8, :null => false
-end
-
-create_table "detail", :id => false, :force => true do |t|
-  t.integer "detail_type", :limit => 2, :null => false
-  t.text    "detail_text",              :null => false
-end
-
-create_table "encoding", :id => false, :force => true do |t|
-  t.integer "encoding_type", :limit => 2, :null => false
-  t.text    "encoding_text",              :null => false
-end
-
-create_table "reference", :primary_key => "ref_id", :force => true do |t|
-  t.integer "ref_system_id", :null => false
-  t.text    "ref_tag",       :null => false
-end
-
-create_table "reference_system", :primary_key => "ref_system_id", :force => true do |t|
-  t.text "ref_system_name"
-end
-
-____________________________________________________________________
-# these tables definitely have large text columns:
-
-create_table "data", :id => false, :force => true do |t|
-  t.integer "sid",                       :null => false
-  t.integer "cid",          :limit => 8, :null => false
-  t.text    "data_payload"
-end
-
-create_table "opt", :id => false, :force => true do |t|
-  t.integer "sid",                    :null => false
-  t.integer "cid",       :limit => 8, :null => false
-  t.integer "optid",     :limit => 2, :null => false
-  t.integer "opt_proto", :limit => 2, :null => false
-  t.integer "opt_code",  :limit => 2, :null => false
-  t.integer "opt_len"
-  t.text    "opt_data"
-end
-
 ____________________________________________________________________
 tables missing from Incident creation:
 opt
@@ -204,14 +5,6 @@ opt
 *done-> reference
 *done-> reference_system
 *done-> signature_reference
-
-____________________________________________________________________
-- upstart conf for redis, /etc/init/redis-server.conf:
-description "redis server"
-start on runlevel [2345]
-stop on shutdown
-exec /usr/bin/redis-server /etc/redis/redis.conf
-respawn
 
 _________________________________________________________________________________________________________
 2012-12-12 - error FIXED by Charlie Savage based on my suggestion:
@@ -350,47 +143,6 @@ charts:
 https://dbinsights.herokuapp.com/
 
 _____________________________________________________________________________________________________________________
-For the reporting I'd like to see a way for the admin to be able to upload, disable, delete report profiles. 
-Examples of report profiles would be:
-a) A Summary report profile listing everything on the pulse page
-b) A Detailed report profile listing all the info in the events page
-c) A Critical report profile listing all the High Priority info (Level 1) priority events.
-d) A Combo report profile listing a & b in one report
-You should be able to select a timeframe for each report you generate. 
-You can setup a calendar option similar to the one on "Events" --> "search events based on:" --> "Date Range"
-_____________________________________________________________________________________________________________________
-so what's a Report:
-- lists Events or Incidents
-- name or just id#
-- criteria to select records, including:
-  - relative time range (like: today, last 24, ...)
-  - specific time range (like date range on Events search page)
-- may include the Pulse(summary) page (without graphics), and for the same time period in the criteria
-- created_at/updated_at
-Report attributes:
-1. name:string
-2. include_summary:boolean
-3. run_status:boolean
-4. auto_run:boolean
-5. report_criteria:text ... object is ReportCriteria
-    params= {"utf8"=>"✓", "q"=>{"sig_priority"=>"2", "sig_id"=>"9", "source_address"=>"", "source_port"=>"", "destination_address"=>"", "destination_port"=>"", "sensor_id"=>"", "timestamp_gte"=>"", "timestamp_lte"=>""}, "commit"=>"Search", "action"=>"index", "controller"=>"events"}
-    class= ActiveSupport::HashWithIndifferentAccess
-6. report_criteria_as_string:string ... to ensure there are no duplicate reports for a user
-7. timestamps
-
-> be rails g model report user:references name:string include_summary:boolean report_criteria:text report_criteria_as_string:string --no-test-framework
-
-_____________________________________________________________________________________________________________________
-ToDo's:
-1. *done* app config:
-    - records per page for listings ... or have this settable in each user's profile
-    - PDF records limit, instead of the default of 1,000
-2. Incidents: delete Events from an Incident
-3. Incidents: click to show details for an Event in an Incident
-4. Incidents: search criteria for Incidents and their Events, including Description and Resolution
-5. Events: create pdf of event show page ... useful ?
-
-_____________________________________________________________________________________________________________________
 cls: why I don't use PDFKit and wkhtmltopdf:
 
 Jul 15, 2010 ... see: http://aaronvb.com/articles/page/4
@@ -427,24 +179,81 @@ Run 'wkhtmltopdf' in shell and you should see it load correctly instead of seein
 Running 'wkhtmltopdf-proxy' should do the same, which is what PDFKit uses.
 
 ... is it worth all of this madness ?
+
 _____________________________________________________________________________________________________________________
 
-Fri, Feb 24, 2012 at 11:35 PM:
+* * * * * before installing Ruby do the following (install the software build tools and libraries) * * * * *
+_____________________________________________________________________________________________________________________
 
-1) How hard would it be to make the Notifications, 
-    not only generate an email, but also create an incident automatically (with the same criteria, as email events)
+Ubuntu build tools and libraries needed for a Ruby install:
+... use either: sudo aptitude (preferred) or sudo apt-get
 
-2) How hard would it be to make it osprotect to create an incident report 
-    (a report, with all the incidents). 
-    Similar functionality as the current reports (to be able to pick monthly, weekly, daily, etc., 
-    pending suspicious, resolved)
+sudo aptitude -y install 
+autoconf
+automake
+bison
+build-essential
+curl
+flex
+git-core
+libapr1-dev
+libaprutil1-dev
+libc6-dev
+libcurl4-openssl-dev
+libexpat1
+libffi-dev
+libpcap-ruby
+libpcap0.8-dev
+libpcre3-dev
+libreadline6
+libreadline6-dev
+libssl-dev
+libtool
+libxml2
+libxml2-dev
+libxslt-dev
+libxslt1-dev
+libxslt1.1
+libyaml-dev
+ncurses-dev
+openssl
+ssl-cert
+subversion
+wget
+zlib1g
+zlib1g-dev
 
-3) The Run Automatically feature in the reports is missing the monthly option
-    ... solve Weekly/Monthly report pdf generation issue(slowness) by concatenating Daily reports using:
-    > apt-get install pdftk
-    ... concat pdf's using pdftk:
-    > pdftk summary.pdf daily1.pdf and_so_on.pdf cat output weekly/monthly.pdf
-    ... much faster to create a weekly/monthly summary then concat summary plus daily's
+... as a one-liner:
+sudo aptitude -y install autoconf automake bison build-essential curl flex git-core libapr1-dev libaprutil1-dev libc6-dev libcurl4-openssl-dev libexpat1 libffi-dev libpcap-ruby libpcap0.8-dev libpcre3-dev libreadline6 libreadline6-dev libssl-dev libtool libxml2 libxml2-dev libxslt-dev libxslt1-dev libxslt1.1 libyaml-dev ncurses-dev openssl ssl-cert subversion wget zlib1g zlib1g-dev
+_____________________________________________________________________________________________________________________
+
+If using MySQL (and the mysql2 gem):
+sudo aptitude -y install
+mysql 
+mysql-server 
+libmysqlclient16-dev
+libmysqlclient16
+_____________________________________________________________________________________________________________________
+
+If using Apache and Passenger as the web/app server:
+sudo aptitude -y install
+apache2 
+apache2-mpm-prefork 
+apache2-prefork-dev
+apache2-utils 
+apache2.2-common 
+_____________________________________________________________________________________________________________________
+
+If using SQLite:
+sudo aptitude -y install
+libsqlite3-0
+sqlite3
+libsqlite3-dev
+_____________________________________________________________________________________________________________________
+
+If using PostgreSQL (and the pg gem):
+sudo aptitude -y install
+libpq-dev 
 _____________________________________________________________________________________________________________________
 
 ... note that the url will be localhost:5000 (not 3000)
