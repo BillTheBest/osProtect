@@ -11,6 +11,7 @@ class DashboardController < ApplicationController
   include Osprotect::PulseTopTens
 
   def index
+    @title = "Dashboard"
     params[:range] = 'today' if params[:range].blank?
     take_pulse(current_user, params[:range])
   end

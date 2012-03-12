@@ -15,8 +15,9 @@
 #   You may change these if you have the resources to handle the workload involved.
 
 development:
-  web_server: dev_whatever
+  # web_server: dev_whatever
   host: localhost
+  web_server: apache
   version: 1.0.0
   show_versions_and_limits: true
   emails_from: do.not.reply@localhost

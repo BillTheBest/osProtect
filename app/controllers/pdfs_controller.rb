@@ -3,6 +3,7 @@ class PdfsController < ApplicationController
   before_filter :ensure_user_is_setup
 
   def index
+    @title = "PDF Reports"
     @pdfs = current_user.pdfs.order('created_at DESC').page(params[:page]).per_page(APP_CONFIG[:per_page])
   end
 

@@ -1,8 +1,8 @@
-@mixin section-header {
+@mixin section-header($bbcolor: #ededed) {
   @include secondary-gradient;
   @include shadow;
   @include text-shadow;
-  border-bottom: 1px solid #ededed;
+  border-bottom: 1px solid $bbcolor;
   padding: 5px 10px 3px 10px; 
   font-size: 1.0em;
   font-weight: bold;
@@ -14,9 +14,9 @@
 }
 
 @mixin section-background {
-  background: #f4f4f4;
+  background: #fbfbfb;
   @include rounded(4px);
-  @include inset-shadow(0,1px,4px, #ddd);
+  @include shadow;
 }
 
 @mixin section {

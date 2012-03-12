@@ -1,8 +1,33 @@
-<% chart_size = '900x300' %>
+<% chart_size = '650x300' %>
 
+<div id="box-holders">
+<% if @priorities.blank? %>
+<% else
+    total = 0
+    data = []
+    labels = []
+    @priorities.collect do |priority|
+      total += priority.priority_cnt
+      data << priority.priority_cnt
+    end
+    labels = @priorities.collect do |priority|
+      "priority #{priority.sig_priority}"
+    end
+    %>
+    <% @priorities.each do |priority| %>
+      <div class="priority-box">
+        <div class="count"><%= link_to number_with_delimiter(priority.priority_cnt), events_path('q[sig_priority]' => priority.sig_priority) %></div>
+        <div class="title"><span class="failed-green red-font">X</span><br /><span class="all-scanned-title">Vulnerabilities</span></div>
+      </div>
+    <% end %>
+<% end %>
+</div>
+
+<div class="clear"></div>
+<div class="panel_chart">
 <h3 style="clear: both; text-align:center; font-size:15px">Top Attackers</h3>
 <% if @attackers.blank? %>
-    <h3>none</h3>
+    <h6>none</h6>
 <% else
     @attackers = @attackers.order('ipcnt DESC')
     total = 0
@@ -17,21 +42,21 @@
     end
     %>
     <div class="pulse_chart_data_wrapper">
-      <div class="pulse_chart" style="float:left">
+      <div class="pulse_chart">
         <%= image_tag(Gchart.pie_3d(data: data, labels: labels, size: chart_size, title: "", theme: :thirty7signals)) %>
       </div>
-      <div class="pulse_data" style="float:right">
+      <div class="pulse_data">
         <table border="0" cellspacing="0" cellpadding="0">
           <thead>
             <tr>
-              <th style="text-align:right"><small>count</small></th>
-              <th style="text-align:left">Top Attackers <small>(source IPs)</small></th>
+              <th class="count"><small>count</small></th>
+              <th class="top">Top Attackers<br /><small>(source IPs)</small></th>
             </tr>
           </thead>
           <tbody>
             <% @attackers.each do |attack_ip| %>
                 <tr class="<%= cycle('even', 'odd') %>">
-                  <td align="right"><%= number_with_delimiter(attack_ip.ipcnt) %></td>
+                  <td class="right"><%= number_with_delimiter(attack_ip.ipcnt) %></td>
                   <td><%= link_to attack_ip.ip_source, events_path('q[source_address]' => attack_ip.ip_source) %></td>
                 </tr>
             <% end %>
@@ -41,10 +66,12 @@
     </div>
 <% end %>
 <hr style="clear: both; margin-bottom:30px; height:5px" />
+</div>
 
+<div class="panel_chart">
 <h3 style="clear: both; text-align:center; font-size:15px">Top Targets</h3>
 <% if @targets.blank? %>
-    <h3>none</h3>
+    <h6>none</h6>
 <% else 
     @targets = @targets.order('ipcnt DESC')
     total = 0
@@ -59,21 +86,21 @@
     end
     %>
     <div class="pulse_chart_data_wrapper">
-      <div class="pulse_chart" style="float:left">
+      <div class="pulse_chart">
         <%= image_tag(Gchart.pie_3d(data: data, labels: labels, size: chart_size, title: "", theme: :thirty7signals)) %>
       </div>
-      <div class="pulse_data" style="float:right">
+      <div class="pulse_data">
         <table border="0" cellspacing="0" cellpadding="0">
           <thead>
             <tr>
-              <th style="text-align:left"><small>count</small></th>
-              <th style="text-align:left">Top Targets <small>(destination IPs)</small></th>
+              <th class="count"><small>count</small></th>
+              <th class="top">Top Targets<br /><small>(destination IPs)</small></th>
             </tr>
           </thead>
           <tbody>
             <% @targets.each do |target_ip| %>
                 <tr class="<%= cycle('even', 'odd') %>">
-                  <td align="right"><%= number_with_delimiter(target_ip.ipcnt) %></td>
+                  <td class="right"><%= number_with_delimiter(target_ip.ipcnt) %></td>
                   <td><%= link_to target_ip.ip_destination, events_path('q[destination_address]' => target_ip.ip_destination) %></td>
                 </tr>
             <% end %>
@@ -83,10 +110,12 @@
     </div>
 <% end %>
 <hr style="clear: both; margin-bottom:20px; height:5px" />
+</div>
 
+<div class="panel_chart">
 <h3 style="text-align:center; font-size:15px">Priorities</h3>
 <% if @priorities.blank? %>
-    <h3>none</h3>
+    <h6>none</h6>
 <% else 
     total = 0
     data = []
@@ -100,21 +129,21 @@
     end
     %>
     <div class="pulse_chart_data_wrapper">
-      <div class="pulse_chart" style="float:left">
+      <div class="pulse_chart">
         <%= image_tag(Gchart.pie_3d(data: data, labels: labels, size: chart_size, title: "", theme: :thirty7signals)) %>
       </div>
-      <div class="pulse_data" style="float:right">
+      <div class="pulse_data">
         <table border="0" cellspacing="0" cellpadding="0">
           <thead>
             <tr>
-              <th style="text-align:left"><small>count</small></th>
-              <th style="text-align:left">Priority</th>
+              <th class="count"><small>count</small></th>
+              <th class="top">Priority</th>
             </tr>
           </thead>
           <tbody>
             <% @priorities.each do |priority| %>
                 <tr class="<%= cycle('even', 'odd') %>">
-                  <td align="right"><%= number_with_delimiter(priority.priority_cnt) %></td>
+                  <td class="right"><%= number_with_delimiter(priority.priority_cnt) %></td>
                   <td align="left"><%= link_to priority.sig_priority, events_path('q[sig_priority]' => priority.sig_priority) %></td>
                 </tr>
             <% end %>
@@ -124,10 +153,12 @@
     </div>
 <% end %>
 <hr style="clear: both; margin-bottom:30px; height:5px" />
+</div>
 
+<div class="panel_chart">
 <h3 style="clear: both; text-align:center; font-size:15px">Top Events by Signature</h3>
 <% if @events_by_signature.blank? %>
-    <h3>none</h3>
+    <h6>none</h6>
 <% else 
     @events_by_signature = @events_by_signature.order('event_cnt DESC')
     total = 0
@@ -143,21 +174,21 @@
     %>
     <div class="pulse_chart_data_wrapper">
       <%# note: strange characters in the signature names causes problems for gcharts %>
-      <!-- <div class="pulse_chart" style="float:left">
+      <!-- <div class="pulse_chart">
         <%#= image_tag(Gchart.pie_3d(data: data, labels: labels, size: chart_size, title: "", theme: :thirty7signals)) %>
       </div> -->
       <div class="pulse_data">
         <table border="0" cellspacing="0" cellpadding="0">
           <thead>
             <tr>
-              <th style="text-align:left"><small>count</small></th>
-              <th style="text-align:left">Top Events by Signature</th>
+              <th class="count"><small>count</small></th>
+              <th class="top">Top Events by Signature</th>
             </tr>
           </thead>
           <tbody>
             <% @events_by_signature.each do |event| %>
                 <tr class="<%= cycle('even', 'odd') %>">
-                  <td align="right"><%= number_with_delimiter(event.event_cnt) %></td>
+                  <td class="right"><%= number_with_delimiter(event.event_cnt) %></td>
                   <td><%= link_to event.sig_name, events_path('q[sig_id]' => event.sig_id) %></td>
                 </tr>
             <% end %>
@@ -167,11 +198,13 @@
     </div>
 <% end %>
 <hr style="clear: both; margin-bottom:30px; height:5px" />
+</div>
 
+<div class="panel_chart">
 <%# note: the sql used to find the most active times is too slow, so this is disabled: %>
 <!-- <h3 style="clear: both; text-align:center; font-size:15px">Most Active Times</h3>
 <%# if @hot_times.blank? %>
-    <h3>none</h3>
+    <h6>none</h6>
 <%# else 
     total = 0
     data = []
@@ -206,7 +239,7 @@
                   else; c = "red"; w = "bold"
                 end                                
               %>
-              <td width="10%" align="right" style="color:<%#=c%>; font-weight:<%#=w%>"><%#= number_with_delimiter(hot_time.cnt) %></td>
+              <td width="10%" class="right" style="color:<%#=c%>; font-weight:<%#=w%>"><%#= number_with_delimiter(hot_time.cnt) %></td>
               <td width="50%" style="color:<%#=c%>; font-weight:<%#=w%>"><%#= s.strftime("%l:%M") %> - <%#= e.strftime("%l:%M %P") %> </td>
             </tr>
         <%# end %>
@@ -214,3 +247,4 @@
     </table>
 <%# end %>
 <hr style="clear: both; margin-bottom:30px; height:5px" /> -->
+</div>

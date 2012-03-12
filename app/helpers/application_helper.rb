@@ -33,6 +33,19 @@ module ApplicationHelper
     presenter
   end
 
+  def logo
+    image_tag("Clone_Systems_Managed_Security.jpeg", :alt => "Clone Systems Website", :class => "Blogo")
+  end
+
+  def title
+    base_title = "Clone Guard osProtect"
+    if @title.nil?
+      base_title
+    else
+      "#{@title}"
+    end
+  end
+
   # def using_page_presenter(klass)
   #   (klass.singularize.camelcase + "PagePresenter").constantize
   # end

@@ -1,10 +1,7 @@
 // ----------------------------------- Header 
 #header { 
-  @include primary-gradient;
-  @include shadow;
-  @include text-shadow(#000);
   overflow: visible;
-  padding: 9px $horizontal-page-margin;
+  padding: 9px 0;
   z-index: 900;
 
   h1 { 
@@ -16,29 +13,36 @@
     font-weight: normal; 
   }
 
-  a, a:link { color: #cdcdcd; }
+  a, a:link { color: #4f4f4f; }
+
+  a img { border: 0; }
 
   ul#tabs {
     margin: 0; 
     padding: 0; 
     display: inline-block; 
     height: 100%;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
 
     & > li { 
       display: inline-block; 
-      margin-right: 4px; 
+      padding: 8px 0; 
+      height: 18px;
+      line-height: 18px;
       font-size: 1.0em; 
       position: relative; 
 
       a { 
+        font-size: 11pt; 
         text-decoration: none; 
-        padding: 6px 10px 4px 10px; 
+        padding: 9px 11px; 
         position: relative;
-        @include rounded(10px);
       }
 
       &.current > a {
-        background: $current-menu-item-background;
+        background:url(/assets/nav-bg.png) repeat-x scroll 0 -36px transparent;
         color: #fff;
       }
 
@@ -54,7 +58,8 @@
       }
 
       &:hover > a { 
-        background: $hover-menu-item-background;
+        background:url(/assets/nav-bg.png) repeat-x scroll 0 -36px transparent;
+        padding: 9px 11px;
         color: #fff;
       }
 
@@ -96,6 +101,33 @@
       }
     }
 
+    & > li#events,
+    & > li#pulse,
+    & > li#incidents,
+    & > li#sensors,
+    & > li#notifications,
+    & > li#reports,
+    & > li#pdfs,
+    & > li#groups,
+    & > li#users,
+    & > li#resque_server {
+      border-right: 1px solid #C8C8C8;
+    }
+
+    & > li#profile,
+    & > li#logout {
+      border-left: 1px solid #C8C8C8;
+    }
+
+    & > li#logout img {
+      padding-right: 5px;
+    }
+  }
+
+  ul#tabs > li#events.current > a,
+  ul#tabs > li#events a:hover {
+    border-radius: 4px 0 0 4px;
+    padding: 9px 11px;
   }
 
   #utility_nav { 
@@ -107,4 +139,32 @@
     a:hover { color: #fff; }
   }
 
+  .header_banner {
+    padding: 25px 0 0 20px;
+    float: left;
+    height: 70px;
+    text-align: left;
+    width: 260px;
+  }
+}
+
+.logo {
+  float: left;
+  height: 49px;
+  width: 237px;
+  text-align: left;
+}
+
+.app_name {
+  background:url(/assets/osProtect.png) no-repeat scroll 0 10px transparent;
+  float: right;
+  height: 85px;
+  width: 160px;
+}
+
+.header_menu {
+  background:url(/assets/nav-bg.png) repeat-x scroll 0 0 transparent;
+  @include rounded-all(4px,4px,4px,4px);
+  overflow: visible;
+  border: 1px solid #CDCDCD;
 }
