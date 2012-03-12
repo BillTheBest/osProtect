@@ -8,20 +8,34 @@
 </head>
 
 <body class="index osprotect_dashboard logged_in">
-<div id="wrapper">
+<div id="container">
   <div id="header">
-    <h1 id="site_title">osProtect</h1>
-    <ul class="tabbed_navigation" id="tabs"><%= main_menu %></ul>
-    <p id="utility_nav">
-      <span class="current_user">
-        <%= current_user.role?(:admin) ? "admin user: " : "user: " %><%=current_user.username%>
-      </span>
-      <%= link_to 'Profile', edit_user_path(current_user), 'data-method'=>"get" %>
-      <%= link_to 'Logout', logout_path, 'data-method'=>"get" %>
-    </p>
+    <div class="header_banner">
+      <%= link_to logo, "http://www.clone-systems.com" %>
+    </div>
+    <div class="app_name"></div>
+    <div class="clear"></div>
+    <div class="header_menu">
+      <ul class="tabbed_navigation" id="tabs"><%= main_menu %></ul>
+      <ul class="tabbed_navigation right" id="tabs"><li id="profile"><%= link_to 'Profile', edit_user_path(current_user), 'data-method'=>"get" %></li><li id="logout"><%= link_to image_tag('/assets/logout-icon.png') + 'Logout', logout_path, 'data-method'=>"get" %></li></ul>
+
+<!--
+      <p id="utility_nav">
+        <span class="current_user">
+          <%= current_user.role?(:admin) ? "admin user: " : "user: " %><%=current_user.username%>
+        </span>
+        <%= link_to 'Profile', edit_user_path(current_user), 'data-method'=>"get" %>
+        <%= link_to 'Logout', logout_path, 'data-method'=>"get" %>
+      </p>
+-->
+    </div>
   </div>
 
-  <%= yield %>
+  <div id="container_content">
+    <div class="main_header"><h3><%= @title %></h3></div>
+    <%= yield %>
+    <div class="clear"></div>
+  </div>
 
   <div id="footer">
     <p>

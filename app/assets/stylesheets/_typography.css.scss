@@ -39,7 +39,7 @@ h2 { font-size: 2em; margin-bottom: 0.75em; }
 h3 { font-size: 1.5em; line-height: 1; margin-bottom: 1em; }
 h4 { font-size: 1.2em; line-height: 1.25; margin-bottom: 1.25em; }
 h5 { font-size: 1em; font-weight: bold; margin-bottom: 1.5em; }
-h6 { font-size: 1em; font-weight: bold; }
+h6 { font-size: 1.25em; line-height: 1; margin: 1em 1.25em ; font-weight: bold; }
 
 
 p { 
@@ -51,6 +51,7 @@ p {
 
 .left              { float: left !important; }
 .right             { float: right !important; }
+.clear             { clear: both; }
 
 blockquote  { margin: 1.5em; color: #666; font-style: italic; }
 strong,dfn    { font-weight: bold; }

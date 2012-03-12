@@ -1,17 +1,17 @@
 @mixin default-button {
   @include shadow;
   @include gradient(lighten($primary-color, 15%), darken($primary-color, 12%));
-  @include rounded(200px);
+  @include rounded(10px);
   @include text-shadow(#000);
   text-decoration: none;
   margin-right: 3px;
   font-weight: bold;
   font-size: 1.0em;
   cursor: pointer;
-  padding: .6em 1.4em .5em 1.3em;
+  padding: .6em 1.3em .6em 1.3em;
   border: none;
   color: #efefef;
-  &:hover { color: #fff; @include icon-color(#fff); @include shadow(0, 1px, 3px, #888) }
+  &:hover { color: #fff; @include icon-color(#fff); @include shadow(0, 1px, 3px, #888); @include gradient(darken(#838a90, 15%), darken(#414549, 12%)) }
   &:active { @include inset-shadow(0, 1px, 2px, #000); }
 }
 

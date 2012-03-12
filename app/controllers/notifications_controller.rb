@@ -4,6 +4,7 @@ class NotificationsController < ApplicationController
   before_filter :can_do_notifications
 
   def index
+    @title = "Notifications"
     @notifications = current_user.notifications.order("updated_at desc").page(params[:page]).per_page(APP_CONFIG[:per_page])
   end
 

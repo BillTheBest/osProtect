@@ -15,6 +15,7 @@ class EventsController < ApplicationController
   # include SnortRuleFileLoader
 
   def index
+    @title = "Events"
     # get_events_based_on_groups_for_user(current_user.id)
     # letting CanCan fetch records based on the current_user's abilities is cleaner (see: models/ability.rb file):
     @events = Event.includes(:sensor, :signature_detail, :iphdr, :tcphdr, :udphdr).accessible_by(current_ability).order("timestamp desc").page(params[:page]).per_page(APP_CONFIG[:per_page])
@@ -42,6 +43,7 @@ class EventsController < ApplicationController
   end
 
   def show
+    @title = "Events"
     respond_with do |format|
       format.html do
         @event = Event.includes(:sensor, :signature_detail, :iphdr, :tcphdr, :icmphdr, :udphdr, :payload).find(params[:id])

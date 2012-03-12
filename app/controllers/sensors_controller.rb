@@ -5,6 +5,7 @@ class SensorsController < ApplicationController
   load_and_authorize_resource
 
   def index
+    @title = "Sensors"
     # note: if current_user is an admin, groups/memberships don't matter since an admin can do anything:
     if current_user.role? :admin
       @sensors = Sensor.order('sid asc')

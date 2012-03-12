@@ -17,6 +17,7 @@ class ReportsController < ApplicationController
   respond_to :pdf, only: [:create_pdf]
 
   def index
+    @title = "Reports"
     # list reports for current_user, or current_user.groups, or admin created for all users:
     if current_user.role?(:admin)
       @reports = Report
@@ -84,6 +85,7 @@ class ReportsController < ApplicationController
 
   # HTML version of report
   def events_listing
+    @title = "Report Event listings"
     if current_user.role?(:admin)
       @report = Report.find(params[:id])
     else

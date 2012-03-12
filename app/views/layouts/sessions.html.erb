@@ -8,8 +8,8 @@
 </head>
 <body class="logged_out new">
   <%= yield %>
-  <div id="footer">
-    <p>
+  <footer>
+    <center>
       2012 
       <% if APP_CONFIG[:show_versions_and_limits] %>
           &nbsp;&nbsp;<%= APP_CONFIG[:host] %>
@@ -18,7 +18,7 @@
           &nbsp;&nbsp;
       <% end %>
       &nbsp;&nbsp;<%= Time.now.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") %>
-    </p>
-  </div>
+    </center>
+  </footer>
 </body>
 </html>

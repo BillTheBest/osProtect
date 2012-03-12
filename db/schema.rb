@@ -94,9 +94,9 @@ ActiveRecord::Schema.define(:version => 20120221205257) do
     t.integer  "sig_gid"
     t.string   "sig_class_name"
     t.text     "ref_tags_and_system_names"
-    t.integer  "ip_src",                    :null => false
+    t.integer  "ip_src"
     t.string   "ip_source"
-    t.integer  "ip_dst",                    :null => false
+    t.integer  "ip_dst"
     t.string   "ip_destination"
     t.integer  "ip_ver"
     t.integer  "ip_hlen"
@@ -129,6 +129,17 @@ ActiveRecord::Schema.define(:version => 20120221205257) do
     t.integer  "udp_csum"
     t.text     "data_payload"
   end
+
+  add_index "incident_events", ["icmp_type"], :name => "ie_icmp_type_idx"
+  add_index "incident_events", ["ip_dst"], :name => "ie_ip_dst_idx"
+  add_index "incident_events", ["ip_src"], :name => "ie_ip_src_idx"
+  add_index "incident_events", ["signature"], :name => "ie_signature_idx"
+  add_index "incident_events", ["tcp_dport"], :name => "ie_tcp_dport_idx"
+  add_index "incident_events", ["tcp_flags"], :name => "ie_tcp_flags_idx"
+  add_index "incident_events", ["tcp_sport"], :name => "ie_tcp_sport_idx"
+  add_index "incident_events", ["timestamp"], :name => "ie_timestamp_idx"
+  add_index "incident_events", ["udp_dport"], :name => "ie_udp_dport_idx"
+  add_index "incident_events", ["udp_sport"], :name => "ie_udp_sport_idx"
 
   create_table "incidents", :force => true do |t|
     t.integer  "group_id"

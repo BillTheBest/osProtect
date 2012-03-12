@@ -3,6 +3,7 @@ class IncidentsController < ApplicationController
   before_filter :ensure_user_is_setup
 
   def index
+    @title = "Incidents"
     @incidents = Incident.accessible_by(current_ability).order("updated_at desc").page(params[:page]).per_page(APP_CONFIG[:per_page])
   end
 
