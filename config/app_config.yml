@@ -58,7 +58,7 @@ production:
   # host: 38.123.140.62
   version: 1.0.0
   show_versions_and_limits: true
-  emails_from: do.not.reply@osprotect.com
+  emails_from: do.not.reply@osprotect.clone-systems.com
   per_page: 12
   # -- Notifications config:
   can_do_notifications: true

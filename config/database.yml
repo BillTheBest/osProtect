@@ -15,7 +15,6 @@ development:
   password: rails
   socket: /tmp/mysql.sock
 
-
 test:
   adapter: mysql2
   encoding: utf8
@@ -27,6 +26,14 @@ test:
   socket: /tmp/mysql.sock
 
 production:
+  # adapter: mysql2
+  # encoding: utf8
+  # reconnect: false
+  # pool: 5
+  # database: osprotect_dev
+  # username: rails
+  # password: rails
+  # socket: /tmp/mysql.sock
   adapter: mysql2
   encoding: utf8
   reconnect: false
