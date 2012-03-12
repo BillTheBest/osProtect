@@ -296,5 +296,34 @@ Apache + Unicorn:
 https://github.com/teambox/teambox/wiki/Installing-on-Ubuntu-using-Apache-and-Unicorn
 
 
+cls: old wiki instructions with steps 13. and 14.
+## Install this Rails application
+
+1. log in as the **rails app user** (not **root**)
+  * this is the user that the rails app will execute/run as
+2. cd **/home/rails_app_user/apps** (mkdir apps, if needed)
+3. **git clone git://github.com/clonesec/osProtect.git** ... this creates an osProtect folder
+4. cd **osProtect**
+5. edit **config/app_config.yml** ... change as appropriate for your installation ... [details here](wiki/app_config "app config settings")
+6. it is required that a Snort database already be installed
+  * another MySQL user should be created for this rails app to use when accessing the existing Snort database ... [details here](wiki/create-rails-app-user-for-snort-database "create rails app user in mysql")
+  * this MySQL user name does not have to match the **rails app user**
+7. edit **config/database.yml** ... change to match your installation of MySQL and the Snort database
+8. **bundle install --deployment --without assets development test** ... to install **rails** and all of the gems in the **Gemfile**
+9. **bundle exec rake assets:precompile** ... to compress and ready assets for use by web servers in **production** mode
+10. **bundle exec rake db:migrate** ... which add tables in addition to the Snort schema (note: the Snort tables/data are not altered by this app)
+11. **bundle exec rake db:seed** ... which creates the initial **admin** user, please edit this file to change the admin password/email
+12. edit **config/resque.yml** ... change this file if you are not using the default IP/Port for **Redis**
+13. to perform a quick test without using the web server (apache/nginx) do:
+  * **nano ~/apps/osProtect/config/environments/production.rb** and change the following line from **false** to **true**:
+  * **config.serve_static_assets = true**
+  * save that change
+  * **bundle exec rails server -e production**
+  * then visit http://localhost:3000/ in a web browser
+14. now try everything via the web server:
+  * **nano ~/apps/osProtect/config/environments/production.rb** and change the following line back to **false**:
+  * **config.serve_static_assets = false**
+  * save that change, because web servers are much faster and more efficient at serving assets (images, javascripts, and stylesheets)
+  * then visit http://osprotect.example.com/ (use your domain) in a web browser, and everything should be the same as in step **13.**
 
 

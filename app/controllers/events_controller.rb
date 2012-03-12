@@ -25,20 +25,39 @@ class EventsController < ApplicationController
         redirect_to events_path
       end
     end
-# path = "#{Rails.root}/doc/snort/rules"
+    # path = "#{Rails.root}/doc/snort/rules"
     # @snort_rules = Dir.glob("#{Rails.root}/doc/snort/rules/**/*")
     # @snort_rules = Dir.glob("#{Rails.root}/doc/snort/rules/icmp.rules")
     # @snort_rules = Dir.glob("#{Rails.root}/doc/snort/rules/attack-responses.rules")
-#     Snortor.import_rules(@snort_rules[0])
-# puts "\n#{Snortor.rules.to_yaml}\n"
-# puts "\n#{Snortor.rules.size}\n"
-# rule_files = SnortRuleFileLoader::get_rule_files_from_dir(path)
-# @rule_files = SnortRuleFileLoader.new
-# @rule_files.get_rule_files_from_dir(path) do |path_to_file, filename|
-#   rule_file = SnortRuleFile.new(path_to_file, filename)
-#   @rule_files << rule_file
-# end
-# puts "\n@rule_files(#{@rule_files.size})=#{@rule_files.inspect}\n\n"
+    #     Snortor.import_rules(@snort_rules[0])
+    # puts "\n#{Snortor.rules.to_yaml}\n"
+    # puts "\n#{Snortor.rules.size}\n"
+    # rule_files = SnortRuleFileLoader::get_rule_files_from_dir(path)
+    # @rule_files = SnortRuleFileLoader.new
+    # @rule_files.get_rule_files_from_dir(path) do |path_to_file, filename|
+    #   rule_file = SnortRuleFile.new(path_to_file, filename)
+    #   @rule_files << rule_file
+    # end
+    # puts "\n@rule_files(#{@rule_files.size})=#{@rule_files.inspect}\n\n"
+
+    # require 'find'
+    # Find.find("#{Rails.root}/doc/snort/rules") do |file|
+    #   puts "file=#{file.inspect} | ctime=#{File::ctime(file)} | mtime=#{File::mtime(file)}"
+    # end
+    # total_size = 0
+    # Find.find("#{Rails.root}/doc/snort/rules") do |path|
+    #   if FileTest.directory?(path)
+    #     if File.basename(path)[0] == ?.
+    #       Find.prune # don't look any further into this directory.
+    #     else
+    #       next
+    #     end
+    #   else
+    #     total_size += FileTest.size(path)
+    #     puts "path=#{path.inspect}\nctime=#{File::ctime(path).utc} | mtime=#{File::mtime(path).utc}\n\n"
+    #   end
+    # end
+    # puts "total_size=#{total_size.inspect}"
   end
 
   def show
