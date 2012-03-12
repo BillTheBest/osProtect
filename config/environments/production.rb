@@ -11,6 +11,10 @@ OsProtectRor320::Application.configure do
   # Disable Rails's static asset server (Apache or nginx will already do this)
   config.serve_static_assets = false
 
+  # NOTE do not leave this set to "true" because you really want Apache/nginx to serve the assets !!!
+  # cls: to use "rails server -e production" in order to quickly test the app do:
+  # config.serve_static_assets = true
+
   # Compress JavaScripts and CSS
   config.assets.compress = true
 
