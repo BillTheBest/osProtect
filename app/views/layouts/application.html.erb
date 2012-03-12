@@ -46,7 +46,11 @@
 -->
   </div>
 
-  <%= yield %>
+  <div id="container_content">
+    <div class="main_header"><h3><%= @title %></h3></div>
+      <%= yield %>
+    <div class="clear"></div>
+  </div>
 
   <div id="footer">
     <p>
