@@ -59,7 +59,7 @@
                                   <td><%= link_to event.signature, event_path(event.key) %></td>
                                   <td><%=event.source_ip_port%></td>
                                   <td><%=event.destination_ip_port%></td>
-                                  <td><%=event.sensor_name%></td>
+                                  <td><%=event.common_name_for_sensor%></td>
                                   <td><%=event.timestamp%></td>
                                 </tr>
                             <% end %>

@@ -71,6 +71,16 @@ class Event < ActiveRecord::Base
     self.signature_detail.sig_name
   end
 
+  def common_name_for_sensor
+    if self.sensor.sensor_name.blank?
+      cnfs = self.sensor.hostname # use the name from Snort
+    else
+      cnfs = self.sensor.sensor_name.name
+    end
+    cnfs = "?" if cnfs.blank?
+    cnfs
+  end
+
   def sensor_name
     self.sensor.hostname
   end
