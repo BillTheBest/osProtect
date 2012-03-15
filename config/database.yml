@@ -1,10 +1,3 @@
-# ... copy/backup a mysql db:
-# > ssh ????_@_???.com
-# > mysqldump -u railsapp -p osprotect > osprotect.sql
-# > cd somewhere_local
-# > scp ???_@_???.com:/apps/osprotect/current/osprotect.sql .
-# > mysql -u rails -prails osprotect_dev < osprotect.sql
-
 development:
   adapter: mysql2
   encoding: utf8
@@ -26,19 +19,3 @@ test:
   socket: /tmp/mysql.sock
 
 production:
-  # adapter: mysql2
-  # encoding: utf8
-  # reconnect: false
-  # pool: 5
-  # database: osprotect_dev
-  # username: rails
-  # password: rails
-  # socket: /tmp/mysql.sock
-  adapter: mysql2
-  encoding: utf8
-  reconnect: false
-  pool: 5
-  database: snort
-  username: railsapp
-  password: r1o2r3dec20
-  socket: /var/run/mysqld/mysqld.sock
