@@ -17,6 +17,16 @@
             <li><%= link_to 'Past Year', pulse_path(range: 'past_year') %></li>
             <li><%= link_to 'Year', pulse_path(range: 'year') %></li>
           </ul>
+          <select id="pulseTimePeriod">
+            <option value="">Select a time period</option>
+            <option value="<%=pulse_path%>">Today</option>
+            <option value="<%=pulse_path(range: 'last_24')%>">Last 24 Hours</option>
+            <option value="<%=pulse_path(range: 'week')%>">This Week</option>
+            <option value="<%=pulse_path(range: 'last_week')%>">Last Week</option>
+            <option value="<%=pulse_path(range: 'month')%>">This Month</option>
+            <option value="<%=pulse_path(range: 'past_year')%>">Past Year</option>
+            <option value="<%=pulse_path(range: 'year')%>">This Year</option>
+          </select>
         </div>
         <div class="panel_contents">
           <h3>
