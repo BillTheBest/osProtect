@@ -33,13 +33,14 @@ h3 {
 
 h1,h2,h3 {
 	/* Top & bottom margin based on font size. */
-  margin: 5px 0;
+	margin: 5px 0;
 }
 
 h1,h2,h3,h4,h5,h6,strong,dt {
 	/* Bringing boldness back to headers and the strong element. */
 	font-weight: bold;
 }
+
 optgroup {
 	font-weight:normal;
 }
@@ -87,7 +88,7 @@ dl dd {
 
 th,td {
 	/* Borders and padding to make the table readable. */
-  border-bottom: 1px solid #000;
+	border-bottom: 1px solid #000;
 	padding: .5em;
 }
 
@@ -133,5 +134,5 @@ input[type="submit"] {
 /* make IE scale images properly */
 /* see http://code.flickr.com/blog/2008/11/12/on-ui-quality-the-little-things-client-side-image-resizing/ */
  img {
-    -ms-interpolation-mode:bicubic;
+	-ms-interpolation-mode:bicubic;
 }

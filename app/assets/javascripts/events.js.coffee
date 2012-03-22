@@ -21,6 +21,15 @@ jQuery ->
       $(this).val('')
   )
 
+  $('#search-sidebar').toggle(
+    ->
+      $('div#osprotect_content').attr('class','with_sidebar')
+      $('#sidebar').show()
+    ->
+      $('div#osprotect_content').attr('class','without_sidebar')
+      $('#sidebar').hide()
+  )
+
   # note: the following double submitted the form:
   # $("#add-selected-events").click ->
   #   $('#add-selected-events').hide()

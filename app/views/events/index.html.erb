@@ -9,7 +9,7 @@
   </div>
 <!-- cls: example of how to use a plain old css file
 <div class="spud">spud class</div> -->
-  <div id="osprotect_content" class="with_sidebar">
+  <div id="osprotect_content" class="without_sidebar">
     <div id="main_content_wrapper">
       <div id="main_content">
 <!-- <%#= "#{@rule_files.size} rule files found:" %><br />
@@ -23,8 +23,9 @@
             <%= form_tag events_path, method: :post, :remote => :true, class: "event_select_form" do %>
               <% if presenter.page_of_events.count > 0 %>
                   <div class="buttons" id="add-selected-events">
-                    <%#= submit_tag 'add selected Events to', id: 'submit-selected-events', disable_with: "Standby . . ." %>
-                    <%= submit_tag 'add selected Events to', id: 'submit-selected-events' %>
+                    <div id="search-sidebar" class="left"><%= submit_tag 'Search' %></div>
+                    <%#= submit_tag 'Add selected events to', id: 'submit-selected-events', disable_with: "Standby . . ." %>
+                    <%= submit_tag 'Add selected events to', id: 'submit-selected-events' %>
                     <%= select_tag(:incident_id, options_for_select(Incident.accessible_by(current_ability).all.collect {|i| [ "##{i.id} - #{truncate(i.incident_name)}", i.id ] }), {prompt: "a new Incident or select from this list"}) %>
                   </div>
                   <div id="adding-events-spinner" style="display:none">
@@ -42,12 +43,12 @@
                               <th class="sortable small">
                                 <%= image_tag('check.png', id: 'events-check', title: 'click to toggle checkboxes')%>
                               </th>
-                              <th class="sortable">priority</th>
-                              <th class="sortable">signature</th>
-                              <th class="sortable">source</th>
-                              <th class="sortable">destination</th>
-                              <th class="sortable">sensor</th>
-                              <th class="sortable">timestamp</th>
+                              <th class="sortable">Priority</th>
+                              <th class="sortable">Signature</th>
+                              <th class="sortable">Source</th>
+                              <th class="sortable">Destination</th>
+                              <th class="sortable">Sensor</th>
+                              <th class="sortable">Timestamp</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -91,17 +92,8 @@
     </div> <!-- main_content_wrapper -->
 
     <%# unless @events.blank? %>
-      <div id="sidebar">
-        <br />
-        <div class="buttons">
-          <% if no_events %>
-              <%= button_to 'create PDF of current results', events_pdf_url(q: params[:q], format: :pdf), method: "post", disabled: 'disabled', title: raw("There are no events to process."), style: 'text-decoration: line-through' %>
-          <% elsif @events.count > 1000 %>
-              <%= button_to 'create PDF of current results', events_pdf_url(q: params[:q], format: :pdf), method: "post", disabled: 'disabled', title: raw("There are more than 1,000 events,\nwhich is too many for PDF creation.\nPlease refine your search and try again."), style: 'text-decoration: line-through' %>
-          <% else %>
-              <%= button_to 'create PDF of current results', events_pdf_url(q: params[:q], format: :pdf), method: "post" %>
-          <% end %>
-        </div>
+      <div id="sidebar" style="display:none">
+        <div class="spacer69"></div>
         <div class="sidebar_section panel" id="filters_sidebar_section">
           <h3>&larr; Search Events:</h3>
           <div class="panel_contents">
@@ -156,14 +148,6 @@
                 <%= submit_tag "Reset" %>
               </div>
             <% end %>
-            <br />
-            <div class="buttons">
-              <% if params[:q].blank? %>
-                  <%= button_to 'create Report using search criteria', reports_path, method: "post", disabled: 'disabled', title: 'no search criteria entered!', style: 'text-decoration: line-through' %>
-              <% else %>
-                  <%= button_to 'create Report using search criteria', reports_path(report: {accessible_by: 'm'}, q: params[:q]), method: "post" %>
-              <% end %>
-            </div>
           </div> <!-- panel_contents -->
         </div> <!-- sidebar_section -->
       </div> <!-- sidebar -->

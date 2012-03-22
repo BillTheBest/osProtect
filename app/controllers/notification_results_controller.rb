@@ -3,11 +3,13 @@ class NotificationResultsController < ApplicationController
   before_filter :ensure_user_is_setup
 
   def index
+    @title = "Notification Results"
     @notification = current_user.notifications.find(params[:id])
     @notification_results = @notification.notification_results.order("updated_at desc").page(params[:page]).per_page(APP_CONFIG[:per_page])
   end
 
   def show
+    @title = "Notification Results"
     # show matching events for this notification result:
     @notification_result = current_user.notification_results.find(params[:id])
     @notification = Notification.find(@notification_result.notification.id)

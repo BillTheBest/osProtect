@@ -24,6 +24,7 @@ class SensorsController < ApplicationController
   end
 
   def edit
+    @title = "Edit Sensor"
     @sensor = Sensor.find(params[:id])
   end
 

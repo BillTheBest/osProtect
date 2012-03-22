@@ -3,6 +3,8 @@
 @import "header";
 @import "panel_header";
 @import "forms";
+@import "dropdown";
+@import "tabs";
 @import "components/flash_messages";
 @import "components/date_picker";
 
@@ -21,7 +23,7 @@ div#container {
   width: 1000px;
 }
 
-// ----------------------------------- Page Title Bar 
+// -------------------------------------- Page Title Bar 
 #title_bar {
   @include section-header;
   position: relative; 
@@ -67,10 +69,11 @@ div#container {
   font-weight: bold;
   text-indent: 21px;
   text-shadow: 1px 1px #FFFFFF;
-  width: 998px
+  width: 998px;
+  span { font-size: 0.65em; }
 }
 
-// ----------------------------------- Main Structure 
+// -------------------------------------- Main Structure 
 #container_content {
   @include rounded-all(12px,12px,0,0);
   border: 1px solid #bdbdbd;
@@ -80,7 +83,6 @@ div#container {
 
 #osprotect_content { 
   margin: 0; 
-  padding: 25px 0; 
   
   #main_content_wrapper { 
     float: left; 
@@ -97,13 +99,14 @@ div#container {
     float: left; 
     width: $sidebar-width; 
     margin-left: -$sidebar-width;
+    padding-bottom: 25px;
   }
 }
 
-// ----------------------------------- Footer 
+// -------------------------------------- Footer 
 #footer {
   @include rounded-all(0,0,12px,12px);
-  background: url("/assets/login-footer.png") repeat-x scroll 0 0 transparent;
+  background: url("/assets/footer.png") repeat-x scroll 0 0 transparent;
   border: 1px solid #c8c8c8;
   border-top: 0;
   margin: 0 auto 10px auto;
@@ -139,15 +142,14 @@ div#container {
   }
 }
 
-// ----------------------------------- Links 
+// -------------------------------------- Links 
 a, a:link, a:visited {
   color: $link-color;
   text-decoration: underline;
 }
 a:hover { text-decoration: none; }
 
-// ----------------------------------- Buttons 
-
+// -------------------------------------- Buttons 
 td, p {
   @include icon(#B3BCC1, 0.8em);
   span.icon { margin: 0 3px; }
@@ -160,7 +162,7 @@ a.member_link {
 
 a.button, input[type=submit] { @include dark-button; }
 
-// ----------------------------------- Breadcrumbs 
+// -------------------------------------- Breadcrumbs 
 .breadcrumb {
   text-transform: uppercase;
   font-size: 0.9em;
@@ -179,11 +181,11 @@ a.button, input[type=submit] { @include dark-button; }
   }
 }
 
-// ----------------------------------- Sections & Panels
+// -------------------------------------- Sections & Panels
 // Helper class to apply to elements to make them sections
 .section, .panel{ @include section; }
 
-// ----------------------------------- Blank Slate
+// -------------------------------------- Blank Slate
 .blank_slate_container {
   clear: both;
   text-align: center;
@@ -216,7 +218,7 @@ a.button, input[type=submit] { @include dark-button; }
   margin-top: 80px;
 }
 
-// ----------------------------------- Tables 
+// -------------------------------------- Tables 
 table.index_table {
   width: 100%;
   margin-bottom: 10px;
@@ -257,7 +259,7 @@ table.index_table {
   }
 }
 
-// ----------------------------------- Tables inside Panels
+// -------------------------------------- Tables inside Panels
 .panel_contents table {
   margin-top: 5px;
   th { 
@@ -283,33 +285,48 @@ table.index_table {
   tr.even { background: $table-stripe-color; }
 }
 
-// ----------------------------------- Charts inside Panels
+// -------------------------------------- Charts inside Panels
 #box-holders {
   .priority-box {
     background: url("/assets/priority-box.png") no-repeat scroll 0 0 transparent;
     float: left;
-    margin-left: 5px;
     height: 210px;
     width: 306px;
 
     .count {
-      font-size: 100px;
+      font-size: 50px;
       font-weight: bold;
       margin-top: 65px;
       text-align: center;
       text-decoration: none;
       text-shadow: -1px 1px 1px #333333;
+
+      a {
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
     }
     .title {
       color: #F4F5F8;
       font-weight: normal;
       line-height: 15pt;
-      margin-top: 50px;
+      margin-top: 30px;
       text-align: center;
       text-decoration: none;
       text-shadow: 1px 1px 1px #333333;
       text-transform: uppercase;
     }
+  }
+
+  .first_chart {
+    margin-left: 0;
+  }
+
+  .chart {
+    margin-left: 8px;
   }
 }
 
@@ -329,7 +346,7 @@ table.index_table {
   min-width: 235px;
 }
 
-// ----------------------------------- Sidebar Sections 
+// -------------------------------------- Sidebar Sections 
 .sidebar_section { @include section; }
 
 // -------------------------------------- Pagination 
@@ -372,9 +389,121 @@ table.index_grid td { border: none; background: none; padding: 0 20px 20px 0; ma
 
 // -------------------------------------- Logged Out 
 body.logged_out {
-  background: #e8e9ea;
+  background: #fff;
 
-  #content_wrapper{
+  .login_wrapper {
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 30px;
+
+    h1 {
+      overflow: auto;
+      width: 590px;
+      margin: 0 auto;
+      display: block;
+    }
+
+    img.Llogo {
+      margin-top: 24px;
+      margin-left: 2px;
+      float: left;
+      border: 0;
+    }
+
+    .os_protect {
+      background: url("/assets/osProtect.png") no-repeat;
+      margin-top: 8px;
+      width: 140px;
+      height: 80px;
+      float: right;
+    }
+
+    .login_flash {
+      margin: 0 auto -15px auto;
+      width: 590px;
+      text-align: left;
+    }
+
+    .user_new {
+      @include rounded-all(8px);
+      width: 588px;
+      height: 287px;
+      margin: 35px auto 0 auto;
+      border: 1px solid #bdbdbd;
+      background: url("/assets/login/login-bg.jpg") 0px 45px no-repeat;
+
+      .login_label {
+        @include rounded-top(8px);
+        background: url("/assets/login/login-header.png") repeat-x;
+        margin-bottom: 40px;
+        height: 45px;
+        border-bottom: 1px solid #bdbdbd;
+        font-size: 18px;
+        font-family: arial, sans-serif;
+        text-align: left;
+        line-height: 45px;
+        text-indent: 20px;
+      }
+
+      p {
+        display: block;
+        padding: 0.5em;
+      }
+
+      .label_field {
+        margin: 10px;
+        label {
+          margin-right: 11px;
+          text-align: right;
+          font-size: 16px;
+          color: #fff;
+        }
+      }
+
+      input.user_submit {
+        @include rounded-all(4px);
+        background: url("/assets/login/button-bg.png");
+        width: 77px;
+        height: 30px;
+        color: #fff;
+        cursor: pointer;
+        &:hover { background-position: 0px 30px; box-shadow: none; }
+      }
+
+      input[type=text], input[type=email], input[type=password] {
+        width: 163px;
+      }
+
+      .pass_remind a { color: #fff; }
+
+      .login_footer {
+        @include rounded-bottom(8px);
+        background: url("/assets/footer.png") repeat-x;
+        border-top: 1px solid #bdbdbd;
+        line-height: 34px;
+        margin-top: 25px;
+        height: 34px;
+
+        .left {
+          float: left;
+          display: block;
+          margin-left: 20px;
+          font-family: arial, sans-serif;
+          font-size: 12px;
+        }
+
+        .right {
+          float: right;
+          display: block;
+          margin-right: 20px;
+          font-size: 12px;
+          font-family: arial, sans-serif;
+        }
+      }
+    }
+  }
+
+  .content_wrapper{
     width: 500px;
     margin: 70px auto;
     #osprotect_content {
@@ -391,34 +520,6 @@ body.logged_out {
     color: #fff;
     margin: -13px -30px 20px -30px;
   }
-
-  #login {
-    form {
-      fieldset {
-        @include no-shadow;
-        background: none;
-        padding: 0;
-        li { padding: 10px 0; }
-        input[type=text], input[type=email], input[type=password] {
-          width: 70%;
-        }
-        &.buttons {
-          margin-top: -10px;
-          margin-left: 17%;
-          height: 120px;
-          .create {
-            position: relative;
-            left: 15px;
-            top: 10px;
-          }
-        }
-        margin-bottom: 0;
-      }
-    }
-
-    a { float: right; margin-top: -32px; }
-  }
-
 }
 
 // -------------------------------------- Dashboard 

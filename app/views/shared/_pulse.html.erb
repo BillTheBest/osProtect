@@ -1,30 +1,70 @@
-<% chart_size = '650x300' %>
+<%
+  chart_size = '650x300'
+  total = 0
+  data = []
+  labels = []
+
+  @priorities.collect do |priority|
+    total += priority.priority_cnt
+    data << priority.priority_cnt
+  end
+
+  labels = @priorities.collect do |priority|
+    "priority #{priority.sig_priority}"
+  end
+%>
 
 <div id="box-holders">
-<% if @priorities.blank? %>
-<% else
-    total = 0
-    data = []
-    labels = []
-    @priorities.collect do |priority|
-      total += priority.priority_cnt
-      data << priority.priority_cnt
-    end
-    labels = @priorities.collect do |priority|
-      "priority #{priority.sig_priority}"
-    end
+  <% @priorities.each do |priority| %>
+    <%
+      case priority.sig_priority
+        when 1
+          @priority1_cnt = priority.priority_cnt
+          @priority1_link = events_path('q[sig_priority]' => priority.sig_priority)
+        when 2
+          @priority2_cnt = priority.priority_cnt
+          @priority2_link = events_path('q[sig_priority]' => priority.sig_priority)
+        else
+          @priority3_cnt = priority.priority_cnt
+          @priority3_link = events_path('q[sig_priority]' => priority.sig_priority)
+      end
     %>
-    <% @priorities.each do |priority| %>
-      <div class="priority-box">
-        <div class="count"><%= link_to number_with_delimiter(priority.priority_cnt), events_path('q[sig_priority]' => priority.sig_priority) %></div>
-        <div class="title"><span class="failed-green red-font">X</span><br /><span class="all-scanned-title">Vulnerabilities</span></div>
-      </div>
-    <% end %>
-<% end %>
+  <% end %>
+
+  <%
+    if @priority1_cnt.blank?
+      @priority1_cnt = '0'
+    end
+    if @priority2_cnt.blank?
+      @priority2_cnt = '0'
+    end
+    if @priority3_cnt.blank?
+      @priority3_cnt = '0'
+    end
+  %>
+
+<div class="clear"></div>
+  <div class="priority-box first_chart">
+    <div class="count"><%= link_to @priority1_cnt, @priority1_link, :class => "rd" %></div>
+    <div class="title"><span>High</span><br /><span class="all-scanned-title">Priority</span></div>
+  </div>
+  <div class="priority-box chart">
+    <div class="count"><%= link_to @priority2_cnt, @priority2_link, :class => "oj" %></div>
+    <div class="title"><span>Medium</span><br /><span class="all-scanned-title">Priority</span></div>
+  </div>
+  <div class="priority-box chart">
+    <div class="count"><%= link_to @priority3_cnt, @priority3_link, :class => "yw" %></div>
+    <div class="title"><span>Low</span><br /><span class="all-scanned-title">Priority</span></div>
+  </div>
 </div>
 
 <div class="clear"></div>
-<div class="panel_chart">
+<ul class="tabs">
+  <li id="topAttackers"><a class="tab" href="#">Top Attackers</a></li>
+  <li id="topTargets"><a class="tab" href="#">Top Targets</a></li>
+  <li id="topEvents"><a class="tab" href="#">Top Events</a></li>
+</ul>
+<div id="top_attackers" class="panel_chart">
 <h3 style="clear: both; text-align:center; font-size:15px">Top Attackers</h3>
 <% if @attackers.blank? %>
     <h6>none</h6>
@@ -68,7 +108,7 @@
 <hr style="clear: both; margin-bottom:30px; height:5px" />
 </div>
 
-<div class="panel_chart">
+<div id="top_targets" class="panel_chart">
 <h3 style="clear: both; text-align:center; font-size:15px">Top Targets</h3>
 <% if @targets.blank? %>
     <h6>none</h6>
@@ -112,50 +152,7 @@
 <hr style="clear: both; margin-bottom:20px; height:5px" />
 </div>
 
-<div class="panel_chart">
-<h3 style="text-align:center; font-size:15px">Priorities</h3>
-<% if @priorities.blank? %>
-    <h6>none</h6>
-<% else 
-    total = 0
-    data = []
-    labels = []
-    @priorities.collect do |priority|
-      total += priority.priority_cnt
-      data << priority.priority_cnt
-    end
-    labels = @priorities.collect do |priority|
-      "priority #{priority.sig_priority}"
-    end
-    %>
-    <div class="pulse_chart_data_wrapper">
-      <div class="pulse_chart">
-        <%= image_tag(Gchart.pie_3d(data: data, labels: labels, size: chart_size, title: "", theme: :thirty7signals)) %>
-      </div>
-      <div class="pulse_data">
-        <table border="0" cellspacing="0" cellpadding="0">
-          <thead>
-            <tr>
-              <th class="count"><small>count</small></th>
-              <th class="top">Priority</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @priorities.each do |priority| %>
-                <tr class="<%= cycle('even', 'odd') %>">
-                  <td class="right"><%= number_with_delimiter(priority.priority_cnt) %></td>
-                  <td align="left"><%= link_to priority.sig_priority, events_path('q[sig_priority]' => priority.sig_priority) %></td>
-                </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-    </div>
-<% end %>
-<hr style="clear: both; margin-bottom:30px; height:5px" />
-</div>
-
-<div class="panel_chart">
+<div id="top_events" class="panel_chart">
 <h3 style="clear: both; text-align:center; font-size:15px">Top Events by Signature</h3>
 <% if @events_by_signature.blank? %>
     <h6>none</h6>

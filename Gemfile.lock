@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/cleesmith/snortor.git
+  remote: https://github.com/cleesmith/snortor.git
   revision: 181af76e87bab7623510febaf7bf888773e8d219
   specs:
     snortor (0.0.1)

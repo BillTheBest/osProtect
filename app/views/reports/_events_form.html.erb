@@ -38,7 +38,7 @@
                     <label>Access Allowed</label>
                     <span id="allow_all" style="display:none;">All<br /><br /></span>
                   </li>
-                  <fieldset id="set_access_allowed" class="inputs" style="margin-top:-12px; margin-left:240px">
+                  <fieldset id="set_access_allowed" class="inputs" style="margin-top:-12px; margin-left:140px">
                     <ol>
                       <li class="access_allowed" style="margin-top:-10px">
                         <label>To</label>
@@ -75,13 +75,13 @@
                     </ol>
                   </fieldset>
                   <li class="include_summary" style="margin-top:-20px">
-                    <label>Include Summary(Pulse)</label>
+                    <label>Include Summary<br />(Pulse)</label>
                     <%= f.select(:include_summary, options_for_select([["yes", true], ["no", false]], selected: @report.include_summary)) %>
                   </li>
                   <li>
-                    <label>Event Selection Criteria</label>
+                    <label>Event Selection<br />Criteria</label>
                   </li>
-                  <fieldset class="inputs" style="margin-top:-12px; margin-left:240px">
+                  <fieldset class="inputs" style="margin-top:-12px; margin-left:140px">
                     <ol>
                       <li class="date_ranges_description date_ranges">
                         <label>Date Ranges</label>
@@ -136,7 +136,8 @@
                       </li>
                     </ol>
                   </fieldset>
-                  <li class="buttons commit" style="margin-top:-40px">
+                  <div class="clear"></div>
+                  <li class="buttons commit" style="margin-top:-20px">
                     <label>&nbsp;</label>
                     <%= f.submit %>
                   </li>

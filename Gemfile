@@ -9,7 +9,7 @@ gem 'mysql2'
 
 # gem "composite_primary_keys", "~> 5.0.0.rc1"
 # gem 'composite_primary_keys', path: '~/Sites/composite_primary_keys'
-# gem 'composite_primary_keys', git: 'git://github.com/cleesmith/composite_primary_keys.git'
+# gem 'composite_primary_keys', git: 'https://github.com/cleesmith/composite_primary_keys.git'
 gem 'composite_primary_keys'
 
 gem 'cancan'
@@ -40,7 +40,7 @@ gem 'googlecharts'
 
 # gem 'snortor'
 # gem 'snortor', path: '~/Sites/snortor'
-gem 'snortor', git: 'git://github.com/cleesmith/snortor.git'
+gem 'snortor', git: 'https://github.com/cleesmith/snortor.git'
 
 # to easily create cron jobs:
 gem 'whenever', :require => false
