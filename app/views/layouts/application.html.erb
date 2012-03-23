@@ -47,7 +47,14 @@
   </div>
 
   <div id="container_content">
-    <div class="main_header"><h3><%= @title %><% if @title == "Dashboard" %><%= render partial: '/shared/dash_header' %><% end %></h3></div>
+    <div class="main_header">
+      <h3>
+        <%= @title %>
+        <% if @title == "Pulse" %>
+          <%= render partial: '/shared/dash_header' %>
+        <% end %>
+      </h3>
+    </div>
       <%= yield %>
     <div class="clear"></div>
   </div>

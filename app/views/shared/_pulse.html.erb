@@ -45,15 +45,15 @@
 
 <div class="clear"></div>
   <div class="priority-box first_chart">
-    <div class="count"><%= link_to @priority1_cnt, @priority1_link, :class => "rd" %></div>
+    <div class="count"><%= link_to number_with_delimiter(@priority1_cnt), @priority1_link, :class => "rd" %></div>
     <div class="title"><span>High</span><br /><span class="all-scanned-title">Priority</span></div>
   </div>
   <div class="priority-box chart">
-    <div class="count"><%= link_to @priority2_cnt, @priority2_link, :class => "oj" %></div>
+    <div class="count"><%= link_to number_with_delimiter(@priority2_cnt), @priority2_link, :class => "oj" %></div>
     <div class="title"><span>Medium</span><br /><span class="all-scanned-title">Priority</span></div>
   </div>
   <div class="priority-box chart">
-    <div class="count"><%= link_to @priority3_cnt, @priority3_link, :class => "yw" %></div>
+    <div class="count"><%= link_to number_with_delimiter(@priority3_cnt), @priority3_link, :class => "yw" %></div>
     <div class="title"><span>Low</span><br /><span class="all-scanned-title">Priority</span></div>
   </div>
 </div>
@@ -157,24 +157,25 @@
 <% if @events_by_signature.blank? %>
     <h6>none</h6>
 <% else 
-    @events_by_signature = @events_by_signature.order('event_cnt DESC')
-    total = 0
-    data = []
-    labels = []
-    @events_by_signature.collect do |event|
-      total += event.event_cnt
-      data << event.event_cnt
-    end
-    labels = @events_by_signature.collect do |event|
-      "#{truncate(event.sig_name, length: 40)}"
-    end
+    # @events_by_signature = @events_by_signature.order('event_cnt DESC')
+    # total = 0
+    # data = []
+    # labels = []
+    # @events_by_signature.collect do |event|
+    #   total += event.event_cnt
+    #   data << event.event_cnt
+    # end
+    # labels = @events_by_signature.collect do |event|
+    #   "#{truncate(event.sig_name, length: 40)}"
+    # end
     %>
     <div class="pulse_chart_data_wrapper">
-      <%# note: strange characters in the signature names causes problems for gcharts %>
+      <%# NOTE: there are strange characters in the signature names which
+                causes errors for gcharts, so we don't display a chart: %>
       <!-- <div class="pulse_chart">
         <%#= image_tag(Gchart.pie_3d(data: data, labels: labels, size: chart_size, title: "", theme: :thirty7signals)) %>
       </div> -->
-      <div class="pulse_data">
+      <div>
         <table border="0" cellspacing="0" cellpadding="0">
           <thead>
             <tr>
