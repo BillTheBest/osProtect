@@ -15,6 +15,7 @@ class GroupsController < ApplicationController
   end
 
   def new
+    @title = "New Group"
     @group = Group.new
   end
 
@@ -32,6 +33,7 @@ class GroupsController < ApplicationController
   end
 
   def edit
+    @title = "Edit Group"
     @group = Group.find(params[:id])
   end
 

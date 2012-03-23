@@ -8,7 +8,8 @@ class AdminRestriction
 end
 
 OsProtectRor320::Application.routes.draw do
-  mount Resque::Server => '/resque', :constraints => AdminRestriction.new
+  # mount Resque::Server => '/resque', :constraints => AdminRestriction.new
+  mount Resque::Server => '/resque'
 
   resources :sessions
   get "login" => "sessions#new", :as => "login"

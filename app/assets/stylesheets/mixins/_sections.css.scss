@@ -21,7 +21,7 @@
 
 @mixin section {
   @include section-background;
-  margin-bottom: 20px;
+  padding: 0;
   
   h3 { @include section-header; }
   

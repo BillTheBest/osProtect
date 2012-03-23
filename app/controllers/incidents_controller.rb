@@ -12,6 +12,7 @@ class IncidentsController < ApplicationController
   end
 
   def new
+    @title = "New Incident"
     @incident = Incident.new
   end
 
@@ -29,6 +30,7 @@ class IncidentsController < ApplicationController
   end
 
   def edit
+    @title = "Edit Incident"
     @incident = Incident.accessible_by(current_ability).find(params[:id])
     @incident_events = @incident.incident_events.page(params[:page]).per_page(APP_CONFIG[:per_page])
   end

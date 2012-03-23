@@ -3,10 +3,14 @@ development:
   encoding: utf8
   reconnect: false
   pool: 5
-  database: osprotect_dev
-  username: rails
-  password: rails
-  socket: /tmp/mysql.sock
+  # database: osprotect_dev
+  # username: rails
+  # password: rails
+  # socket: /tmp/mysql.sock
+  database: snort    
+  username: railsapp
+  password: cl0nesys01
+  socket: /var/run/mysqld/mysqld.sock
 
 test:
   adapter: mysql2
@@ -19,3 +23,11 @@ test:
   socket: /tmp/mysql.sock
 
 production:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  pool: 5
+  database: snort    
+  username: railsapp
+  password: cl0nesys01
+  socket: /var/run/mysqld/mysqld.sock

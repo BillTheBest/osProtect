@@ -33,8 +33,8 @@ module ApplicationHelper
     presenter
   end
 
-  def logo
-    image_tag("Clone_Systems_Managed_Security.jpeg", :alt => "Clone Systems Website", :class => "Blogo")
+  def logo(logo='Blogo')
+    image_tag("Clone_Systems_Managed_Security.jpeg", :alt => "Clone Systems Website", :class => logo)
   end
 
   def title

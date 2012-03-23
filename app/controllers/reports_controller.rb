@@ -35,6 +35,7 @@ class ReportsController < ApplicationController
   end
 
   def new
+    @title = "New Report"
     @report = Report.new
     @report.report_type = 2 if params[:commit] == 'create Incidents Report' # incidents
     @event_search = @report.report_type == 2 ? IncidentEventSearch.new(nil) : EventSearch.new(nil)
@@ -53,6 +54,7 @@ class ReportsController < ApplicationController
   end
 
   def edit
+    @title = "Edit Report"
     @report = current_user.reports.find(params[:id])
     @event_search = @report.report_type == 2 ? IncidentEventSearch.new(@report.report_criteria) : EventSearch.new(@report.report_criteria)
   end

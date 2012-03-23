@@ -29,6 +29,7 @@ class NotificationsController < ApplicationController
   end
 
   def edit
+    @title = "Edit Notification"
     @notification = current_user.notifications.find(params[:id])
     @event_search = EventSearch.new(@notification.notify_criteria)
   end

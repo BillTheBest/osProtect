@@ -7,34 +7,8 @@
   <div id="main_content_wrapper">
     <div id="main_content">
       <div class="dashboard_section panel">
-        <div id="panel_header" style="margin-top:-20px">
-          <ul class="tabbed_navigation" id="panel_tabs">
-            <li><%= link_to 'Today', pulse_path %></li>
-            <li><%= link_to 'Last 24 Hours', pulse_path(range: 'last_24') %></li>
-            <li><%= link_to 'This Week', pulse_path(range: 'week') %></li>
-            <li><%= link_to 'Last Week', pulse_path(range: 'last_week') %></li>
-            <li><%= link_to 'This Month', pulse_path(range: 'month') %></li>
-            <li><%= link_to 'Past Year', pulse_path(range: 'past_year') %></li>
-            <li><%= link_to 'Year', pulse_path(range: 'year') %></li>
-          </ul>
-          <select id="pulseTimePeriod">
-            <option value="">Select a time period</option>
-            <option value="<%=pulse_path%>">Today</option>
-            <option value="<%=pulse_path(range: 'last_24')%>">Last 24 Hours</option>
-            <option value="<%=pulse_path(range: 'week')%>">This Week</option>
-            <option value="<%=pulse_path(range: 'last_week')%>">Last Week</option>
-            <option value="<%=pulse_path(range: 'month')%>">This Month</option>
-            <option value="<%=pulse_path(range: 'past_year')%>">Past Year</option>
-            <option value="<%=pulse_path(range: 'year')%>">This Year</option>
-          </select>
-        </div>
-        <div class="panel_contents">
-          <h3>
-            <%= params[:range].to_s.titleize %>:&nbsp;&nbsp;
-            <%= @start_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") %>
-            &nbsp;&nbsp;-&nbsp;&nbsp;
-            <%= @end_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") %>
-          </h3>
+        <div class="panel_contents" style="margin-top:-5px">
+          <div class="spacer10"></div>
           <%= render partial: 'shared/pulse' %>
         </div> <!-- panel_contents -->
       </div> <!-- dashboard_section -->
