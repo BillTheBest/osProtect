@@ -91,6 +91,6 @@ OsProtectRor320::Application.configure do
   config.action_mailer.delivery_method = :sendmail
   # ignore_exceptions = ExceptionNotifier.default_ignore_exceptions + [ActionView::MissingTemplate]
   # config.middleware.use ExceptionNotifier, :email_prefix => "[ERROR] ", :sender_address => 'noreply@osprotect.appsudo.com', :exception_recipients => "support@osprotect.appsudo.com", :ignore_exceptions => ignore_exceptions
-  # config.action_mailer.default_url_options = { :host => "osprotect.appsudo.com" }
-  config.action_mailer.default_url_options = { :host => "38.123.140.50" }
+  config.action_mailer.default_url_options = { :host => "osprotect.appsudo.com" }
+  # config.action_mailer.default_url_options = { :host => "38.123.140.50" }
 end
