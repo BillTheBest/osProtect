@@ -49,13 +49,13 @@ class CronTask
       matching_keys = []
       sensors = nil # admin's can see all sensors
       sensors = notification.user.sensors unless notification.user.role? :admin
-      if Rails.env.production?
+      # if Rails.env.production?
         @events = temp_event.get_events_based_on_groups_for_user(notification.user.id)
         @events = @events.where("timestamp >= ? AND timestamp <= ?", one_minute_ago_time, now_time)
-      else
-        @events = Event.includes(:sensor, :signature_detail, :iphdr, :tcphdr, :udphdr).where("timestamp >= ? AND timestamp <= ?", '2011-10-26 15:09:00', '2011-10-26 15:12:00')
-        # @events = Event.includes(:sensor, :signature_detail, :iphdr, :tcphdr, :udphdr).where("timestamp >= ? AND timestamp <= ?", '2011-11-04 00:00:00', '2011-11-08 00:02:00')
-      end
+      # else
+      #   @events = Event.includes(:sensor, :signature_detail, :iphdr, :tcphdr, :udphdr).where("timestamp >= ? AND timestamp <= ?", '2011-10-26 15:09:00', '2011-10-26 15:12:00')
+      #   @events = Event.includes(:sensor, :signature_detail, :iphdr, :tcphdr, :udphdr).where("timestamp >= ? AND timestamp <= ?", '2011-11-04 00:00:00', '2011-11-08 00:02:00')
+      # end
       @event_search = EventSearch.new(criteria)
       @events = @event_search.filter(@events) # sets: @start_time and @end_time
       next if @events.count < 1 # no events matched for this notification so go to the next one
