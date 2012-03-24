@@ -31,7 +31,7 @@ production:
   encoding: utf8
   reconnect: false
   pool: 5
-  database: snort    
+  database: snort
   username: railsapp
-  password: cl0nesys01
+  password: r1o2r3dec20
   socket: /var/run/mysqld/mysqld.sock
