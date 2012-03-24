@@ -5,7 +5,6 @@ class UsersController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @title = "Users"
     @users = User.order("updated_at desc").page(params[:page]).per_page(APP_CONFIG[:per_page])
   end
 
@@ -23,7 +22,6 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @title = "Edit User"
     @user = User.find(params[:id])
   end
 

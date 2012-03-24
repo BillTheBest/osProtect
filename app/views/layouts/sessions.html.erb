@@ -7,16 +7,24 @@
   <%= csrf_meta_tags %>
 </head>
 <body class="logged_out new">
+<div class="login_wrapper">
+  <h1>
+    <%= link_to image_tag("Clone_Systems_Managed_Security.jpeg", :alt => "Clone Systems Website", :class => 'Llogo'), "http://www.clone-systems.com" %>
+    <div class="os_protect"></div>
+  </h1>
   <%= yield %>
-  <footer>
-    <center>
-      2012 
-      <% if APP_CONFIG[:show_versions_and_limits] %>
-          &nbsp;-&nbsp;
-          version: <%= APP_CONFIG[:version] %>
-          &nbsp;&nbsp;
-      <% end %>
-    </center>
-  </footer>
+  <div class="clear"></div>
+</div>
+
+<footer>
+  <center>
+    2012 
+    <% if APP_CONFIG[:show_versions_and_limits] %>
+        &nbsp;-&nbsp;
+        version: <%= APP_CONFIG[:version] %>
+        &nbsp;&nbsp;
+    <% end %>
+  </center>
+</footer>
 </body>
 </html>

@@ -327,3 +327,31 @@ cls: old wiki instructions with steps 13. and 14.
   * then visit http://osprotect.example.com/ (use your domain) in a web browser, and everything should be the same as in step **13.**
 
 
+          <%#= main_menu %>
+          <%
+          # tabs = ['events', 'pulse', 'incidents', 'sensors']
+          # tabs += ['notifications'] if APP_CONFIG[:can_do_notifications]
+          # tabs += ['reports', 'pdfs'] if APP_CONFIG[:can_do_reports]
+          # tabs += ['groups', 'users'] if can?(:admin, User)
+          # # tabs += ['resque_server'] if can?(:admin, User) && (APP_CONFIG[:can_do_notifications] || APP_CONFIG[:can_do_reports])
+          # tabs += ['resque_server'] if current_user.username == 'admin'
+          # tabs
+          # menu_tabs.each do |page|
+          #   highlight_current = ""
+          #   if page == params[:controller].downcase
+          #     highlight_current = "current"
+          #   elsif page == 'pulse' && params[:controller].downcase == 'dashboard'
+          #     highlight_current = "current"
+          #   end
+            # if page == 'resque_server' %>
+            <!-- <li id="<%="#{page}"%>" class="<%="#{highlight_current}"%>">
+            <%= link_to 'Background jobs', resque_server_path, target: "_blank" %></li>
+            <% elsif page == 'pdfs' %>
+            <li id="<%="#{page}"%>" class="<%="#{highlight_current}"%>">
+            <%= link_to 'PDFs', pdfs_path %></li>
+            <% else %>
+            <li id="<%="#{page}"%>" class="<%="#{highlight_current}"%>">
+            <%= link_to page.camelcase, send("#{page}_path") %></li> -->
+            <%
+  #          end
+  #        end %>

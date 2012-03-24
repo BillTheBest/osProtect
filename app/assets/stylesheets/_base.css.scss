@@ -106,7 +106,7 @@ div#container {
 // -------------------------------------- Footer 
 #footer {
   @include rounded-all(0,0,12px,12px);
-  background: url("/assets/footer.png") repeat-x scroll 0 0 transparent;
+  background: url("/assets/login/login-footer.png") repeat-x scroll 0 0 transparent;
   border: 1px solid #c8c8c8;
   border-top: 0;
   margin: 0 auto 10px auto;
@@ -478,7 +478,7 @@ body.logged_out {
 
       .login_footer {
         @include rounded-bottom(8px);
-        background: url("/assets/footer.png") repeat-x;
+        background: url("/assets/login/login-footer.png") repeat-x;
         border-top: 1px solid #bdbdbd;
         line-height: 34px;
         margin-top: 25px;
@@ -501,6 +501,86 @@ body.logged_out {
         }
       }
     }
+
+    .edit_user {
+      @include rounded-all(8px);
+      width: 588px;
+      height: 287px;
+      margin: 35px auto 0 auto;
+      border: 1px solid #bdbdbd;
+      background: url("/assets/login/login-bg.jpg") 0px 45px no-repeat;
+
+      .login_label {
+        @include rounded-top(8px);
+        background: url("/assets/login/login-header.png") repeat-x;
+        margin-bottom: 40px;
+        height: 45px;
+        border-bottom: 1px solid #bdbdbd;
+        font-size: 18px;
+        font-family: arial, sans-serif;
+        text-align: left;
+        line-height: 45px;
+        text-indent: 20px;
+      }
+
+      p {
+        display: block;
+        margin-right: -51px;
+        padding: 0.5em;
+      }
+
+      .label_field {
+        margin: 10px;
+        label {
+          margin-right: 11px;
+          text-align: left;
+          font-size: 16px;
+          color: #fff;
+        }
+      }
+
+      input.user_submit {
+        @include rounded-all(4px);
+        background: url("/assets/login/button-bg.png");
+        width: 77px;
+        height: 30px;
+        color: #fff;
+        cursor: pointer;
+        &:hover { background-position: 0px 30px; box-shadow: none; }
+      }
+
+      input[type=text], input[type=email], input[type=password] {
+        width: 163px;
+      }
+
+      .pass_remind a { color: #fff; }
+
+      .login_footer {
+        @include rounded-bottom(8px);
+        background: url("/assets/login/login-footer.png") repeat-x;
+        border-top: 1px solid #bdbdbd;
+        line-height: 34px;
+        margin-top: 25px;
+        height: 34px;
+
+        .left {
+          float: left;
+          display: block;
+          margin-left: 20px;
+          font-family: arial, sans-serif;
+          font-size: 12px;
+        }
+
+        .right {
+          float: right;
+          display: block;
+          margin-right: 20px;
+          font-size: 12px;
+          font-family: arial, sans-serif;
+        }
+      }
+    }
+
   }
 
   .content_wrapper{

@@ -5,7 +5,6 @@ class GroupsController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @title = "Groups"
     @groups = Group.order("updated_at desc").page(params[:page]).per_page(APP_CONFIG[:per_page])
   end
 
@@ -15,7 +14,6 @@ class GroupsController < ApplicationController
   end
 
   def new
-    @title = "New Group"
     @group = Group.new
   end
 
@@ -33,7 +31,6 @@ class GroupsController < ApplicationController
   end
 
   def edit
-    @title = "Edit Group"
     @group = Group.find(params[:id])
   end
 

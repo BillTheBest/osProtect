@@ -1,0 +1,12 @@
+<li id="pulse" class="<%=("dashboard" == @pcd) ? @cur : ''%>">
+  <%= link_to 'Pulse', pulse_path %>
+  <ul>
+    <li id="pulse" class="current"><%= link_to 'Today', pulse_path %></li>
+    <li id="pulse" class="current"><%= link_to 'Last 24 Hours', pulse_path(range: 'last_24') %></li>
+    <li id="pulse" class="current"><%= link_to 'This Week', pulse_path(range: 'week') %></li>
+    <li id="pulse" class="current"><%= link_to 'Last Week', pulse_path(range: 'last_week') %></li>
+    <li id="pulse" class="current"><%= link_to 'This Month', pulse_path(range: 'month') %></li>
+    <li id="pulse" class="current"><%= link_to 'Past Year', pulse_path(range: 'past_year') %></li>
+    <li id="pulse" class="current"><%= link_to 'Year', pulse_path(range: 'year') %></li>
+  </ul>
+</li>

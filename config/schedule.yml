@@ -20,50 +20,50 @@
 # 0 0 1 * 5       -- midnight on 1st of month and every Friday
 # The sixth field of a crontab entry is a string that your shell executes at the specified time.
 
-process_daily_reports:
-  #     "0 1 * * *" == 1am every day ... daily report for yesterday
-  cron: "0 1 * * *"
-  class: CronTask
-  queue: daily_reports
-  # method to perform in app/workers/cron_task.rb:
-  args: "daily_report_emailed_as_pdf"
-  description: "Daily Report"
-  rails_envs: development, production
-
-process_weekly_reports:
-  #     "0 2 * * 0" == 2am every Sunday ... weekly report for last week
-  cron: "0 2 * * 0"
-  class: CronTask
-  queue: weekly_reports
-  # method to perform in app/workers/cron_task.rb:
-  args: "weekly_report_emailed_as_pdf"
-  description: "Weekly Report"
-  rails_envs: development, production
-
-process_monthly_reports:
-  #     "0 3 1 * *" == 3am on 1st of month ... monthly report for last month:
-  cron: "0 3 1 * *"
-  class: CronTask
-  queue: monthly_reports
-  # method to perform in app/workers/cron_task.rb:
-  args: "monthly_report_emailed_as_pdf"
-  description: "Monthly Report"
-  rails_envs: development, production
-
-process_event_notifications:
-  every: 1m
-  class: CronTask
-  queue: notifications
-  # method to perform in app/workers/cron_task.rb:
-  args: "event_notifications"
-  description: "Notifications"
-  rails_envs: development, production
-
-email_notifications:
-  every: 5m
-  class: CronTask
-  queue: notifications
-  # method to perform in app/workers/cron_task.rb:
-  args: "batched_email_notifications"
-  description: "Email Event Notifications"
-  rails_envs: development, production
+# process_daily_reports:
+#   #     "0 1 * * *" == 1am every day ... daily report for yesterday
+#   cron: "0 1 * * *"
+#   class: CronTask
+#   queue: daily_reports
+#   # method to perform in app/workers/cron_task.rb:
+#   args: "daily_report_emailed_as_pdf"
+#   description: "Daily Report"
+#   rails_envs: development, production
+# 
+# process_weekly_reports:
+#   #     "0 2 * * 0" == 2am every Sunday ... weekly report for last week
+#   cron: "0 2 * * 0"
+#   class: CronTask
+#   queue: weekly_reports
+#   # method to perform in app/workers/cron_task.rb:
+#   args: "weekly_report_emailed_as_pdf"
+#   description: "Weekly Report"
+#   rails_envs: development, production
+# 
+# process_monthly_reports:
+#   #     "0 3 1 * *" == 3am on 1st of month ... monthly report for last month:
+#   cron: "0 3 1 * *"
+#   class: CronTask
+#   queue: monthly_reports
+#   # method to perform in app/workers/cron_task.rb:
+#   args: "monthly_report_emailed_as_pdf"
+#   description: "Monthly Report"
+#   rails_envs: development, production
+# 
+# process_event_notifications:
+#   every: 1m
+#   class: CronTask
+#   queue: notifications
+#   # method to perform in app/workers/cron_task.rb:
+#   args: "event_notifications"
+#   description: "Notifications"
+#   rails_envs: development, production
+# 
+# email_notifications:
+#   every: 5m
+#   class: CronTask
+#   queue: notifications
+#   # method to perform in app/workers/cron_task.rb:
+#   args: "batched_email_notifications"
+#   description: "Email Event Notifications"
+#   rails_envs: development, production

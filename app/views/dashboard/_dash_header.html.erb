@@ -5,7 +5,8 @@
   <%= @end_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") %>)
 </span>
 <ul id="ddm">
-  <li class="page-options"><%= link_to dropdown, '#', :class => 'no_menu_link' %>
+  <li class="page-options">
+    <%= link_to image_tag("arrow.png") + 'Select a Time Period', '#', :class => 'no_menu_link' %>
     <ul id="frequencybox" style="display: none;">
       <li><%= link_to 'Today', pulse_path %></li>
       <li><%= link_to 'Last 24 Hours', pulse_path(range: 'last_24') %></li>
