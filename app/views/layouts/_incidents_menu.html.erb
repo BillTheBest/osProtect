@@ -1,0 +1,6 @@
+<li id="incidents" class="<%=("incidents" == @pcd) ? @cur : ''%>">
+  <%= link_to 'Incidents', incidents_path %>
+  <ul>
+    <li id="incidents" class="current"><%= link_to 'New Incident', new_incident_path %></li>
+  </ul>
+</li>

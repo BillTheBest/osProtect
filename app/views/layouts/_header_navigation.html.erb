@@ -8,23 +8,15 @@
     <% @pcd = params[:controller].downcase %>
     <% @cur = "current" %>
     <ul class="tabbed_navigation" id="tabs">
-      <li id="events" class="<%=("events" == @pcd) ? @cur : ''%>"><%= link_to 'Events', events_path %></li>
-      <%= render :partial => 'layouts/pulse_menu' %>
-      <li id="incidents" class="<%=("incidents" == @pcd) ? @cur : ''%>">
-        <%= link_to 'Incidents', incidents_path %>
-        <ul>
-          <li id="incidents" class="current"><%= link_to 'New Incident', new_incident_path %></li>
-        </ul>
-      </li>
-      <li id="sensors" class="<%=("sensors" == @pcd) ? @cur : ''%>"><%= link_to 'Sensors', sensors_path %></li>
-      <%= render :partial => 'layouts/notifications_menu' if APP_CONFIG[:can_do_notifications] %>
-      <%= render :partial => 'layouts/reports_menu' if APP_CONFIG[:can_do_reports] %>
-      <%= render :partial => 'layouts/admins_menu' if can?(:admin, User) %>
-      <%= render :partial => 'layouts/resque_server_menu' if current_user.username == 'admin' %>
+      <%= render partial: 'layouts/events_menu' %>
+      <%= render partial: 'layouts/pulse_menu' %>
+      <%= render partial: 'layouts/incidents_menu' %>
+      <%= render partial: 'layouts/sensors_menu' %>
+      <%= render partial: 'layouts/notifications_menu' if APP_CONFIG[:can_do_notifications] %>
+      <%= render partial: 'layouts/reports_menu' if APP_CONFIG[:can_do_reports] %>
+      <%= render partial: 'layouts/admins_menu' if can?(:admin, User) %>
+      <%= render partial: 'layouts/resque_server_menu' if current_user.username == 'admin' %>
     </ul>
-    <ul class="tabbed_navigation right" id="tabs">
-      <li id="profile"><%= link_to 'Profile', edit_user_path(current_user), 'data-method'=>"get" %></li>
-      <li id="logout"><%= link_to image_tag('/assets/logout-icon.png') + 'Logout', logout_path, 'data-method'=>"get" %></li>
-    </ul>
+    <%= render partial: 'layouts/right_side_menu' %>
   </div>
 </div>
