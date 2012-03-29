@@ -74,7 +74,7 @@
                         <%= text_field_tag 'q[destination_port]', @event_search.destination_port, size: "30" %>
                       </li>
                       <li class="sensor">
-                        <label>Sensor</label>
+                        <label>Detection Engine</label>
                         <%= collection_select('q', :sensor_id, Sensor.selections(current_user), :id, :hostname, include_blank: true, selected: @event_search.sensor_id) %>
                       </li>
                     </ol>

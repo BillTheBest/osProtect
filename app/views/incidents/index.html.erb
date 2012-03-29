@@ -11,7 +11,7 @@
       <div class="paginated_collection">
         <%= form_tag new_incident_path, method: :get do %>
           <div class="buttons" id="add_new_incident">
-            <%= submit_tag 'Create Incident' %>
+            <%= submit_tag 'New Incident' %>
           </div>
         <% end %>
         <br />
@@ -33,7 +33,7 @@
                   <% if @incidents.any? %>
                       <% @incidents.each do |incident| %>
                           <tr class="<%= cycle('even', 'odd') %>">
-                            <td><%= link_to incident.incident_name, edit_incident_path(incident) %></td>
+                            <td><%= link_to incident.incident_name.truncate(50, :omission => "..."), edit_incident_path(incident) %></td>
                             <td><%= incident.status %></td>
                             <td><%= simple_format incident.incident_description %></td>
                             <td><%= simple_format incident.incident_resolution %></td>

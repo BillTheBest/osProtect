@@ -3,16 +3,16 @@
 # usage: APP_CONFIG[:show_versions_and_limits]
 #
 # notes:
-#   The per_page (i.e. pagination) setting affects all online listings.
+# The per_page (i.e. pagination) setting affects all online listings.
 #
-#   Notifications and Reports require Redis and Resque Scheduler and workers to be up and running.
+# Notifications and Reports require Redis and Resque Scheduler and workers to be up and running.
 #
-#   Weekly and monthly reports:
-#     - are too time/resource consuming
-#     - they are really just a repeat of the Daily work, but at 7/30 times the daily amount
-#     - except for the summary/pulse portion they are just a copies of the daily's
-#   so they are initially disabled (set to false).
-#   You may change these if you have the resources to handle the workload involved.
+# Weekly and monthly reports:
+# - are too time/resource consuming
+# - they are really just a repeat of the Daily work, but at 7/30 times the daily amount
+# - except for the summary/pulse portion they are just a copies of the daily's
+# so they are initially disabled (set to false).
+# You may change these if you have the resources to handle the workload involved.
 
 development:
   # web_server: dev_whatever

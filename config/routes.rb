@@ -40,5 +40,7 @@ OsProtectRor320::Application.routes.draw do
   resources :events, :only => [:index, :show, :create, :create_pdf]
   get "home" => "events#index", :as => "home"
   post "events_pdf" => "events#create_pdf", :as => "events_pdf"
-  root :to => "events#index"
+
+  resources :helps
+  root :to => "dashboard#index"
 end

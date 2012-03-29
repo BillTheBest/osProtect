@@ -5,6 +5,7 @@
 @import "forms";
 @import "dropdown";
 @import "tabs";
+@import "page_specific";
 @import "components/flash_messages";
 @import "components/date_picker";
 
@@ -49,7 +50,7 @@ div#container {
       padding: .8em 1.5em .7em 1.5em;
       border: 1px solid #f8f8f8;
       span.icon { vertical-align: bottom; margin-right: 4px;} 
-      &:hover{ @include icon-color(#000); }
+      &:hover { @include icon-color(#000); }
       &:active { border: inherit; }
     }
   }
@@ -89,7 +90,7 @@ div#container {
     width: 100%; 
 
     #main_content{ 
-      margin-right: 300px; 
+      margin-right: 285px; 
     }
   }
 
