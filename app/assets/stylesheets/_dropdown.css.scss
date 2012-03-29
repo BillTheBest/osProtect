@@ -1,8 +1,10 @@
 // ----------------------------------- Dashboard Dropdown Menu
 #ddm {
   float: right;
-  margin: 4px -8px 0 0;
+  margin: 4px 0 0 0;
   height: 35px;
+  text-indent: 0;
+  padding: 0;
 
   li {
     float: left;
@@ -31,6 +33,7 @@
     }
 
     ul {
+      @include opacity;
       margin: 0px 0 0 0px;
       padding: 0;
       position: absolute;
@@ -40,11 +43,6 @@
       border: 1px solid #DDDDDD;
       border-top: 0;
       padding-bottom: 1px;
-      opacity: 0.9;
-      -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
-      filter: alpha(opacity=90);
-      -moz-opacity: 0.90;
-      -khtml-opacity: 0.9;
     }
 
     ul li, ul li a, ul li a:hover {

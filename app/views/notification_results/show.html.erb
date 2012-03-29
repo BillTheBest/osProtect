@@ -80,8 +80,9 @@
     </div> <!-- main_content_wrapper -->
 
     <div id="sidebar">
+      <div class="spacer57"></div>
       <div class="sidebar_section panel">
-        <h3 style="margin-top:-2px">&larr; results for Notification: <%= "#{@notification.id}" %></h3>
+        <h3>&larr; Results for notification: <%= "#{@notification.id}" %></h3>
         <div class="panel_contents">
             <ul style="list-style-type:none">
               <li>- events matched: <strong><%= number_with_delimiter @notification_result.total_matches %></strong></li>

@@ -80,8 +80,10 @@ dd            { margin-left: 1.5em;}
 
 // Spacers
 .spacer_login { margin-bottom: 83px; }
-.spacer10     { margin-bottom: 10px; }
-.spacer69     { margin-bottom: 69px; }
+.spacer10     { height: 10px; }
+.spacer15     { height: 15px; }
+.spacer57     { height: 57px; }
+.spacerx13    { width: 13px; float: right; }
 
 // Tables
 table         { margin-bottom: 1.4em; width:100%; }
