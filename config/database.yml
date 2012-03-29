@@ -17,5 +17,3 @@ test:
   username: rails
   password: rails
   socket: /tmp/mysql.sock
-
-production:
