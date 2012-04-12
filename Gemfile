@@ -50,7 +50,6 @@ gem 'whenever', :require => false
 
 gem 'thin'
 gem 'foreman'
-gem 'unicorn'
 
 group :development do
   gem 'letter_opener'

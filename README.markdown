@@ -4,4 +4,6 @@
 
 This is a Ruby on Rails application that offers a modern interface for network security IDS/IPS management and reporting.
 
-### There is [more information and detailed installation instructions](osProtect/wiki "wiki installation instructions") at the wiki.
+### See the wiki for [more information and detailed installation instructions](osProtect/wiki "wiki installation instructions").
+
+### There's also a quick start [install guide for osProtect on Ubuntu 10.04 LTS](osProtect/wiki/install_osProtect_on_Ubuntu_10.04LTS "install guide for osProtect on Ubuntu 10.04 LTS").

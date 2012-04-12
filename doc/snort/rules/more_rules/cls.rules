@@ -1,1 +1,0 @@
-alert tcp $EXTERNAL_NET any -> $HOME_NET 119 (msg:"NNTP article post without path attempt"; flow:to_server,established; content:"takethis"; fast_pattern:only; pcre:!"/^takethis.*?Path\x3a.*?[\r]{0,1}?\n[\r]{0,1}\n/si"; classtype:attempted-admin; sid:2432; rev:5;)
