@@ -62,7 +62,7 @@
                               <%# note: owner or an admin may delete this report %>
                               <% if current_user.id == report.user_id || current_user.role?(:admin) %>
                                   &nbsp;&nbsp;&nbsp;
-                                  <%= link_to 'delete', report, confirm: "\n*** WARNING ***\n\nThis will also delete all PDF's created by this report.\n\nAre you sure?\n\n", method: :delete %>
+                                  <%= link_to 'Delete', report, confirm: "\n*** WARNING ***\n\nThis will also delete all PDF's created by this report.\n\nAre you sure?\n\n", method: :delete %>
                               <% else %>
                                   &nbsp;
                               <% end %>

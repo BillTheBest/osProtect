@@ -17,6 +17,7 @@ class PdfWorker
       report_name = "events_search_#{@pdf.id}" if @pdf.pdf_type == 3
       if @pdf.pdf_type == 1
         @report = @pdf.report
+        @header = "Report Name: " + @report.name
         @report.name = "'" + @report.name + "' Report"
       elsif @pdf.pdf_type == 3
         # temporary Report for pdf's based on searches from the Events page:
@@ -31,10 +32,12 @@ class PdfWorker
       @event_search = EventSearch.new(@report.report_criteria)
       @events = @event_search.filter(@events) # sets: @start_time and @end_time
       report_title = set_report_title(@report.name, @event_search.start_time, @event_search.end_time)
+      report_header = @header
+      report_time = set_report_time(@event_search.start_time, @event_search.end_time)
       events_count = @events.count
       max_exceeded = (events_count > max_events_per_pdf) ? true : false
       @events = @events.limit(max_events_per_pdf)
-      pdf_doc = EventsPdf.new(@user, @report, report_title, max_exceeded, max_events_per_pdf, events_count, @events)
+      pdf_doc = EventsPdf.new(@user, @report, report_title, report_header, report_time, max_exceeded, max_events_per_pdf, events_count, @events)
       # now save pdf to file:
       path = "#{Rails.root}/shared/reports/#{user_id}"
       FileUtils.mkdir_p(path) # create path if it doesn't exist already
@@ -60,14 +63,28 @@ class PdfWorker
   def self.set_report_title(name, start_time, end_time)
     title = name
     if start_time.blank? && end_time.blank?
-      title += 'for: any time period'
+      title += 'For: any time period'
     elsif !start_time.blank? && end_time.blank?
-      title += ' on or after: ' + start_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z")
+      title += ' On or after: ' + start_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z")
     elsif start_time.blank? && !end_time.blank?
-      title += ' on or before: ' + end_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z")
+      title += ' On or before: ' + end_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z")
     else
-      title += ' for: ' + start_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") + ' - ' + end_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z")
+      title += ' For: ' + start_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") + ' - ' + end_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z")
     end
     title
+  end
+
+  def self.set_report_time(start_time, end_time)
+    report_time_window = ''
+    if start_time.blank? && end_time.blank?
+      report_time_window += 'For: any time period'
+    elsif !start_time.blank? && end_time.blank?
+      report_time_window += 'On or after: ' + start_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z")
+    elsif start_time.blank? && !end_time.blank?
+      report_time_window += 'On or before: ' + end_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z")
+    else
+      report_time_window += 'For: ' + start_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") + ' - ' + end_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z")
+    end
+    report_time_window
   end
 end

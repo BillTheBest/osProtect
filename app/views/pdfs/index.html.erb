@@ -37,21 +37,21 @@
                               <%# definitely need a presenter here to handle the display of criteria %>
                               <% unless pdf.creation_criteria.blank? %>
                                   <span style="font-size:0.9em">
-                                    <%= "priority: #{pdf.creation_criteria[:sig_priority]}" unless pdf.creation_criteria[:sig_priority].blank? %>
-                                    <%= "sig_id: #{pdf.creation_criteria[:sig_id]}" unless pdf.creation_criteria[:sig_id].blank? %>
-                                    <%= "srcIP: #{pdf.creation_criteria[:source_address]}" unless pdf.creation_criteria[:source_address].blank? %>
-                                    <%= "srcPort: #{pdf.creation_criteria[:source_port]}" unless pdf.creation_criteria[:source_port].blank? %>
-                                    <%= "destIP: #{pdf.creation_criteria[:destination_address]}" unless pdf.creation_criteria[:destination_address].blank? %>
-                                    <%= "destPort: #{pdf.creation_criteria[:destination_port]}" unless pdf.creation_criteria[:destination_port].blank? %>
-                                    <%= "sensor: #{pdf.creation_criteria[:sensor_id]}" unless pdf.creation_criteria[:sensor_id].blank? %>
-                                    <%= "range: #{pdf.creation_criteria[:relative_date_range]}" unless pdf.creation_criteria[:relative_date_range].blank? %>
-                                    <%= "begin: #{pdf.creation_criteria[:timestamp_gte]}" unless pdf.creation_criteria[:timestamp_gte].blank? %>
-                                    <%= "end: #{pdf.creation_criteria[:timestamp_lte]}" unless pdf.creation_criteria[:timestamp_lte].blank? %>
+                                    <%= "Priority: #{pdf.creation_criteria[:sig_priority]}" unless pdf.creation_criteria[:sig_priority].blank? %>
+                                    <%= "Sig_ID: #{pdf.creation_criteria[:sig_id]}" unless pdf.creation_criteria[:sig_id].blank? %>
+                                    <%= "SrcIP: #{pdf.creation_criteria[:source_address]}" unless pdf.creation_criteria[:source_address].blank? %>
+                                    <%= "SrcPort: #{pdf.creation_criteria[:source_port]}" unless pdf.creation_criteria[:source_port].blank? %>
+                                    <%= "DestIP: #{pdf.creation_criteria[:destination_address]}" unless pdf.creation_criteria[:destination_address].blank? %>
+                                    <%= "DestPort: #{pdf.creation_criteria[:destination_port]}" unless pdf.creation_criteria[:destination_port].blank? %>
+                                    <%= "Sensor: #{pdf.creation_criteria[:sensor_id]}" unless pdf.creation_criteria[:sensor_id].blank? %>
+                                    <%= "Range: #{pdf.creation_criteria[:relative_date_range]}" unless pdf.creation_criteria[:relative_date_range].blank? %>
+                                    <%= "Begin: #{pdf.creation_criteria[:timestamp_gte]}" unless pdf.creation_criteria[:timestamp_gte].blank? %>
+                                    <%= "End: #{pdf.creation_criteria[:timestamp_lte]}" unless pdf.creation_criteria[:timestamp_lte].blank? %>
                                   </span>
                               <% end %>
                             </td>
                             <td><%= pdf.created_at %></td>
-                            <td><%= link_to 'delete', pdf, confirm: 'Are you sure?', method: :delete %></td>
+                            <td><%= link_to 'Delete', pdf, confirm: 'Are you sure?', method: :delete %></td>
                           </tr>
                       <% end %>
                   <% else %>
