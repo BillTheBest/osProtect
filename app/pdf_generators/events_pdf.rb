@@ -1,7 +1,7 @@
-
 require "open-uri"
 require "osprotect/date_ranges"
 require "osprotect/pulse_top_tens"
+require "osprotect/array"
 
 class EventsPdf < Prawn::Document
   include Osprotect::DateRanges
@@ -21,7 +21,6 @@ class EventsPdf < Prawn::Document
     @events_count = events_count
     @events = events
     @coverbg = "app/assets/images/osProtect-background.jpg"
-
     # set_title_for_every_page
     image @coverbg, :at => [-5,805], scale: 0.48
     move_down 225
@@ -130,7 +129,6 @@ class EventsPdf < Prawn::Document
         end
       end
     end
-
     start_new_page
     add_dest('section3', dest_fit_horizontally(cursor, page.dictionary))
     @priorities_text = "The Priority table and graph shows the total number of attacks detected based on their priority (severity) level; High, Medium or Low. High priority attacks can sometimes lead to loss of cardholder information, social security numbers, PHI or other personal information. Medium priority alerts can generally be categorized as denial of service (DoS), virus propagation, Trojans or Malware based attacks. Low priority events are early signs of unauthorized activity such as ping, port discover, illegal URL requests, etc."
@@ -157,7 +155,6 @@ class EventsPdf < Prawn::Document
       move_down 6
       indent(465) { create_priorities_table }
     end
-
     canvas do
       move_down  380
       indent(5) do
@@ -325,7 +322,6 @@ class EventsPdf < Prawn::Document
       # comment the width attributes below to let prawn figure this stuff out:
       self.width = 585
       self.column_widths = [38, 154, 91, 91, 109, 102]
-      # puts "\nself.width=#{self.width}\n"
       self.row_colors = ["D4E1EF", "FFFFFF"]
       self.cell_style = {overflow: :shrink_to_fit, min_font_size: 8, border_width: 1, borders: [:left, :right, :bottom], border_color: "D4E1EF"}
     end
@@ -344,13 +340,11 @@ class EventsPdf < Prawn::Document
   def set_footer_for_every_page
     page_footerL = "#{Time.now.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z")}"
     page_optionsL = {:at => [5, 0],
-                    # :color => "007700",
                     :width => 400,
                     :page_filter => :all,
                     :align => :left,
                     :start_count_at => 1 }
     number_pages page_footerL, page_optionsL
-
     page_footerR = "page <page> of <total>"
     page_optionsR = {:at => [bounds.right - 405, 0],
                     :width => 400,
