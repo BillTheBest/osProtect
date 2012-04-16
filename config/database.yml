@@ -3,9 +3,9 @@ development:
   encoding: utf8
   reconnect: false
   pool: 5
-  database: osprotect_dev
-  username: rails
-  password: rails
+  database: snort
+  username: osprotect
+  password: CHANGE_ME
   socket: /tmp/mysql.sock
 
 production:
