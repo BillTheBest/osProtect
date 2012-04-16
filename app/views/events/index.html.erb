@@ -17,76 +17,85 @@
   <%#=rf.path%> ... <b><%#=rf.filename%></b><br />
 <%# end %> -->
         <% no_events = false %>
-        <% unless @events.blank? %>
-          <div class="paginated_collection">
-            <%= form_tag events_path, method: :post, :remote => :true, class: "event_select_form" do %>
+        <div class="paginated_collection">
+          <%= form_tag events_path, method: :post, :remote => :true, class: "event_select_form" do %>
+            <div class="buttons" id="add-selected-events">
+              <div id="search-sidebar" class="left"><%= submit_tag 'Search' %></div>
               <% if presenter.page_of_events.count > 0 %>
-                  <div class="buttons" id="add-selected-events">
-                    <div id="search-sidebar" class="left"><%= submit_tag 'Search' %></div>
-                    <%#= submit_tag 'Add selected events to', id: 'submit-selected-events', disable_with: "Standby . . ." %>
-                    <%= submit_tag 'Add selected events to', id: 'submit-selected-events' %>
-                    <%= select_tag(:incident_id, options_for_select(Incident.accessible_by(current_ability).all.collect {|i| [ "##{i.id} - #{truncate(i.incident_name)}", i.id ] }), {prompt: "a new Incident or select from this list"}) %>
-                  </div>
-                  <div id="adding-events-spinner" style="display:none">
-                    <%= image_tag('loading-bars.gif') %>
-                  </div>
+                <%#= submit_tag 'Add selected events to', id: 'submit-selected-events', disable_with: "Standby . . ." %>
+                <%= submit_tag 'Add selected events to', id: 'submit-selected-events' %>
+                <%= select_tag(:incident_id, options_for_select(Incident.accessible_by(current_ability).all.collect {|i| [ "##{i.id} - #{truncate(i.incident_name)}", i.id ] }), {prompt: "a new Incident or select from this list"}) %>
               <% end %>
-              <div class="pagination_information"><%= page_entries_info presenter.page_of_events %></div>
-              <div class="paginated_collection_contents">
-                <div class="index_content">
-                  <div class="index_as_table">
-                    <% if presenter.page_of_events %>
-                        <table border="0" cellspacing="0" cellpadding="0" id="events" class="index_table">
-                          <thead>
-                            <tr>
-                              <th class="sortable small">
-                                <%= image_tag('check.png', id: 'events-check', title: 'click to toggle checkboxes')%>
-                              </th>
-                              <th class="sortable">Priority</th>
-                              <th class="sortable">Signature</th>
-                              <th class="sortable">Source</th>
-                              <th class="sortable">Destination</th>
-                              <th class="sortable">Sensor</th>
-                              <th class="sortable">Timestamp</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <% presenter.page_of_events.each_with_index do |event, x| %>
-                                <tr class="<%= cycle('even', 'odd') %>">
-                                  <%#= render event %>
-                                  <td><%= check_box_tag "event[#{x}]", event.key, false, :id => "check_box_#{event.key_with_underscore}", :class => 'select-events' %></td>
-                                  <td><%=event.priority%></td>
-                                  <td><%= link_to event.signature, event_path(event.key) %></td>
-                                  <td><%=event.source_ip_port%></td>
-                                  <td><%=event.destination_ip_port%></td>
-                                  <td><%=event.common_name_for_sensor%></td>
-                                  <td><%=event.timestamp%></td>
-                                </tr>
-                            <% end %>
-                          </tbody>
-                        </table>
-                    <% else %>
-                        <% no_events = true %>
-                        <br /><h2>No events found!</h2>
-                    <% end %>
-                  </div> <!-- index_as_table -->
-                </div> <!-- index_content -->
-              </div> <!-- paginated_collection_contents -->
-            <% end %> <!-- form_tag events_path -->
-
-            <div id="index_footer">
-              <!-- <div style="float:left">
-                <%#= button_to 'create PDF', events_pdf_url(q: params[:q], format: :pdf), method: "post" %>
-                <%# the following opens a new tab in the browser: %>
-                <%#= button_to 'create PDF', events_pdf_url(q: params[:q], format: :pdf), method: "post", form: {"target" => "_blank"} %>
-              </div> -->
-              <%= will_paginate presenter.page_of_events %>
+              <div class="clear"></div>
             </div>
-          </div> <!-- paginated_collection -->
-        <% else %>
-          <% no_events = true %>
-          <br /><h2>No events found!</h2>
-        <% end %>
+            <div id="adding-events-spinner" style="display:none">
+              <%= image_tag('loading-bars.gif') %>
+            </div>
+            <div class="pagination_information"><%= page_entries_info presenter.page_of_events %></div>
+            <div class="paginated_collection_contents">
+              <div class="index_content">
+                <div class="index_as_table">
+                  <table border="0" cellspacing="0" cellpadding="0" id="events" class="index_table">
+                    <thead>
+                      <tr>
+                        <th class="sortable small">
+                          <%= image_tag('check.png', id: 'events-check', title: 'click to toggle checkboxes')%>
+                        </th>
+                        <th class="sortable">Priority</th>
+                        <th class="sortable">Signature</th>
+                        <th class="sortable">Source</th>
+                        <th class="sortable">Destination</th>
+                        <th class="sortable">Sensor</th>
+                        <th class="sortable">Timestamp</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% unless @events.blank? %>
+                        <% if presenter.page_of_events %>
+                          <% presenter.page_of_events.each_with_index do |event, x| %>
+                            <tr class="<%= cycle('even', 'odd') %>">
+                              <%#= render event %>
+                              <td><%= check_box_tag "event[#{x}]", event.key, false, :id => "check_box_#{event.key_with_underscore}", :class => 'select-events' %></td>
+                              <td><%=event.priority%></td>
+                              <td><%= link_to event.signature, event_path(event.key) %></td>
+                              <td><%=event.source_ip_port%></td>
+                              <td><%=event.destination_ip_port%></td>
+                              <td><%=event.common_name_for_sensor%></td>
+                              <td><%=event.timestamp%></td>
+                            </tr>
+                          <% end %>
+                        <% else %>
+                          <tr class="<%= cycle('even', 'odd') %>">
+                            <td colspan=8>
+                              <% no_events = true %>
+                              <b>No events found!</b>
+                            </td>
+                          </tr>
+                        <% end %>
+                      <% else %>
+                        <tr class="<%= cycle('even', 'odd') %>">
+                          <td colspan=8>
+                            <% no_events = true %>
+                            <h3>No events found!</h3>
+                          </td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                </div> <!-- index_as_table -->
+              </div> <!-- index_content -->
+            </div> <!-- paginated_collection_contents -->
+          <% end %> <!-- form_tag events_path -->
+
+          <div id="index_footer">
+            <!-- <div style="float:left">
+              <%#= button_to 'create PDF', events_pdf_url(q: params[:q], format: :pdf), method: "post" %>
+              <%# the following opens a new tab in the browser: %>
+              <%#= button_to 'create PDF', events_pdf_url(q: params[:q], format: :pdf), method: "post", form: {"target" => "_blank"} %>
+            </div> -->
+            <%= will_paginate presenter.page_of_events %>
+          </div>
+        </div> <!-- paginated_collection -->
       </div> <!-- main_content -->
     </div> <!-- main_content_wrapper -->
 
