@@ -7,7 +7,6 @@
 <div id="osprotect_content" class="without_sidebar">
   <div id="main_content_wrapper">
     <div id="main_content">
-      <div class="pagination_information"><%= page_entries_info @reports %></div>
       <div class="paginated_collection">
         <%= form_tag new_report_path, method: :get do %>
           <div class="buttons" id="add_new_report">
@@ -15,7 +14,7 @@
             <%= submit_tag 'New Incidents Report' %>
           </div>
         <% end %>
-        <br />
+        <div class="pagination_information"><%= page_entries_info @reports %></div>
         <div class="paginated_collection_contents">
           <div class="index_content">
             <div class="index_as_table">

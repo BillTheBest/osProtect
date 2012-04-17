@@ -20,7 +20,7 @@
   @include gradient(#f9f9f9, #dddbdb);
   @include text-shadow;
   color: #777;
-  &:hover { color: #444; @include icon-color(#444) }
+  &:hover { color: #444; @include icon-color(#444); background: #BBB; }
   &:active { @include inset-shadow; }
 }
 
