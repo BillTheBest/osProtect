@@ -338,20 +338,20 @@ class EventsPdf < Prawn::Document
   end
 
   def set_footer_for_every_page
-    page_footerL = "#{Time.now.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z")}"
-    page_optionsL = {:at => [5, 0],
+    page_footer = "#{Time.now.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z")}"
+    page_options = {:at => [5, 0],
                     :width => 400,
                     :page_filter => :all,
                     :align => :left,
                     :start_count_at => 1 }
-    number_pages page_footerL, page_optionsL
-    page_footerR = "page <page> of <total>"
-    page_optionsR = {:at => [bounds.right - 405, 0],
+    number_pages page_footer, page_options
+    page_footer = "page <page> of <total>"
+    page_options = {:at => [bounds.right - 405, 0],
                     :width => 400,
                     :page_filter => :all,
                     :align => :right,
                     :start_count_at => 1 }
-    number_pages page_footerR, page_optionsR
+    number_pages page_footer, page_options
   end
 
   def set_priority_level(key)
