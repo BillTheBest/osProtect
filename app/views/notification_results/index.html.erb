@@ -7,9 +7,9 @@
 <div id="osprotect_content" class="without_sidebar">
   <div id="main_content_wrapper">
     <div id="main_content">
-      <div class="pagination_information"><%= page_entries_info @notification_results %></div>
       <div class="paginated_collection">
         <h3><%= link_to "Notification #{@notification.id}", edit_notification_path(id: @notification.id) %> results:</h3>
+        <div class="pagination_information"><%= page_entries_info @notification_results %></div>
         <div class="paginated_collection_contents">
           <div class="index_content">
             <div class="index_as_table">

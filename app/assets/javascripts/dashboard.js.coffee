@@ -4,16 +4,25 @@
 
 jQuery ->
   $("#topAttackers").click ->
+    $('li#topAttackers').attr('class','current')
+    $('li#topTargets').removeAttr('class')
+    $('li#topEvents').removeAttr('class')
     $('#top_attackers').show()
     $('#top_targets').hide()
     $('#top_events').hide()
 
   $("#topTargets").click ->
+    $('li#topAttackers').removeAttr('class')
+    $('li#topTargets').attr('class','current')
+    $('li#topEvents').removeAttr('class')
     $('#top_attackers').hide()
     $('#top_targets').show()
     $('#top_events').hide()
 
   $("#topEvents").click ->
+    $('li#topAttackers').removeAttr('class')
+    $('li#topTargets').removeAttr('class')
+    $('li#topEvents').attr('class','current')
     $('#top_attackers').hide()
     $('#top_targets').hide()
     $('#top_events').show()

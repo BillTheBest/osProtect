@@ -10,6 +10,8 @@ ul.tabs {
     list-style: none;
     display: inline;
 
+    &.current a { background-color:#ccc; }
+
     a {
       @include rounded-top(7px);
       background-color:#f6f6f6;
