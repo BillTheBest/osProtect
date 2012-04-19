@@ -245,13 +245,15 @@ class EventsPdf < Prawn::Document
   end
 
   def create_priorities_table
-    priority_table_updated = []
     priority_table = @priorities.map { |p| [p.priority_cnt, p.sig_priority] }
     priority_table_flatten = priority_table.flatten
     priority_cnt = priority_table_flatten.columnize :columns => 2, :offset => 0
     sig_priority = priority_table_flatten.columnize :columns => 2, :offset => 1
+    priority_table_updated = []
+    i = 0
     sig_priority = sig_priority.map do |key|
-      priority_table_updated << [ priority_cnt[key-1], set_priority_level(key) ]
+      priority_table_updated << [ priority_cnt[i], set_priority_level(key) ]
+      i = i+1
     end
     atable =  [ ["Count", "Priorities"] ] + priority_table_updated
     table atable do
@@ -283,7 +285,7 @@ class EventsPdf < Prawn::Document
   end
 
   def put_criteria_into_table
-    criteria_table =  @report.report_criteria.map do |key, value|
+    criteria_table = @report.report_criteria.map do |key, value|
                         k = "Priority:"          if key == "sig_priority"
                         if key == "sig_id"
                           k = "Signature:"

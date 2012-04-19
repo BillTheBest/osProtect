@@ -4,7 +4,7 @@ form {
   ul, ol, li, fieldset, legend, input, textarea, select, p { margin:0; padding:0; }
   ol, ul { list-style: none }
 
-  fieldset { 
+  fieldset {
     border: 0; 
     padding: 10px 0;
     margin-bottom: 20px;
@@ -30,44 +30,44 @@ form {
     }
 
 
-    ol > li > li label { 
-      line-height:100%; 
-      padding-top:0; 
-      input { 
-        line-height:100%; 
-        vertical-align:middle; 
-        margin-top:-0.1em;
+    ol > li > li label {
+      line-height:100%;
+      padding-top: 0;
+      input {
+        line-height: 100%;
+        vertical-align: middle;
+        margin-top: -0.1em;
       }
     }
   }
 
   /* Nested Fieldsets and Legends */
   fieldset > ol > li {
-    fieldset { 
-      position:relative; 
+    fieldset {
+      position: relative;
       padding: 0;
       margin-bottom: 0;
 
-      legend { 
-        position:absolute; 
-        width:95%; 
-        padding-top:0.1em; 
-        left: 0px; 
-        font-size: 100%; 
+      legend {
+        position: absolute;
+        width: 95%;
+        padding-top: 0.1em;
+        left: 0px;
+        font-size: 100%;
         font-weight: normal;
-        span { position:absolute; }
-        &.label label { position:absolute; }
+        span { position: absolute; }
+        &.label label { position: absolute; }
       }
 
       ol { 
-        float:left; 
-        width:74%; 
-        margin:0; 
-        padding:0 0 0 20%; 
+        float: left;
+        width: 95%;
+        margin: 0;
+        padding: 0;
 
         li {
-          padding:0; 
-          border:0; 
+          padding: 0;
+          border: 0;
         }
       }
     }
@@ -95,29 +95,29 @@ form {
     p.inline-hints { 
       font-size: 0.95em;
       font-style: italic;
-      color:#666; 
-      margin: 0.5em 0 0 20%;  
+      color:#666;
+      margin: 0.5em 0 0 20%;
     }
 
     /* Date and Time Fields */
     &.date, &.time, &.datetime {
       fieldset ol li {
-        float:left; width:auto; margin:0 0.5em 0 0; 
+        float: left; width: auto; margin: 0 0.5em 0 0;
         label { display: none; }
-        input { display:inline; margin:0; padding:0;  }
+        input { display: inline; margin: 0; padding: 0; }
       }
     }
 
     /* Check Boxes or Radio fields */
     &.check_boxes, &.radio {
-      fieldset ol { 
-        margin-bottom:-0.6em;
-        li { 
-          margin:0.1em 0 0.5em 0; 
-          label { 
-            float:none; 
-            width:100%; 
-            input { margin-right:0.2em; }
+      fieldset ol {
+        margin-bottom: -0.6em;
+        li {
+          margin: 0.1em 0 0.5em 0;
+          label {
+            float: none;
+            width: 100%;
+            input { margin-right: 0.2em; }
           }
         }
       }
@@ -126,30 +126,30 @@ form {
     /* Boolean Field */
     &.boolean {
       height: 1.1em;
-      label { 
+      label {
         width: 100%;
-        padding-left:20%; 
-        padding-right: 10px; 
+        padding-left: 20%;
+        padding-right: 10px;
         text-transform: none !important;
         font-weight: normal;
-        input { margin:0 0.5em 0 0.2em; }
+        input { margin: 0 0.5em 0 0.2em; }
       }
     }
 
     &.hidden { display: none; }
 
     /* Errors */
-    p.inline-errors { 
-      text-transform:capitalize;
+    p.inline-errors {
+      text-transform: capitalize;
       color: $error-color;
       font-weight: bold;
-      margin:0.3em 0 0 20%; 
+      margin: 0.3em 0 0 20%;
     }
-    ul.errors { 
+    ul.errors {
       color: $error-color;
-      margin:0.5em 0 0 20%; 
-      list-style:square; 
-      li { padding:0; border:none; display:list-item; }
+      margin: 0.5em 0 0 20%;
+      list-style: square;
+      li { padding: 0; border: none; display: list-item; }
     }
 
     &.error {
@@ -163,25 +163,24 @@ form {
   
   input[type=submit] { @include dark-button; }
   
-  .buttons { 
-    margin-top: 15px; 
+  .buttons {
+    margin-top: 15px;
     input[type=submit] { margin-right: 10px; }
   }
   
-  fieldset.buttons li { 
-    float:left; 
-    padding-right:0.5em;
+  fieldset.buttons li {
+    float: left;
+    padding-right: 0.5em;
     padding-top: 0;
     &.cancel { margin-left: 0.3em; padding: 5px; a { @include light-button; @include icon(#777, 9px);} }
   }
-
 }
 
-// -------------------------------------- Sidebar Forms 
+// -------------------------------------- Sidebar Forms
 
 $sidebar-inner-content-width: $sidebar-width - ($section-padding * 2);
 
-.sidebar_section { 
+.sidebar_section {
 
   label {
     display: block;
@@ -198,7 +197,6 @@ $sidebar-inner-content-width: $sidebar-width - ($section-padding * 2);
   input[type=text], input[type=password], input[type=email], input[type=url], input[type=tel], textarea {
     width: $sidebar-inner-content-width - ($text-input-horizontal-padding * 2);
   }
-
 }
 
 // -------------------------------------- Filter Forms
@@ -214,7 +212,7 @@ $date-range-filter-input-width: ($sidebar-inner-content-width / 2) - $filter-fie
 
 form.filter_form {
   .filter_form_field {
-    margin-bottom: 10px; 
+    margin-bottom: 10px;
     clear: both;
     
     &.filter_numeric {
@@ -229,8 +227,8 @@ form.filter_form {
     
     &.filter_check_boxes {
       label { margin-bottom: 3px; }
-      .check_boxes_wrapper label { 
-        font-weight: normal; 
+      .check_boxes_wrapper label {
+        font-weight: normal;
         margin-bottom: 3px;
         text-transform: none;
         font-size: 1.0em;
