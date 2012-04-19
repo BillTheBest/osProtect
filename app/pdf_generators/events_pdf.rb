@@ -57,6 +57,7 @@ class EventsPdf < Prawn::Document
     create_summary if report.include_summary
     start_new_page
     add_dest('section5', dest_fit_horizontally(cursor, page.dictionary))
+    @detailed_view_text = "The detailed events table below shows all events along with the details related to each event. By utilizing the information in the table below a security analyst will be able to see traffic flow information such as source and destination IP addresses and ports numbers related to each event."
     text "Detailed View of Events", size: 15, style: :bold, spacing: 4, align: :left
     move_down 10
     if @max_exceeded
@@ -69,6 +70,8 @@ class EventsPdf < Prawn::Document
       stroke_horizontal_line bounds.left, bounds.right
       move_down 10
     end
+    text @detailed_view_text, size: 9, align: :left
+    move_down 15
     put_events_into_table
     # note: always do this last so Prawn's "number_pages" will number every page:
     set_footer_for_every_page
@@ -131,7 +134,7 @@ class EventsPdf < Prawn::Document
     end
     start_new_page
     add_dest('section3', dest_fit_horizontally(cursor, page.dictionary))
-    @priorities_text = "The Priority table and graph shows the total number of attacks detected based on their priority (severity) level; High, Medium or Low. High priority attacks can sometimes lead to loss of cardholder information, social security numbers, PHI or other personal information. Medium priority alerts can generally be categorized as denial of service (DoS), virus propagation, Trojans or Malware based attacks. Low priority events are early signs of unauthorized activity such as ping, port discover, illegal URL requests, etc."
+    @priorities_text = "The Priority table and graph shows the total number of attacks detected based on their priority (severity) level; High, Medium or Low. High priority attacks can sometimes lead to loss of cardholder information, social security numbers, PHI or other personal information. Medium priority alerts can generally be categorized as denial of service (DoS), virus propagation, Trojans or Malware based attacks. Low priority events are early signs of unauthorized activity such as ping, port discovery, illegal URL requests, etc."
     if @priorities.blank?
       add_dest('section3', dest_fit_horizontally(cursor, page.dictionary))
       text "Attack Priorities", size: 15, style: :bold, spacing: 4, align: :left
@@ -159,8 +162,11 @@ class EventsPdf < Prawn::Document
       move_down  380
       indent(5) do
         add_dest('section4', dest_fit_horizontally(cursor, page.dictionary))
+        @top_events_text = "The table below shows the top events in descending order that were detected based on the signature that was triggered. Signatures should be tuned to eliminate false positive events from the table."
         text "Top Events by Signature", size: 15, style: :bold, spacing: 4, align: :left
         move_down 10
+        text @top_events_text, size: 9, align: :left
+        move_down 15
         if @events_by_signature.blank?
           text "none", size: 10, style: :bold, spacing: 4, align: :left
         else
