@@ -70,7 +70,7 @@ class EventSearch
     else
       events = events.where('timestamp between ? and ?', @start_time, @end_time)
     end
-    # puts "\n events=#{events.to_sql}\n"
+    # puts "\nevents=#{events.to_sql}\n"
     events
   end
 
