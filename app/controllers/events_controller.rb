@@ -18,7 +18,7 @@ class EventsController < ApplicationController
     # get_events_based_on_groups_for_user(current_user.id)
     # letting CanCan fetch records based on the current_user's abilities is cleaner (see: models/ability.rb file):
     @events = Event.includes(:sensor, :signature_detail, :iphdr, :tcphdr, :udphdr).accessible_by(current_ability).order("timestamp desc").page(params[:page]).per_page(APP_CONFIG[:per_page])
-    # default is to show events for Today, instead of all events:
+    # when no search params present just show events for Today, instead of all events:
     params[:q] = {relative_date_range: "today"} if params[:q].blank?
     filter_events_based_on(params[:q])
     if params.present?
