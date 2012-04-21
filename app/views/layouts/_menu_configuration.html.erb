@@ -1,4 +1,4 @@
-<li id="configuration" class="<%=(("users" == @pcd && !current_user.role?(:admin)) || "sensors" == @pcd || "notifications" == @pcd) ? @cur : ''%>">
+<li id="configuration" class="<%=(("users" == @pcd && !current_user.role?(:admin)) || "sensors" == @pcd || "notifications" == @pcd || "notification_results" == @pcd) ? @cur : ''%>">
   <a class="cursor">Configuration</a>
   <ul>
     <li id="profile">

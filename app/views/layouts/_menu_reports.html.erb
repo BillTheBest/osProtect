@@ -1,7 +1,7 @@
 <%# note: if PDFs are a submenu of Reports uncomment this: %>
 <!-- <li id="reports" class="<%#=['reports', 'pdfs'].include?(@pcd) ? @cur : ''%>"> -->
 <%# note: if PDFs are a submenu of Reports remove/comment this: %>
-<li id="reports" class="<%=("reports" == @pcd) ? @cur : ''%>">
+<li id="reports" class="<%=("reports" == @pcd || "pdfs" == @pcd) ? @cur : ''%>">
   <a class="cursor">Reports</a>
   <ul>
     <li id="reports" class="current">
