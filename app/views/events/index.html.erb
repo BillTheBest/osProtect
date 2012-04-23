@@ -1,5 +1,8 @@
 <% @title = 'Events' %>
 <% presenting @events, "EventPagePresenter" do |presenter| %>
+  <% content_class = presenter.page_of_events.blank? ? "with_sidebar" : "without_sidebar" %>
+  <% searchbar = presenter.page_of_events.blank? ? "search-sidebar-no-events" : "search-sidebar" %>
+  <% sidebar_display = presenter.page_of_events.blank? ? "" : "display:none" %>
   <div class="flashes">
     <% flash.each do |name, msg| %>
       <%= content_tag :div, msg, :class=>"flash flash_#{name}" %>
@@ -8,7 +11,8 @@
       <%= render partial: 'incident', locals: {incident: @incident} %>
     </div>
   </div>
-  <div id="osprotect_content" class="without_sidebar">
+
+  <div id="osprotect_content" class="<%= content_class %>">
     <div id="main_content_wrapper">
       <div id="main_content">
 <!-- <%#= "#{@rule_files.size} rule files found:" %><br />
@@ -20,7 +24,7 @@
         <div class="paginated_collection">
           <%= form_tag events_path, method: :post, :remote => :true, class: "event_select_form" do %>
             <div class="buttons" id="add-selected-events">
-              <div id="search-sidebar" class="left"><%= submit_tag 'Search' %></div>
+              <div id="<%= searchbar %>" class="left"><%= submit_tag 'Search' %></div>
               <% if presenter.page_of_events.count > 0 %>
                 <%#= submit_tag 'Add selected events to', id: 'submit-selected-events', disable_with: "Standby . . ." %>
                 <%= submit_tag 'Add selected events to', id: 'submit-selected-events' %>
@@ -72,7 +76,7 @@
                           <tr class="<%= cycle('even', 'odd') %>">
                             <td colspan=8>
                               <% no_events = true %>
-                              <b>No events found!</b>
+                              <b>No events found for: <%= set_range(@event_search.relative_date_range) %></b>
                             </td>
                           </tr>
                         <% end %>
@@ -80,7 +84,7 @@
                         <tr class="<%= cycle('even', 'odd') %>">
                           <td colspan=8>
                             <% no_events = true %>
-                            <h3>No events found!</h3>
+                            <h3>No events found for: <%= set_range(@event_search.relative_date_range) %></h3>
                           </td>
                         </tr>
                       <% end %>
@@ -104,7 +108,7 @@
     </div> <!-- main_content_wrapper -->
 
     <%# unless @events.blank? %>
-      <div id="sidebar" style="display:none">
+      <div id="sidebar" style="<%= sidebar_display %>">
         <div class="spacer57"></div>
         <div class="sidebar_section panel" id="filters_sidebar_section">
           <h3>&larr; Search Events:</h3>

@@ -30,6 +30,15 @@ jQuery ->
       $('#sidebar').hide()
   )
 
+  $('#search-sidebar-no-events').toggle(
+    ->
+      $('div#osprotect_content').attr('class','without_sidebar')
+      $('#sidebar').hide()
+    ->
+      $('div#osprotect_content').attr('class','with_sidebar')
+      $('#sidebar').show()
+  )
+
   # note: the following double submitted the form:
   # $("#add-selected-events").click ->
   #   $('#add-selected-events').hide()
