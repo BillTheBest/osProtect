@@ -30,8 +30,8 @@ development:
   max_incidents_per_pdf: 50
   max_events_per_pdf: 50
   can_daily_report: true
-  can_weekly_report: false
-  can_monthly_report: false
+  can_weekly_report: true
+  can_monthly_report: true
 
 test:
   web_server: dev_whatever
@@ -68,5 +68,5 @@ production:
   max_incidents_per_pdf: 2000
   max_events_per_pdf: 2000
   can_daily_report: true
-  can_weekly_report: false
-  can_monthly_report: false
+  can_weekly_report: true
+  can_monthly_report: true
